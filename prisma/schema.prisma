@@ -8,6 +8,96 @@ datasource db {
 }
 
 model users {
-  id   Int     @id
-  name String? @db.VarChar(45)
+  id          BigInt    @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  name        String?   @db.VarChar(45)
+  firstname   String?   @db.VarChar(45)
+  lastname    String?   @db.VarChar(45)
+  mail        String?   @db.VarChar(55)
+  password    String?   @db.VarChar(150)
+  postnumber  Int?
+  postcity    String?   @db.VarChar(35)
+  phonenumber String?   @db.VarChar(38)
+  verified    Boolean?
+  admin       Boolean?
+  image       Bytes?    @db.Blob
+  orders      orders[]
+  reviews     reviews[]
+}
+
+model categories {
+  id       Int        @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  name     String?    @db.VarChar(45)
+  icon     Bytes?     @db.Blob
+  products products[]
+}
+
+model orders {
+  id        BigInt   @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  productid BigInt
+  date      DateTime @db.Date
+  userid    BigInt
+  status    String?  @db.VarChar(45)
+  users     users    @relation(fields: [userid], references: [id], onUpdate: Restrict, map: "orders_ibfk_1")
+  products  products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "orders_ibfk_2")
+
+  @@index([productid], map: "productid")
+  @@index([userid], map: "userid")
+}
+
+model orders_products {
+  id        BigInt @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  orderid   BigInt
+  productid BigInt
+}
+
+model product_images {
+  id        BigInt   @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  name      String?  @db.VarChar(45)
+  productid BigInt
+  image     Bytes    @db.Blob
+  products  products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "product_images_ibfk_1")
+
+  @@index([productid], map: "productid")
+}
+
+model product_specs {
+  id           BigInt   @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  title        String   @db.VarChar(45)
+  content      String?  @db.Text
+  productid    BigInt
+  speccategory String?  @db.VarChar(45)
+  products     products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "product_specs_ibfk_1")
+
+  @@index([productid], map: "productid")
+}
+
+model products {
+  id             BigInt           @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  categoryid     Int
+  name           String?          @db.VarChar(45)
+  quickspecs     String?          @db.VarChar(100)
+  description    String?          @db.Text
+  price          Int
+  discountprice  Int?
+  instock        Boolean?
+  orders         orders[]
+  product_images product_images[]
+  product_specs  product_specs[]
+  categories     categories       @relation(fields: [categoryid], references: [id], onUpdate: Restrict, map: "products_ibfk_1")
+  reviews        reviews[]
+
+  @@index([categoryid], map: "categoryid")
+}
+
+model reviews {
+  id        BigInt   @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  userid    BigInt
+  content   String?  @db.Text
+  rating    Int?     @db.SmallInt
+  productid BigInt
+  products  products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "reviews_ibfk_1")
+  users     users    @relation(fields: [userid], references: [id], onUpdate: Restrict, map: "reviews_ibfk_2")
+
+  @@index([productid], map: "productid")
+  @@index([userid], map: "userid")
 }

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import useUser from "../lib/useUser";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import fetchJson from "../lib/fetchJson";
+import styles from "../styles/Header.module.scss";
 
 export default function Header() {
     const { user, mutateUser } = useUser();
@@ -10,7 +10,7 @@ export default function Header() {
 
     return (
         <header>
-            <nav>
+            <nav className={styles.nav}>
                 <ul>
                     <li>
                         <Link href="/" legacyBehavior>
@@ -61,16 +61,6 @@ export default function Header() {
                             </li>
                         </>
                     )}
-                    <li>
-                        <a href="https://github.com/vvo/iron-session">
-                            <Image
-                                src="/GitHub-Mark-Light-32px.png"
-                                width="32"
-                                height="32"
-                                alt=""
-                            />
-                        </a>
-                    </li>
                 </ul>
             </nav>
             <style jsx>{`
