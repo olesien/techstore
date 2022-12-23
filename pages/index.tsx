@@ -10,7 +10,9 @@ export default function Home({}: {}) {
                 <title>Test</title>
             </Head>
             <section className={utilStyles.headingMd}>
-                <Button variant="contained">Hello World</Button>
+                <Button variant="contained" color="primary">
+                    Hello World
+                </Button>
                 <p>test</p>
             </section>
         </Layout>
