@@ -36,23 +36,12 @@ export default function Header() {
                                                 borderRadius: "100%",
                                                 overflow: "hidden",
                                             }}
-                                        >
-                                            {/* <Image
-                                                src={user.avatarUrl}
-                                                width={32}
-                                                height={32}
-                                                alt=""
-                                            /> */}
-                                        </span>
-                                        Profile (Static Generation, recommended)
+                                        ></span>
+                                        Profile
                                     </a>
                                 </Link>
                             </li>
-                            <li>
-                                <Link href="/profile-ssr" legacyBehavior>
-                                    <a>Profile (Server-side Rendering)</a>
-                                </Link>
-                            </li>
+
                             <li>
                                 <a
                                     href="/api/logout"
