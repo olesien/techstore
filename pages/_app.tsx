@@ -16,11 +16,13 @@ declare module "@mui/material/styles" {
 
     interface Palette {
         neutral: Palette["primary"];
+        secondary: Palette["primary"];
     }
 
-    interface PaletteOptions {
-        neutral: PaletteOptions["primary"];
-    }
+    // interface PaletteOptions {
+    //     neutral: PaletteOptions["primary"];
+    //     secondary: PaletteOptions["secondary"];
+    // }
 
     interface PaletteColor {
         darker?: string;
@@ -29,6 +31,9 @@ declare module "@mui/material/styles" {
     interface SimplePaletteColorOptions {
         darker?: string;
     }
+    // interface PaletteColorOptions: {
+
+    // }
 
     interface ThemeOptions {
         status: {
@@ -65,9 +70,9 @@ export const theme = createTheme({
             main: "#4870FF",
             contrastText: "#fff",
         },
-        neutral: {
+        secondary: {
             main: "#FFF",
-            contrastText: "#000",
+            contrastText: "#9D9D9D",
         },
     },
 });

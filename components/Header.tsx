@@ -4,6 +4,10 @@ import { useRouter } from "next/router";
 import fetchJson from "../lib/fetchJson";
 import styles from "../styles/Header.module.scss";
 import Image from "next/image";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import { theme } from "../pages/_app";
 
 export default function Header() {
     const { user, mutateUser } = useUser();
@@ -17,6 +21,23 @@ export default function Header() {
                 width={60}
                 alt="Techstore logo"
             />
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <TextField
+                    id="filled-basic"
+                    label="Search"
+                    variant="filled"
+                    size="small"
+                    color="primary"
+                    sx={{
+                        input: {
+                            color: theme.palette.secondary.contrastText,
+                            background: theme.palette.secondary.main,
+                            borderRadius: 1,
+                        },
+                    }}
+                />
+                <Button variant="contained">Search</Button>
+            </Box>
             <nav>
                 <ul>
                     <li>
