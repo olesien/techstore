@@ -1,3 +1,40 @@
-.nav {
-    height: 100px;
+@import "colors.scss";
+.header {
+    padding: 1rem;
+    color: $black;
+    background-color: $header;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .nav {
+        padding: 1rem;
+    }
+
+    ul {
+        display: flex;
+        list-style: none;
+        margin-left: 0;
+        padding-left: 0;
+    }
+
+    li {
+        margin-right: 1rem;
+        display: flex;
+    }
+
+    li:first-child {
+        margin-left: auto;
+    }
+
+    a {
+        color: $black;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+
+    a img {
+        margin-right: 1em;
+    }
 }

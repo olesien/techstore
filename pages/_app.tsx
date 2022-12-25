@@ -1,4 +1,4 @@
-import "../styles/globals.css";
+import "../styles/globals.scss";
 import { AppProps } from "next/app";
 import { SWRConfig } from "swr";
 import fetchJson from "../lib/fetchJson";

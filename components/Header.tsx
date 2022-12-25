@@ -3,14 +3,21 @@ import useUser from "../lib/useUser";
 import { useRouter } from "next/router";
 import fetchJson from "../lib/fetchJson";
 import styles from "../styles/Header.module.scss";
+import Image from "next/image";
 
 export default function Header() {
     const { user, mutateUser } = useUser();
     const router = useRouter();
 
     return (
-        <header>
-            <nav className={styles.nav}>
+        <header className={styles.header}>
+            <Image
+                src="/Logo.svg"
+                height={60}
+                width={60}
+                alt="Techstore logo"
+            />
+            <nav>
                 <ul>
                     <li>
                         <Link href="/" legacyBehavior>
@@ -29,14 +36,7 @@ export default function Header() {
                             <li>
                                 <Link href="/profile-sg" legacyBehavior>
                                     <a>
-                                        <span
-                                            style={{
-                                                marginRight: ".3em",
-                                                verticalAlign: "middle",
-                                                borderRadius: "100%",
-                                                overflow: "hidden",
-                                            }}
-                                        ></span>
+                                        <span></span>
                                         Profile
                                     </a>
                                 </Link>
@@ -63,7 +63,7 @@ export default function Header() {
                     )}
                 </ul>
             </nav>
-            <style jsx>{`
+            {/* <style jsx>{`
                 ul {
                     display: flex;
                     list-style: none;
@@ -96,7 +96,7 @@ export default function Header() {
                     color: #fff;
                     background-color: #333;
                 }
-            `}</style>
+            `}</style> */}
         </header>
     );
 }
