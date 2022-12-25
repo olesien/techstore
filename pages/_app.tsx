@@ -11,6 +11,8 @@ declare module "@mui/material/styles" {
             background: React.CSSProperties["color"];
             yellow: React.CSSProperties["color"];
             elementBackground: React.CSSProperties["color"];
+            header: React.CSSProperties["color"];
+            contrast: React.CSSProperties["color"];
         };
     }
 
@@ -41,6 +43,8 @@ declare module "@mui/material/styles" {
             background: React.CSSProperties["color"];
             yellow: React.CSSProperties["color"];
             elementBackground: React.CSSProperties["color"];
+            header: React.CSSProperties["color"];
+            contrast: React.CSSProperties["color"];
         };
     }
 }
@@ -64,6 +68,8 @@ export const theme = createTheme({
         background: "#E9E9E9",
         elementBackground: "#9D9D9D",
         yellow: "#FFB82F",
+        header: "#cccccc",
+        contrast: "#000",
     },
     palette: {
         primary: {

@@ -1,11 +1,15 @@
 @import "colors.scss";
 .header {
-    padding: 1rem;
+    padding: 1rem 2rem;
     color: $black;
     background-color: $header;
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    > * {
+        flex: 1;
+    }
 
     .nav {
         padding: 1rem;

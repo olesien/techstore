@@ -39,3 +39,17 @@ button {
     padding: 0.5rem 1rem;
     font-weight: bold;
 }
+
+.container-flex {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.center-flex {
+    justify-content: center;
+}
+
+.space-around {
+    justify-content: space-around;
+}
