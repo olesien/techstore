@@ -22,8 +22,8 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                         <a>
                             <Image
                                 src="/Logo.svg"
-                                height={60}
-                                width={60}
+                                height={75}
+                                width={75}
                                 alt="Techstore logo"
                             />
                         </a>
