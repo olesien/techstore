@@ -8,7 +8,8 @@ export default function Home({}: {}) {
     return (
         <Layout>
             <Head>
-                <title>Test</title>
+                <link rel="shortcut icon" href="/Logo.svg" />
+                <title>Hem - Techstore</title>
             </Head>
             <Main>
                 <section className={utilStyles.headingMd}>
