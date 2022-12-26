@@ -16,12 +16,16 @@ export default function Header() {
     return (
         <header className={styles.header}>
             <div>
-                <Image
-                    src="/Logo.svg"
-                    height={60}
-                    width={60}
-                    alt="Techstore logo"
-                />
+                <Link href="/" legacyBehavior>
+                    <a>
+                        <Image
+                            src="/Logo.svg"
+                            height={60}
+                            width={60}
+                            alt="Techstore logo"
+                        />
+                    </a>
+                </Link>
             </div>
             <div className="container-flex space-around">
                 <div className="container-flex ">
