@@ -53,7 +53,7 @@ button {
 .container-flex {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 .center-flex {
@@ -62,4 +62,18 @@ button {
 
 .space-around {
     justify-content: space-around;
+}
+
+#hide-nav {
+    @media (max-width: 768px) {
+        display: none;
+    }
+}
+
+.login {
+    max-width: 21rem;
+    margin: 0 auto;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }

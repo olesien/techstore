@@ -24,6 +24,14 @@
         li:hover {
             background-color: $whiteHover;
         }
+
+        @media (max-width: 768px) {
+            position: absolute;
+            z-index: 100000;
+            left: 0;
+            height: 100%;
+            width: 100%;
+        }
     }
     > div {
         width: 100%;

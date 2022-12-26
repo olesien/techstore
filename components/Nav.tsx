@@ -13,9 +13,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import NavItem from "./generic/NavItem";
 
-export default function Nav() {
+export default function Nav({ showNav }: { showNav: boolean }) {
+    console.log(showNav);
     return (
-        <ul>
+        <ul id={showNav ? "" : "hide-nav"}>
             <NavItem title="Datorchassi" link={"/category/1"} icon={faBox} />
             <NavItem title="Grafikkort" link={"/category/2"} icon={faPalette} />
             <NavItem

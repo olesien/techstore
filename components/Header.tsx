@@ -7,44 +7,50 @@ import Image from "next/image";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { theme } from "../pages/_app";
-import { faHome, faSignIn } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faHome, faSignIn } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function Header() {
+export default function Header({ toggleNav }: { toggleNav: () => void }) {
     const { user, mutateUser } = useUser();
     const router = useRouter();
 
     return (
         <header className={styles.header}>
-            <div>
-                <Link href="/" legacyBehavior>
-                    <a>
-                        <Image
-                            src="/Logo.svg"
-                            height={60}
-                            width={60}
-                            alt="Techstore logo"
+            <div className={styles.headContainer}>
+                <div>
+                    <Link href="/" legacyBehavior>
+                        <a>
+                            <Image
+                                src="/Logo.svg"
+                                height={60}
+                                width={60}
+                                alt="Techstore logo"
+                            />
+                        </a>
+                    </Link>
+                </div>
+                {/* <div className="container-flex space-around"> */}
+                <div className={styles.containerFlex}>
+                    <div className={styles.hamburger} onClick={toggleNav}>
+                        <FontAwesomeIcon icon={faBars} />
+                    </div>
+                    <div className="container-flex">
+                        <TextField
+                            id="filled-basic"
+                            label="Search"
+                            variant="filled"
+                            size="small"
+                            color="primary"
+                            sx={{
+                                input: {
+                                    color: theme.status.contrast,
+                                    background: theme.status.header,
+                                    borderRadius: 1,
+                                },
+                            }}
                         />
-                    </a>
-                </Link>
-            </div>
-            <div className="container-flex space-around">
-                <div className="container-flex ">
-                    <TextField
-                        id="filled-basic"
-                        label="Search"
-                        variant="filled"
-                        size="small"
-                        color="primary"
-                        sx={{
-                            input: {
-                                color: theme.status.contrast,
-                                background: theme.status.header,
-                                borderRadius: 1,
-                            },
-                        }}
-                    />
-                    <Button variant="contained">Search</Button>
+                        <Button variant="contained">Search</Button>
+                    </div>
                 </div>
                 <nav>
                     <ul>
@@ -95,6 +101,7 @@ export default function Header() {
                         )}
                     </ul>
                 </nav>
+                {/* </div> */}
             </div>
         </header>
     );
