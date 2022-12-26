@@ -65,10 +65,10 @@ declare module "@mui/material/styles" {
 export const theme = createTheme({
     status: {
         danger: "#DA3535",
-        background: "#E9E9E9",
+        background: "#f0f0f0",
         elementBackground: "#9D9D9D",
         yellow: "#FFB82F",
-        header: "#cccccc",
+        header: "#dedede",
         contrast: "#000",
     },
     palette: {

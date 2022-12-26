@@ -6,8 +6,9 @@ import styles from "../styles/Header.module.scss";
 import Image from "next/image";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import { theme } from "../pages/_app";
+import { faHome, faSignIn } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Header() {
     const { user, mutateUser } = useUser();
@@ -49,13 +50,19 @@ export default function Header() {
                     <ul>
                         <li>
                             <Link href="/" legacyBehavior>
-                                <a>Home</a>
+                                <a>
+                                    <FontAwesomeIcon icon={faHome} />
+                                    <span>Home</span>
+                                </a>
                             </Link>
                         </li>
                         {user?.isLoggedIn === false && (
                             <li>
                                 <Link href="/login" legacyBehavior>
-                                    <a>Login</a>
+                                    <a>
+                                        <FontAwesomeIcon icon={faSignIn} />
+                                        <span>Login</span>
+                                    </a>
                                 </Link>
                             </li>
                         )}
@@ -63,10 +70,7 @@ export default function Header() {
                             <>
                                 <li>
                                     <Link href="/profile-sg" legacyBehavior>
-                                        <a>
-                                            <span></span>
-                                            Profile
-                                        </a>
+                                        <a>Profile</a>
                                     </Link>
                                 </li>
 
