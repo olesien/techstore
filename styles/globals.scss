@@ -77,3 +77,30 @@ button {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+.vertical-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.horizontal-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-flex {
+    justify-content: space-around;
+    // > * {
+    //     flex: 1;
+    // }
+}
+
+.button {
+    :hover {
+        cursor: pointer;
+    }
+}

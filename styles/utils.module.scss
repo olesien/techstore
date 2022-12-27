@@ -55,4 +55,15 @@
 .hero {
     width: 100%;
     background-color: $header;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+}
+
+.section {
+    border-radius: 5px;
+    width: 100%;
+    background-color: $white;
+    padding: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
