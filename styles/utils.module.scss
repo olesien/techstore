@@ -67,3 +67,17 @@
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
+
+.productList {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.discount {
+    background-color: $danger;
+    color: $white;
+    // border-radius: 0 50% 50% 0;
+    padding: 0.5rem;
+    // padding-right: 2rem;
+    border-radius: 5px;
+}

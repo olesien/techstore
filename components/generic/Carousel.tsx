@@ -26,11 +26,7 @@ export default function Carousel({
             >
                 <FontAwesomeIcon icon={faChevronLeft} size={"2x"} />
             </div>
-            <CarouselItem
-                title={items[carouselIndex].title}
-                image={items[carouselIndex].image}
-                id={items[carouselIndex].id}
-            />
+            <CarouselItem {...items[carouselIndex]} />
             <div
                 className="horizontal-flex button"
                 role="button"

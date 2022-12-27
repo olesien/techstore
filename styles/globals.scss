@@ -84,7 +84,9 @@ button {
     align-items: center;
     justify-content: center;
 }
-
+.flex {
+    display: flex;
+}
 .horizontal-flex {
     display: flex;
     flex-direction: row;
@@ -103,4 +105,24 @@ button {
     :hover {
         cursor: pointer;
     }
+}
+
+.crossed {
+    text-decoration: line-through;
+}
+
+.bold {
+    font-weight: bolder;
+}
+
+.p-1 {
+    padding: 1rem;
+}
+
+.m-1 {
+    margin: 1rem;
+}
+
+.gap-1 {
+    gap: 1rem;
 }

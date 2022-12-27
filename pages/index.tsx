@@ -1,16 +1,42 @@
 import Head from "next/head";
 import Layout from "../components/layout";
 import utilStyles from "../styles/utils.module.scss";
-import Button from "@mui/material/Button";
 import Main from "../components/Main";
 import { useState } from "react";
 import builderimage from "../public/images/builder.png";
 import Image from "next/image";
 import Link from "next/link";
 import Carousel from "../components/generic/Carousel";
+import VerticalItem from "../components/generic/VerticalItem";
 
 export default function Home({}: {}) {
     const [showNav, setShowNav] = useState(false);
+    const items = [
+        {
+            title: "I9",
+            image: "/images/i9.png",
+            id: 1,
+            price: 1000,
+            saleprice: 1000,
+            description: "En jäkligt snabb processor!",
+        },
+        {
+            title: "I10",
+            image: "/images/i9.png",
+            id: 2,
+            price: 1000,
+            saleprice: 1000,
+            description: "En jäkligt snabb processor!",
+        },
+        {
+            title: "I11",
+            image: "/images/i9.png",
+            id: 3,
+            price: 1000,
+            saleprice: 1000,
+            description: "En jäkligt snabb processor!",
+        },
+    ];
     return (
         <Layout toggleNav={() => setShowNav((prev) => !prev)}>
             <Head>
@@ -34,10 +60,6 @@ export default function Home({}: {}) {
                                 />
                             </a>
                         </Link>
-                        {/* <Button variant="contained" color="primary">
-                        Hello World
-                    </Button>
-                    <p>test</p> */}
                     </section>
                     <p>Nya Produkter</p>
                     <section className={utilStyles.section}>
@@ -51,6 +73,14 @@ export default function Home({}: {}) {
                                 },
                             ]}
                         />
+                    </section>
+                    <p>Kampanjer</p>
+                    <section className={utilStyles.section}>
+                        <ul className={utilStyles.productList}>
+                            {items.map((item) => (
+                                <VerticalItem {...item} />
+                            ))}
+                        </ul>
                     </section>
                 </div>
             </Main>

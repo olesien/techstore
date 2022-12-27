@@ -12,7 +12,7 @@ export default function CarouselItem({
 }) {
     return (
         <div className="horizontal-flex">
-            <div className="vertical-flex">
+            <div className="vertical-flex bold">
                 <Link href={"/product/" + id} legacyBehavior>
                     <a>{title}</a>
                 </Link>
