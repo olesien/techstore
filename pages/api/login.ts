@@ -1,11 +1,9 @@
 import type { User } from "./user";
 
-import { Octokit } from "octokit";
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "../../lib/session";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
-const octokit = new Octokit();
 
 async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
     const { username } = await req.body;
