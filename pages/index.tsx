@@ -6,7 +6,7 @@ import Main from "../components/Main";
 import { useState } from "react";
 
 export default function Home({}: {}) {
-    const [showNav, setShowNav] = useState(true);
+    const [showNav, setShowNav] = useState(false);
     return (
         <Layout toggleNav={() => setShowNav((prev) => !prev)}>
             <Head>

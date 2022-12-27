@@ -14,7 +14,7 @@ export default function Post({
     };
 }) {
     console.log(category);
-    const [showNav, setShowNav] = useState(true);
+    const [showNav, setShowNav] = useState(false);
     return (
         <Layout toggleNav={() => setShowNav((prev) => !prev)}>
             <Head>
