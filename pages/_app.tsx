@@ -3,6 +3,13 @@ import { AppProps } from "next/app";
 import { SWRConfig } from "swr";
 import fetchJson from "../lib/fetchJson";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { CacheProvider, EmotionCache } from "@emotion/react";
+import createEmotionCache from "../config/createEmotionCache";
+const clientSideEmotionCache = createEmotionCache();
+
+interface MyAppProps extends AppProps {
+    emotionCache?: EmotionCache;
+}
 
 declare module "@mui/material/styles" {
     interface Theme {
@@ -83,19 +90,25 @@ export const theme = createTheme({
     },
 });
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({
+    Component,
+    emotionCache = clientSideEmotionCache,
+    pageProps,
+}: MyAppProps) {
     return (
-        <ThemeProvider theme={theme}>
-            <SWRConfig
-                value={{
-                    fetcher: fetchJson,
-                    onError: (err) => {
-                        console.error(err);
-                    },
-                }}
-            >
-                <Component {...pageProps} />
-            </SWRConfig>
-        </ThemeProvider>
+        <CacheProvider value={emotionCache}>
+            <ThemeProvider theme={theme}>
+                <SWRConfig
+                    value={{
+                        fetcher: fetchJson,
+                        onError: (err) => {
+                            console.error(err);
+                        },
+                    }}
+                >
+                    <Component {...pageProps} />
+                </SWRConfig>
+            </ThemeProvider>
+        </CacheProvider>
     );
 }
