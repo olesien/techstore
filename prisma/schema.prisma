@@ -20,6 +20,7 @@ model users {
   verified    Boolean?
   admin       Boolean?
   image       Bytes?    @db.Blob
+  address     String?   @db.VarChar(45)
   orders      orders[]
   reviews     reviews[]
 }

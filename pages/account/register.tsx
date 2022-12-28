@@ -16,6 +16,12 @@ export interface Register {
     mail?: string;
     password?: string;
     password2?: string;
+    firstname?: string;
+    lastname?: string;
+    address?: string;
+    postnumber?: string;
+    postcity?: string;
+    phonenumber?: string;
 }
 
 export default function Register() {
@@ -68,37 +74,6 @@ export default function Register() {
             </Head>
             <Main showNav={showNav}>
                 <div className={styles.register}>
-                    {/* <Form
-                        errorMessage={errorMsg}
-                        onSubmit={async function handleSubmit(event) {
-                            event.preventDefault();
-
-                            const body = {
-                                username: event.currentTarget.username.value,
-                            };
-
-                            try {
-                                mutateUser(
-                                    await fetchJson("/api/login", {
-                                        method: "POST",
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                        },
-                                        body: JSON.stringify(body),
-                                    })
-                                );
-                            } catch (error) {
-                                if (error instanceof FetchError) {
-                                    setErrorMsg(error.data.message);
-                                } else {
-                                    console.error(
-                                        "An unexpected error happened:",
-                                        error
-                                    );
-                                }
-                            }
-                        }}
-                    /> */}
                     {errorMsg && <p className="error">{errorMsg}</p>}
                     <form onSubmit={register}>
                         <FormInput
@@ -110,6 +85,76 @@ export default function Register() {
                             value={form.mail ?? ""}
                             onChange={(mail) =>
                                 setForm((form) => ({ ...form, mail }))
+                            }
+                        />
+                        <div>
+                            <FormInput
+                                id={"techstore-firstname"}
+                                title={"Förnamn"}
+                                hint={""}
+                                aria={"enter-firstname"}
+                                type={"text"}
+                                value={form.firstname ?? ""}
+                                onChange={(firstname) =>
+                                    setForm((form) => ({ ...form, firstname }))
+                                }
+                            />
+                            <FormInput
+                                id={"techstore-lastname"}
+                                title={"Efternamn"}
+                                hint={""}
+                                aria={"enter-lastname"}
+                                type={"text"}
+                                value={form.lastname ?? ""}
+                                onChange={(lastname) =>
+                                    setForm((form) => ({ ...form, lastname }))
+                                }
+                            />
+                        </div>
+                        <FormInput
+                            id={"techstore-address"}
+                            title={"Adress"}
+                            hint={"Skriv in adress, exempelvis engatan 6A"}
+                            aria={"enter-adress-example-engatan-6A"}
+                            type={"text"}
+                            value={form.address ?? ""}
+                            onChange={(address) =>
+                                setForm((form) => ({ ...form, address }))
+                            }
+                        />
+                        <div>
+                            <FormInput
+                                id={"techstore-postnumber"}
+                                title={"Postnummer"}
+                                hint={"Skriv in postnummer, t.ex 25615"}
+                                aria={"enter-postnumber"}
+                                type={"number"}
+                                value={form.postnumber ?? ""}
+                                onChange={(postnumber) =>
+                                    setForm((form) => ({ ...form, postnumber }))
+                                }
+                            />
+                            <FormInput
+                                id={"techstore-postcity"}
+                                title={"Postort"}
+                                hint={"T.ex malmö"}
+                                aria={"enter-postcity"}
+                                type={"text"}
+                                value={form.postcity ?? ""}
+                                onChange={(postcity) =>
+                                    setForm((form) => ({ ...form, postcity }))
+                                }
+                            />
+                        </div>
+                        <FormInput
+                            id={"techstore-phonenumber"}
+                            title={"Telefonnummer"}
+                            hint={"Ditt telefon nummer"}
+                            aria={"enter-phonenumber"}
+                            type={"tel"}
+                            value={form.phonenumber ?? ""}
+                            onChange={(phonenumber) =>
+                                setForm((form) => ({ ...form, phonenumber }))
                             }
                         />
                         <FormInput

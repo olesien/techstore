@@ -58,5 +58,13 @@
         > * {
             padding: 1rem;
         }
+
+        div {
+            display: flex;
+            gap: 0.5rem;
+            > * {
+                flex: 1;
+            }
+        }
     }
 }

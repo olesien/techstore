@@ -16,27 +16,29 @@ export default function FormInput({
     title: string;
     hint: string;
     aria: string;
-    type: "email" | "password" | "text" | "number";
+    type: "email" | "password" | "text" | "number" | "tel";
     value: string;
     onChange: (value: string) => void;
 }) {
     return (
-        <FormControl>
-            <InputLabel htmlFor={id}>{title}</InputLabel>
-            <Input
-                id={id}
-                aria-describedby={aria}
-                type={type}
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                sx={{
-                    input: {
-                        padding: 1,
-                        marginTop: 1,
-                    },
-                }}
-            />
-            <FormHelperText id={aria}>{hint}</FormHelperText>
-        </FormControl>
+        <div>
+            <FormControl>
+                <InputLabel htmlFor={id}>{title}</InputLabel>
+                <Input
+                    id={id}
+                    aria-describedby={aria}
+                    type={type}
+                    value={value}
+                    onChange={(e) => onChange(e.target.value)}
+                    sx={{
+                        input: {
+                            padding: 1,
+                            marginTop: 1,
+                        },
+                    }}
+                />
+                <FormHelperText id={aria}>{hint}</FormHelperText>
+            </FormControl>
+        </div>
     );
 }

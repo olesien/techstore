@@ -8,13 +8,41 @@ import bcrypt from "bcrypt";
 
 const saltRounds = 15;
 
+export interface Register {
+    mail: string;
+    password: string;
+    firstname?: string;
+    lastname?: string;
+    address?: string;
+    postnumber?: number;
+    postcity?: string;
+    phonenumber?: string;
+}
+
 async function registerRoute(req: NextApiRequest, res: NextApiResponse) {
-    const { mail, password } = await req.body;
+    const {
+        mail,
+        firstname,
+        lastname,
+        address,
+        postnumber,
+        postcity,
+        phonenumber,
+        password,
+    } = await req.body;
     bcrypt.hash(password, saltRounds, async function (err, hashedPassword) {
         // Store hash in your password DB.
         if (err) {
             return res.status(500).json({ message: "Encryption error" });
         }
+
+        const data: Register = { mail, password: hashedPassword };
+        if (firstname) data.firstname = firstname;
+        if (lastname) data.lastname = lastname;
+        if (address) data.address = address;
+        if (postnumber) data.postnumber = Number(postnumber);
+        if (phonenumber) data.phonenumber = phonenumber;
+        if (postcity) data.postcity = postcity;
 
         try {
             //Login
@@ -22,10 +50,7 @@ async function registerRoute(req: NextApiRequest, res: NextApiResponse) {
             //Check so mail does not exist?
 
             const newUser = await prisma.users.create({
-                data: {
-                    mail,
-                    password: hashedPassword,
-                },
+                data,
             });
 
             if (newUser) {
