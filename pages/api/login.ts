@@ -6,19 +6,19 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 
 async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
-    const { username } = await req.body;
+    const { mail } = await req.body;
 
     try {
         //Login
 
         const userQuery = await prisma.users.findFirst({
-            where: { name: username },
+            where: { mail },
         });
 
         if (userQuery) {
             const user = {
                 isLoggedIn: true,
-                login: userQuery.name,
+                login: userQuery.mail,
                 avatarUrl: "",
             } as User;
             req.session.user = user;

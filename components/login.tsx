@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import useUser from "../lib/useUser";
 import Form from "./Form";
 import fetchJson, { FetchError } from "../lib/fetchJson";
-import styles from "../styles/Login.module.scss";
+import styles from "../styles/Auth.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
@@ -35,7 +35,7 @@ export default function Login({ closeMenu }: { closeMenu: () => void }) {
                             event.preventDefault();
 
                             const body = {
-                                username: event.currentTarget.username.value,
+                                mail: event.currentTarget.mail.value,
                             };
 
                             try {

@@ -78,7 +78,7 @@ export default function Home({}: {}) {
                     <section className={utilStyles.section}>
                         <ul className={utilStyles.productList}>
                             {items.map((item) => (
-                                <VerticalItem {...item} />
+                                <VerticalItem key={item.id} {...item} />
                             ))}
                         </ul>
                     </section>

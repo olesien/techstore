@@ -10,8 +10,8 @@ export default function Form({
     return (
         <form onSubmit={onSubmit}>
             <label>
-                <span>Type your username</span>
-                <input type="text" name="username" required />
+                <span>Type your mail</span>
+                <input type="mail" name="mail" required />
             </label>
 
             <button type="submit">Login</button>
