@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import useUser from "../lib/useUser";
-import Form from "./Form";
 import fetchJson, { FetchError } from "../lib/fetchJson";
 import styles from "../styles/Auth.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,13 +22,33 @@ export default function Login({ closeMenu }: { closeMenu: () => void }) {
     });
 
     const [errorMsg, setErrorMsg] = useState("");
+    const [errors, setErrors] = useState<Login>({});
     //Prevent spread up
 
     const login = async (e: React.SyntheticEvent) => {
         e.preventDefault();
 
-        if (!form.password || !form.mail) {
-            return setErrorMsg("Du saknar fält");
+        let formErrors: Login = {};
+        const validRegex =
+            /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        if (!form.mail || !form.mail.match(validRegex)) {
+            formErrors = {
+                ...errors,
+                mail: "Mailet kan inte stämma",
+            };
+        }
+
+        if (!form.password || form.password.length < 4) {
+            formErrors = {
+                ...errors,
+                password: "Lösenordet är för kort",
+            };
+        }
+
+        setErrors(formErrors);
+
+        if (Object.keys(formErrors).length > 0) {
+            return setErrorMsg("Kolla igenom formuläret igen");
         }
 
         const body = {
@@ -58,6 +77,7 @@ export default function Login({ closeMenu }: { closeMenu: () => void }) {
     return (
         <div className={styles.login}>
             <div>
+                {errorMsg && <p className="error">{errorMsg}</p>}
                 <div className={styles.closeMenu}>
                     <FontAwesomeIcon
                         role="button"
@@ -68,23 +88,27 @@ export default function Login({ closeMenu }: { closeMenu: () => void }) {
                 <div>
                     <form onSubmit={login}>
                         <FormInput
+                            required
                             id={"techstore-email"}
                             title={"Epost Address"}
                             hint={""}
                             aria={"enter-mail"}
                             type={"email"}
                             value={form.mail ?? ""}
+                            error={errors.mail}
                             onChange={(mail) =>
                                 setForm((form) => ({ ...form, mail }))
                             }
                         />
                         <FormInput
+                            required
                             id={"techstore-password"}
                             title={"Passord"}
                             hint={""}
                             aria={"enter-password"}
                             type={"password"}
                             value={form.password ?? ""}
+                            error={errors.password}
                             onChange={(password) =>
                                 setForm((form) => ({ ...form, password }))
                             }

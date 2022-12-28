@@ -44,6 +44,20 @@ async function registerRoute(req: NextApiRequest, res: NextApiResponse) {
         if (phonenumber) data.phonenumber = phonenumber;
         if (postcity) data.postcity = postcity;
 
+        const validRegex =
+            /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+        if (
+            !mail ||
+            !mail.match(validRegex) ||
+            !password ||
+            password.length < 4
+        ) {
+            return res
+                .status(400)
+                .json({ message: "The inputs are not correct" });
+        }
+
         try {
             //Login
 

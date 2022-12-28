@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import useUser from "../../lib/useUser";
-import Form from "../../components/Form";
 import fetchJson, { FetchError } from "../../lib/fetchJson";
 import styles from "../../styles/Auth.module.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import Layout from "../../components/layout";
 import Head from "next/head";
 import Main from "../../components/Main";
@@ -30,8 +27,8 @@ export default function Register() {
         redirectTo: "/profile-sg",
         redirectIfFound: true,
     });
-
     const [errorMsg, setErrorMsg] = useState("");
+    const [errors, setErrors] = useState<Register>({});
     const [showNav, setShowNav] = useState(false);
     const [form, setForm] = useState<Register>({});
     //Prevent spread up
@@ -39,12 +36,33 @@ export default function Register() {
     const register = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         console.log(form);
+        const validRegex =
+            /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        let formErrors: Register = {};
 
-        if (!form.password || !form.password2 || !form.mail) {
-            return setErrorMsg("Du saknar fält");
+        if (!form.mail || !form.mail.match(validRegex)) {
+            formErrors = {
+                ...errors,
+                mail: "Mailet är för kort eller är fel",
+            };
+        }
+
+        if (!form.password || form.password.length < 4) {
+            formErrors = {
+                ...errors,
+                password: "Lösenordet är för kort",
+            };
         }
         if (form.password !== form.password2) {
-            return setErrorMsg("Lösenorden matchar ej");
+            formErrors = {
+                ...errors,
+                password2: "Lösenorden matchar ej",
+            };
+        }
+        setErrors(formErrors);
+
+        if (Object.keys(formErrors).length > 0) {
+            return setErrorMsg("Kolla igenom formuläret igen");
         }
 
         try {
@@ -77,11 +95,13 @@ export default function Register() {
                     {errorMsg && <p className="error">{errorMsg}</p>}
                     <form onSubmit={register}>
                         <FormInput
+                            required
                             id={"techstore-email"}
                             title={"Epost Address"}
                             hint={"Kommer att användas för inloggning"}
                             aria={"enter-mail"}
                             type={"email"}
+                            error={errors.mail}
                             value={form.mail ?? ""}
                             onChange={(mail) =>
                                 setForm((form) => ({ ...form, mail }))
@@ -94,6 +114,7 @@ export default function Register() {
                                 hint={""}
                                 aria={"enter-firstname"}
                                 type={"text"}
+                                error={errors.firstname}
                                 value={form.firstname ?? ""}
                                 onChange={(firstname) =>
                                     setForm((form) => ({ ...form, firstname }))
@@ -105,6 +126,7 @@ export default function Register() {
                                 hint={""}
                                 aria={"enter-lastname"}
                                 type={"text"}
+                                error={errors.lastname}
                                 value={form.lastname ?? ""}
                                 onChange={(lastname) =>
                                     setForm((form) => ({ ...form, lastname }))
@@ -117,6 +139,7 @@ export default function Register() {
                             hint={"Skriv in adress, exempelvis engatan 6A"}
                             aria={"enter-adress-example-engatan-6A"}
                             type={"text"}
+                            error={errors.address}
                             value={form.address ?? ""}
                             onChange={(address) =>
                                 setForm((form) => ({ ...form, address }))
@@ -129,6 +152,7 @@ export default function Register() {
                                 hint={"Skriv in postnummer, t.ex 25615"}
                                 aria={"enter-postnumber"}
                                 type={"number"}
+                                error={errors.postnumber}
                                 value={form.postnumber ?? ""}
                                 onChange={(postnumber) =>
                                     setForm((form) => ({ ...form, postnumber }))
@@ -140,6 +164,7 @@ export default function Register() {
                                 hint={"T.ex malmö"}
                                 aria={"enter-postcity"}
                                 type={"text"}
+                                error={errors.postcity}
                                 value={form.postcity ?? ""}
                                 onChange={(postcity) =>
                                     setForm((form) => ({ ...form, postcity }))
@@ -152,28 +177,33 @@ export default function Register() {
                             hint={"Ditt telefon nummer"}
                             aria={"enter-phonenumber"}
                             type={"tel"}
+                            error={errors.phonenumber}
                             value={form.phonenumber ?? ""}
                             onChange={(phonenumber) =>
                                 setForm((form) => ({ ...form, phonenumber }))
                             }
                         />
                         <FormInput
+                            required
                             id={"techstore-password"}
                             title={"Passord"}
                             hint={"Ditt passord kommer att bli krypterat"}
                             aria={"enter-password"}
                             type={"password"}
+                            error={errors.password}
                             value={form.password ?? ""}
                             onChange={(password) =>
                                 setForm((form) => ({ ...form, password }))
                             }
                         />
                         <FormInput
+                            required
                             id={"techstore-password2"}
                             title={"Skriv in Passord igen"}
                             hint={"Skriv in det igen"}
                             aria={"enter-password-again"}
                             type={"password"}
+                            error={errors.password2}
                             value={form.password2 ?? ""}
                             onChange={(password2) =>
                                 setForm((form) => ({ ...form, password2 }))
