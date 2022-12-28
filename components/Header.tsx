@@ -9,8 +9,11 @@ import Button from "@mui/material/Button";
 import { theme } from "../pages/_app";
 import { faBars, faHome, faSignIn } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Login from "./login";
+import { useState } from "react";
 
 export default function Header({ toggleNav }: { toggleNav: () => void }) {
+    const [loginVisible, setLoginVisible] = useState(false);
     const { user, mutateUser } = useUser();
     const router = useRouter();
 
@@ -63,13 +66,21 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                             </Link>
                         </li>
                         {user?.isLoggedIn === false && (
-                            <li>
-                                <Link href="/login" legacyBehavior>
-                                    <a>
-                                        <FontAwesomeIcon icon={faSignIn} />
-                                        <span>Login</span>
-                                    </a>
-                                </Link>
+                            <li
+                                role="button"
+                                className="button horizontal-flex gap-04"
+                                onClick={() =>
+                                    setLoginVisible(
+                                        (loginVisible) => !loginVisible
+                                    )
+                                }
+                            >
+                                {/* <Link href="/login" legacyBehavior>
+                                    <a> */}
+                                <FontAwesomeIcon icon={faSignIn} />
+                                <span>Login</span>
+                                {/* </a>
+                                </Link> */}
                             </li>
                         )}
                         {user?.isLoggedIn === true && (
@@ -91,7 +102,7 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                                                 }),
                                                 false
                                             );
-                                            router.push("/login");
+                                            router.push("/");
                                         }}
                                     >
                                         Logout
@@ -103,6 +114,7 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                 </nav>
                 {/* </div> */}
             </div>
+            {loginVisible && <Login closeMenu={() => setLoginVisible(false)} />}
         </header>
     );
 }

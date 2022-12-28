@@ -10,9 +10,6 @@ export default function layout({
 }) {
     return (
         <>
-            <Head>
-                <title>With Iron Session</title>
-            </Head>
             <Header toggleNav={toggleNav} />
 
             <main>

@@ -30,13 +30,13 @@ export default function VerticalItem({
                     height: "auto",
                 }}
             />
-            <div className="vertical-flex">
+            <div className="vertical-flex ">
                 <Link href={"/product/" + id} legacyBehavior>
                     <a className="bold">{title}</a>
                 </Link>
                 <p>{description}</p>
             </div>
-            <div className="horizontal-flex gap-1">
+            <div className="horizontal-flex gap-1 m-1">
                 <div className="vertical-flex">
                     <p className="crossed">{price} kr</p>
                     <p className={utilStyles.discount}>{saleprice} kr</p>
