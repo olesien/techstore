@@ -35,7 +35,7 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                 {/* <div className="container-flex space-around"> */}
                 <div className={styles.containerFlex}>
                     <div className={styles.hamburger} onClick={toggleNav}>
-                        <FontAwesomeIcon icon={faBars} />
+                        <FontAwesomeIcon icon={faBars} size={"1x"} />
                     </div>
                     <div className="container-flex">
                         <TextField
@@ -60,7 +60,10 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                         <li>
                             <Link href="/" legacyBehavior>
                                 <a>
-                                    <FontAwesomeIcon icon={faHome} />
+                                    <FontAwesomeIcon
+                                        icon={faHome}
+                                        size={"1x"}
+                                    />
                                     <span>Home</span>
                                 </a>
                             </Link>

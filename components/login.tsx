@@ -5,9 +5,18 @@ import fetchJson, { FetchError } from "../lib/fetchJson";
 import styles from "../styles/Auth.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import FormInput from "./generic/FormInput";
+import Button from "@mui/material/Button";
+import Link from "next/link";
+
+export interface Login {
+    mail?: string;
+    password?: string;
+}
 
 export default function Login({ closeMenu }: { closeMenu: () => void }) {
     // here we just check if user is already logged in and redirect to profile
+    const [form, setForm] = useState<Login>({});
     const { mutateUser } = useUser({
         redirectTo: "/profile-sg",
         redirectIfFound: true,
@@ -15,11 +24,39 @@ export default function Login({ closeMenu }: { closeMenu: () => void }) {
 
     const [errorMsg, setErrorMsg] = useState("");
     //Prevent spread up
-    const formClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        return e.stopPropagation();
+
+    const login = async (e: React.SyntheticEvent) => {
+        e.preventDefault();
+
+        if (!form.password || !form.mail) {
+            return setErrorMsg("Du saknar fält");
+        }
+
+        const body = {
+            mail: form.mail,
+            password: form.password,
+        };
+
+        try {
+            mutateUser(
+                await fetchJson("/api/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(body),
+                })
+            );
+        } catch (error) {
+            if (error instanceof FetchError) {
+                setErrorMsg(error.data.message);
+            } else {
+                console.error("An unexpected error happened:", error);
+            }
+        }
     };
     return (
-        <div className={styles.login} onClick={closeMenu}>
+        <div className={styles.login}>
             <div>
                 <div className={styles.closeMenu}>
                     <FontAwesomeIcon
@@ -28,38 +65,44 @@ export default function Login({ closeMenu }: { closeMenu: () => void }) {
                         onClick={closeMenu}
                     />
                 </div>
-                <div onClick={formClick}>
-                    <Form
-                        errorMessage={errorMsg}
-                        onSubmit={async function handleSubmit(event) {
-                            event.preventDefault();
-
-                            const body = {
-                                mail: event.currentTarget.mail.value,
-                            };
-
-                            try {
-                                mutateUser(
-                                    await fetchJson("/api/login", {
-                                        method: "POST",
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                        },
-                                        body: JSON.stringify(body),
-                                    })
-                                );
-                            } catch (error) {
-                                if (error instanceof FetchError) {
-                                    setErrorMsg(error.data.message);
-                                } else {
-                                    console.error(
-                                        "An unexpected error happened:",
-                                        error
-                                    );
-                                }
+                <div>
+                    <form onSubmit={login}>
+                        <FormInput
+                            id={"techstore-email"}
+                            title={"Epost Address"}
+                            hint={""}
+                            aria={"enter-mail"}
+                            type={"email"}
+                            value={form.mail ?? ""}
+                            onChange={(mail) =>
+                                setForm((form) => ({ ...form, mail }))
                             }
-                        }}
-                    />
+                        />
+                        <FormInput
+                            id={"techstore-password"}
+                            title={"Passord"}
+                            hint={""}
+                            aria={"enter-password"}
+                            type={"password"}
+                            value={form.password ?? ""}
+                            onChange={(password) =>
+                                setForm((form) => ({ ...form, password }))
+                            }
+                        />
+                        <div className="flex space-around">
+                            <p>
+                                Har du inget konto?
+                                <Link href={"/account/register"} legacyBehavior>
+                                    <a>
+                                        <span>Registrera här</span>
+                                    </a>
+                                </Link>
+                            </p>
+                            <Button type="submit" variant="outlined">
+                                Logga in
+                            </Button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

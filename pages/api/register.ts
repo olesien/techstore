@@ -4,7 +4,6 @@ import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "../../lib/session";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
-import Register from "../account/register";
 import bcrypt from "bcrypt";
 
 const saltRounds = 15;
@@ -19,6 +18,8 @@ async function registerRoute(req: NextApiRequest, res: NextApiResponse) {
 
         try {
             //Login
+
+            //Check so mail does not exist?
 
             const newUser = await prisma.users.create({
                 data: {

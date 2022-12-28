@@ -5,6 +5,11 @@ import fetchJson from "../lib/fetchJson";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import createEmotionCache from "../config/createEmotionCache";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+//Bug prevention
+config.autoAddCss = false;
+
 const clientSideEmotionCache = createEmotionCache();
 
 interface MyAppProps extends AppProps {

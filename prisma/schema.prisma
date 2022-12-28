@@ -12,8 +12,8 @@ model users {
   name        String?   @db.VarChar(45)
   firstname   String?   @db.VarChar(45)
   lastname    String?   @db.VarChar(45)
-  mail        String?   @db.VarChar(55)
-  password    String?   @db.VarChar(150)
+  mail        String    @unique(map: "mail_UNIQUE") @db.VarChar(55)
+  password    String    @db.VarChar(150)
   postnumber  Int?
   postcity    String?   @db.VarChar(35)
   phonenumber String?   @db.VarChar(38)

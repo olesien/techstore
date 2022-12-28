@@ -29,6 +29,12 @@ export default function FormInput({
                 type={type}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
+                sx={{
+                    input: {
+                        padding: 1,
+                        marginTop: 1,
+                    },
+                }}
             />
             <FormHelperText id={aria}>{hint}</FormHelperText>
         </FormControl>
