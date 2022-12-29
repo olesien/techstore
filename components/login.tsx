@@ -17,7 +17,7 @@ export default function Login({ closeMenu }: { closeMenu: () => void }) {
     // here we just check if user is already logged in and redirect to profile
     const [form, setForm] = useState<Login>({});
     const { mutateUser } = useUser({
-        redirectTo: "/profile-sg",
+        redirectTo: "/",
         redirectIfFound: true,
     });
 

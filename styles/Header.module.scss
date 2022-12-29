@@ -18,6 +18,10 @@
     li {
         margin-right: 1rem;
         display: flex;
+
+        span {
+            white-space: nowrap;
+        }
     }
 
     li:first-child {

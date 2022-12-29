@@ -7,7 +7,13 @@ import Image from "next/image";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { theme } from "../pages/_app";
-import { faBars, faHome, faSignIn } from "@fortawesome/free-solid-svg-icons";
+import {
+    faBars,
+    faHome,
+    faRightFromBracket,
+    faSignIn,
+    faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Login from "./login";
 import { useState } from "react";
@@ -40,7 +46,7 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                     <div className="container-flex">
                         <TextField
                             id="filled-basic"
-                            label="Search"
+                            label="Sök bland produkter"
                             variant="filled"
                             size="small"
                             color="primary"
@@ -52,12 +58,12 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                                 },
                             }}
                         />
-                        <Button variant="contained">Search</Button>
+                        <Button variant="contained">Sök</Button>
                     </div>
                 </div>
                 <nav>
                     <ul>
-                        <li>
+                        {/* <li>
                             <Link href="/" legacyBehavior>
                                 <a>
                                     <FontAwesomeIcon
@@ -67,7 +73,7 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                                     <span>Home</span>
                                 </a>
                             </Link>
-                        </li>
+                        </li> */}
                         {user?.isLoggedIn === false && (
                             <li
                                 role="button"
@@ -81,7 +87,7 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                                 {/* <Link href="/login" legacyBehavior>
                                     <a> */}
                                 <FontAwesomeIcon icon={faSignIn} />
-                                <span>Login</span>
+                                <span>Logga In</span>
                                 {/* </a>
                                 </Link> */}
                             </li>
@@ -89,8 +95,11 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                         {user?.isLoggedIn === true && (
                             <>
                                 <li>
-                                    <Link href="/profile-sg" legacyBehavior>
-                                        <a>Profile</a>
+                                    <Link href="/account/orders" legacyBehavior>
+                                        <a>
+                                            <FontAwesomeIcon icon={faUser} />
+                                            <span>Konto</span>
+                                        </a>
                                     </Link>
                                 </li>
 
@@ -108,7 +117,10 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                                             router.push("/");
                                         }}
                                     >
-                                        Logout
+                                        <FontAwesomeIcon
+                                            icon={faRightFromBracket}
+                                        />
+                                        <span>Logga ut</span>
                                     </a>
                                 </li>
                             </>
@@ -117,7 +129,9 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                 </nav>
                 {/* </div> */}
             </div>
-            {loginVisible && <Login closeMenu={() => setLoginVisible(false)} />}
+            {loginVisible && user?.isLoggedIn !== true && (
+                <Login closeMenu={() => setLoginVisible(false)} />
+            )}
         </header>
     );
 }
