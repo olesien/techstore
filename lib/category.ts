@@ -1,9 +1,9 @@
-import fs from "fs";
-import path from "path";
-const categoryDirectory = path.join(process.cwd(), "category");
-export function getAllCategoryIds() {
-    const categories = [{ id: 1, title: "test" }];
-    return categories.map((category) => {
+import prisma from "./prisma";
+import translate from "./translations";
+export async function getAllCategoryIds() {
+    // const categories = [{ id: 1, title: "test" }];
+    const categoryIds = await prisma.categories.findMany();
+    return categoryIds.map((category) => {
         return {
             params: {
                 id: String(category.id),
@@ -14,8 +14,17 @@ export function getAllCategoryIds() {
 
 export async function getCategory(id: string) {
     // Combine the data with the id and contentHtml
+    const category = await prisma.categories.findFirst({
+        where: { id: Number(id) },
+    });
+    if (!category) {
+        return {
+            id: 0,
+            title: "Udefinerat",
+        };
+    }
     return {
-        id: Number(id),
-        title: "Hi",
+        id: String(category.id),
+        title: translate(category.name),
     };
 }

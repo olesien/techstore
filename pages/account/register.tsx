@@ -24,7 +24,7 @@ export interface Register {
 export default function Register() {
     // Register
     const { mutateUser } = useUser({
-        redirectTo: "/profile-sg",
+        redirectTo: "/",
         redirectIfFound: true,
     });
     const [errorMsg, setErrorMsg] = useState("");
