@@ -1,0 +1,96 @@
+@import "colors.scss";
+
+.list {
+    padding: 1rem 0;
+    background-color: $white;
+    border-radius: 5px;
+    > :nth-child(even) {
+        background-color: $whiteTinted;
+    }
+}
+
+.horizontalItem {
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+
+    img {
+        width: auto;
+        height: 6rem;
+    }
+
+    div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        > p,
+        > span {
+            padding: 0.25rem;
+        }
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .horzImage {
+        width: 150px;
+        overflow: hidden;
+    }
+
+    .horzDesc {
+        width: 200px;
+    }
+
+    .horzDiscountPrice {
+        width: 80px;
+        p {
+            font-weight: bolder;
+        }
+        :first-child {
+            text-decoration: line-through;
+        }
+        :nth-child(2) {
+            color: $danger;
+        }
+    }
+
+    .horzPrice {
+        width: 80px;
+        p {
+            font-weight: bolder;
+        }
+    }
+
+    .horzInStock {
+        width: 80px;
+        display: flex;
+        flex-direction: row;
+    }
+
+    a {
+        font-weight: bolder;
+        :hover {
+            color: $primary;
+            cursor: pointer;
+        }
+    }
+}
+
+.greenCircle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: $success;
+    margin-right: 0.5rem;
+}
+
+.redCircle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: $danger;
+    margin-right: 0.5rem;
+}

@@ -56,7 +56,7 @@ model product_images {
   id        BigInt   @id @unique(map: "id_UNIQUE") @default(autoincrement())
   name      String?  @db.VarChar(45)
   productid BigInt
-  image     Bytes    @db.Blob
+  image     String   @db.VarChar(50)
   products  products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "product_images_ibfk_1")
 
   @@index([productid], map: "productid")
@@ -81,7 +81,7 @@ model products {
   description    String?          @db.Text
   price          Int
   discountprice  Int?
-  instock        Boolean?
+  instock        Int?
   orders         orders[]
   product_images product_images[]
   product_specs  product_specs[]

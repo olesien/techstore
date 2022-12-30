@@ -131,7 +131,22 @@ button {
     gap: 0.4rem;
 }
 
+.rounded {
+    border-radius: 5px;
+}
+
 .right-side {
     display: flex;
     justify-content: flex-end;
+}
+
+.section {
+    background-color: $white;
+}
+
+.star-filled {
+    color: $yellow;
+}
+.star-notfilled {
+    color: $header;
 }
