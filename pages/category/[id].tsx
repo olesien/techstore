@@ -2,11 +2,13 @@ import { useState } from "react";
 import Layout from "../../components/layout";
 import Head from "next/head";
 import Main from "../../components/Main";
-import { GetStaticProps, GetStaticPaths } from "next";
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
 import { getCategory, getAllCategoryIds } from "../../lib/category";
 import { getProducts } from "../../lib/products";
 import ProductList from "../../components/ProductList";
 import { products } from "@prisma/client";
+import { Button } from "@mui/material";
+import { useRouter } from "next/router";
 
 export type ProductAddons = {
     product_images: string[];
@@ -25,6 +27,13 @@ export default function List({
     };
     products: Product[];
 }) {
+    const router = useRouter();
+    const setPage = (newPage: number) => {
+        router.push({
+            pathname: "/category/" + category.id,
+            query: { page: newPage },
+        });
+    };
     console.log(products);
     const [showNav, setShowNav] = useState(false);
     console.log(category.title);
@@ -41,6 +50,9 @@ export default function List({
                     <div className="p-1 section m-1 rounded">
                         <p>{category.title}</p>
                     </div>
+                    {/* Pagination */}
+                    <Button onClick={() => setPage(1)}>Page 1</Button>
+                    <Button onClick={() => setPage(2)}>Page 2</Button>
 
                     <ProductList products={products} />
                 </div>
@@ -49,18 +61,24 @@ export default function List({
     );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-    const paths = await getAllCategoryIds();
-    return {
-        paths,
-        fallback: false,
-    };
-};
+// export const getStaticPaths: GetStaticPaths = async () => {
+//     const paths = await getAllCategoryIds();
+//     return {
+//         paths,
+//         fallback: false,
+//     };
+// };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+    params,
+    query,
+}) => {
+    const page = Number(query?.page ?? 1);
+    console.log(page);
     const category = await getCategory(params?.id as string);
-    const products = await getProducts(params?.id as string);
-    console.log(products);
+    const products = await getProducts(params?.id as string, page);
+
+    // console.log(products);
     return {
         props: {
             category,
