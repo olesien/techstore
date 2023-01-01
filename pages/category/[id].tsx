@@ -7,7 +7,14 @@ import { getCategory, getAllCategoryIds } from "../../lib/category";
 import { getProducts } from "../../lib/products";
 import ProductList from "../../components/ProductList";
 import { products } from "@prisma/client";
-import { Button } from "@mui/material";
+import {
+    Button,
+    MenuItem,
+    Pagination,
+    Select,
+    SelectChangeEvent,
+    TextField,
+} from "@mui/material";
 import { useRouter } from "next/router";
 
 export type ProductAddons = {
@@ -17,27 +24,49 @@ export type ProductAddons = {
 
 export type Product = products & ProductAddons;
 
+export type Data = {
+    page: number;
+    pageCount: number;
+    sortBy: number;
+    products: Product[];
+};
+
 export default function List({
     category,
-    products,
+    data,
 }: {
     category: {
         id: number;
         title: string;
     };
-    products: Product[];
+    data: Data;
 }) {
+    const [age, setAge] = useState("1");
+    console.log(data);
+    const products = data?.products;
     const router = useRouter();
-    const setPage = (newPage: number) => {
+    const query = router.query;
+    const changeQuery = (queryIndex: string, value: number) => {
         router.push({
             pathname: "/category/" + category.id,
-            query: { page: newPage },
+            query: { ...query, [queryIndex]: value },
         });
     };
-    console.log(products);
     const [showNav, setShowNav] = useState(false);
-    console.log(category.title);
     const title = `${category?.title} - Techstore`;
+
+    const handlePageChange = (
+        event: React.ChangeEvent<unknown>,
+        value: number
+    ) => {
+        changeQuery("page", value);
+    };
+
+    const handleChange = (event: any) => {
+        //setAge(event.target.value as string);
+        changeQuery("sortby", event.target.value);
+    };
+
     return (
         <Layout toggleNav={() => setShowNav((prev) => !prev)}>
             <Head>
@@ -50,11 +79,32 @@ export default function List({
                     <div className="p-1 section m-1 rounded">
                         <p>{category.title}</p>
                     </div>
-                    {/* Pagination */}
-                    <Button onClick={() => setPage(1)}>Page 1</Button>
-                    <Button onClick={() => setPage(2)}>Page 2</Button>
-
+                    <div className="p-1 right-side">
+                        <TextField
+                            value={String(data.sortBy)}
+                            onChange={handleChange}
+                            select // tell TextField to render select
+                            label="Sortera"
+                            size="small"
+                        >
+                            <MenuItem value={1}>Produkt A-Ö</MenuItem>
+                            <MenuItem value={2}>Produkt Ö-A</MenuItem>
+                            <MenuItem value={3}>Pris Högt - Lågt</MenuItem>
+                            <MenuItem value={4}>Pris Lågt - Högt</MenuItem>
+                        </TextField>
+                    </div>
                     <ProductList products={products} />
+                    <div className="p-1 flex center-flex">
+                        <Pagination
+                            count={data?.pageCount ?? 1}
+                            variant="outlined"
+                            color="primary"
+                            showFirstButton
+                            showLastButton
+                            page={data?.page ?? 1}
+                            onChange={handlePageChange}
+                        />
+                    </div>
                 </div>
             </Main>
         </Layout>
@@ -74,15 +124,16 @@ export const getServerSideProps: GetServerSideProps = async ({
     query,
 }) => {
     const page = Number(query?.page ?? 1);
+    const sortBy = Number(query?.sortby ?? 1);
     console.log(page);
     const category = await getCategory(params?.id as string);
-    const products = await getProducts(params?.id as string, page);
+    const data = await getProducts(params?.id as string, page, sortBy);
 
     // console.log(products);
     return {
         props: {
             category,
-            products,
+            data,
         },
     };
 };
