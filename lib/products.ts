@@ -1,41 +1,50 @@
 import prisma from "./prisma";
-import translate from "./translations";
+type Filters = {
+    priceRange: [min: number, max: number];
+};
 
-export async function getProducts(id: string, page: number, sortBy: number) {
+export async function getProducts(
+    id: string,
+    page: number,
+    sortBy: number,
+    filters: Filters
+) {
     let orderBy:
         | { [key: string]: string | number }
         | { [key: string]: string | number }[] = {
         name: "asc",
     };
-    if (sortBy == 2) {
+    if (sortBy === 2) {
         // asc
         orderBy = {
             name: "desc",
         };
-    } else if (sortBy == 3) {
+    } else if (sortBy === 3) {
         //price desc
         orderBy = [
             {
                 price: "desc",
             },
-            {
-                discountprice: "desc",
-            },
         ];
-    } else if (sortBy == 3) {
+    } else if (sortBy === 4) {
         //price desc
 
         orderBy = [
-            {
-                discountprice: "asc",
-            },
             {
                 price: "asc",
             },
         ];
     }
+
+    let price = {};
+    if (filters.priceRange[0] !== 0 && filters.priceRange[1] !== 0) {
+        price = {
+            lte: filters.priceRange[1],
+            gte: filters.priceRange[0],
+        };
+    }
     const products = await prisma.products.findMany({
-        where: { categoryid: Number(id) },
+        where: { categoryid: Number(id), price },
         include: { product_images: { take: 1 } },
         skip: page * 10 - 10,
         take: 10,
@@ -49,12 +58,34 @@ export async function getProducts(id: string, page: number, sortBy: number) {
         },
     });
 
+    let prices = await prisma.products.findMany({
+        where: { categoryid: Number(id) },
+        distinct: "price",
+        orderBy: {
+            price: "desc",
+        },
+    });
+
     //console.log(products);
     //console.log(avg);
+    const min = prices[prices.length - 1].price;
+    const max = prices[0].price;
+    console.log(min, max);
+    console.log(filters.priceRange[1] === 0 ? [min, max] : filters.priceRange);
     return {
         page,
         pageCount,
         sortBy,
+        filters: {
+            price: {
+                min,
+                max,
+                activeRange:
+                    filters.priceRange[1] === 0
+                        ? [min, max]
+                        : filters.priceRange,
+            },
+        },
         products: products.map((product) => ({
             ...product,
             id: String(product.id),

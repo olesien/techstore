@@ -80,7 +80,7 @@ model products {
   quickspecs     String?          @db.VarChar(100)
   description    String?          @db.Text
   price          Int
-  discountprice  Int?
+  oldprice       Int?
   instock        Int?
   orders         orders[]
   product_images product_images[]

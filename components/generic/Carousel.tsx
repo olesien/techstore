@@ -14,7 +14,7 @@ export default function Carousel({
     const [carouselIndex, setCarouselIndex] = useState(0);
     if (items.length === 0) return <></>;
     return (
-        <div className="horizontal-flex carousel-flex">
+        <div className="horizontal-flex space-around">
             <div
                 className="horizontal-flex button"
                 role="button"

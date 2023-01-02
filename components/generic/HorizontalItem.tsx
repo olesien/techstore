@@ -14,7 +14,7 @@ export default function HorizontalItem({ product }: { product: Product }) {
                     src={
                         product.product_images.length > 0
                             ? product.product_images[0]
-                            : "./images/notfound.png"
+                            : "/images/notfound.png"
                     }
                     alt={product.name ?? "Image"}
                 />
@@ -31,10 +31,10 @@ export default function HorizontalItem({ product }: { product: Product }) {
             <div>
                 <InStock instock={Number(product.instock)} />
             </div>
-            {product.discountprice ? (
+            {product.oldprice ? (
                 <div className={productStyles.horzDiscountPrice}>
+                    <p>{product.oldprice} kr</p>
                     <p>{product.price} kr</p>
-                    <p>{product.discountprice} kr</p>
                 </div>
             ) : (
                 <div className={productStyles.horzPrice}>
