@@ -104,10 +104,20 @@
 
 .filter {
     background-color: $elementBackground;
-    padding: 1rem;
+    padding: 2rem;
     border-radius: 5px;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 1rem;
     // > div {
     //     width: 20rem;
     //     padding: 1rem;
     // }
+    justify-content: space-evenly;
+    align-items: center;
+
+    .filterOption {
+        display: inline-block;
+        width: 200px;
+    }
 }

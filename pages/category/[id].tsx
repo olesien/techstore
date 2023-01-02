@@ -122,8 +122,8 @@ export default function List({
                     <div className="p-1 section m-1 rounded">
                         <p>{category.title}</p>
                     </div>
+
                     <div className={productStyles.filter}>
-                        <p>Filter</p>
                         <Box sx={{ width: 300, padding: 1 }}>
                             <p>Pris</p>
                             <Slider
@@ -148,48 +148,52 @@ export default function List({
                                     },
                                 ]}
                             />
-                            {category.filters.map((filter) => {
-                                const filterData =
-                                    data.filters.otherFilters[filter.value];
-                                return (
-                                    <div key={filter.id}>
-                                        <TextField
-                                            value={filterData.value}
-                                            onChange={(e) =>
-                                                handleFilterChange(
-                                                    filter.value,
-                                                    e.target.value
-                                                )
-                                            }
-                                            select // tell TextField to render select
-                                            label={filter.title}
-                                        >
-                                            <MenuItem value={"unselected"}>
-                                                Välj {filter.title}
-                                            </MenuItem>
-                                            {filterData.list.map((filter) => {
-                                                const value = filter[0].content;
-                                                return (
-                                                    <MenuItem
-                                                        value={value}
-                                                        key={filter[0].id}
-                                                    >
-                                                        {value}
-                                                    </MenuItem>
-                                                );
-                                            })}
-                                            {/* <MenuItem value={10}>Ten</MenuItem>
+                        </Box>
+                        {category.filters.map((filter) => {
+                            const filterData =
+                                data.filters.otherFilters[filter.value];
+                            return (
+                                <div
+                                    className={productStyles.filterOption}
+                                    key={filter.id}
+                                >
+                                    <TextField
+                                        value={filterData.value}
+                                        onChange={(e) =>
+                                            handleFilterChange(
+                                                filter.value,
+                                                e.target.value
+                                            )
+                                        }
+                                        select // tell TextField to render select
+                                        label={filter.title}
+                                        key={filter.id}
+                                    >
+                                        <MenuItem value={"unselected"}>
+                                            Välj {filter.title}
+                                        </MenuItem>
+                                        {filterData.list.map((filter) => {
+                                            const value = filter[0].content;
+                                            return (
+                                                <MenuItem
+                                                    value={value}
+                                                    key={filter[0].id}
+                                                >
+                                                    {value}
+                                                </MenuItem>
+                                            );
+                                        })}
+                                        {/* <MenuItem value={10}>Ten</MenuItem>
                                             <MenuItem value={20}>
                                                 Twenty
                                             </MenuItem>
                                             <MenuItem value={30}>
                                                 Thirty
                                             </MenuItem> */}
-                                        </TextField>
-                                    </div>
-                                );
-                            })}
-                        </Box>
+                                    </TextField>
+                                </div>
+                            );
+                        })}
                     </div>
                     <div className={productStyles.listHeader}>
                         <p>
