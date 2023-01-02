@@ -26,11 +26,11 @@ model users {
 }
 
 model categories {
-  id       Int        @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  name     String     @unique(map: "name_UNIQUE") @db.VarChar(45)
-  icon     Bytes?     @db.Blob
-  filters  filters[]
-  products products[]
+  id                 Int                  @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  name               String               @unique(map: "name_UNIQUE") @db.VarChar(45)
+  icon               Bytes?               @db.Blob
+  categories_filters categories_filters[]
+  products           products[]
 }
 
 model orders {
@@ -65,7 +65,7 @@ model product_images {
 model product_specs {
   id           BigInt   @id @unique(map: "id_UNIQUE") @default(autoincrement())
   title        String   @db.VarChar(45)
-  content      String?  @db.Text
+  content      String   @db.Text
   productid    BigInt
   speccategory String?  @db.VarChar(45)
   products     products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "product_specs_ibfk_1")
@@ -104,12 +104,13 @@ model reviews {
   @@index([userid], map: "userid")
 }
 
-model filters {
+model categories_filters {
   id         Int        @id @default(autoincrement())
   title      String     @db.VarChar(45)
   type       String     @db.VarChar(45)
   categoryid Int
-  categories categories @relation(fields: [categoryid], references: [id], onUpdate: Restrict, map: "filters_ibfk_1")
+  value      String     @db.VarChar(45)
+  categories categories @relation(fields: [categoryid], references: [id], onUpdate: Restrict, map: "categories_filters_ibfk_1")
 
   @@index([categoryid], map: "categoryid")
 }

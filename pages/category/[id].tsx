@@ -4,10 +4,19 @@ import Head from "next/head";
 import Main from "../../components/Main";
 import { GetServerSideProps } from "next";
 import { getCategory, getAllCategoryIds } from "../../lib/category";
-import { getProducts } from "../../lib/products";
+import { OtherFilters, getProducts } from "../../lib/products";
 import ProductList from "../../components/ProductList";
-import { products } from "@prisma/client";
-import { Box, MenuItem, Pagination, Slider, TextField } from "@mui/material";
+import { categories_filters, products } from "@prisma/client";
+import {
+    Box,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Pagination,
+    Select,
+    Slider,
+    TextField,
+} from "@mui/material";
 import { useRouter } from "next/router";
 import productStyles from "../../styles/Product.module.scss";
 
@@ -28,6 +37,7 @@ export type Data = {
             max: number;
             activeRange: [min: number, max: number];
         };
+        otherFilters: OtherFilters;
     };
     products: Product[];
 };
@@ -39,6 +49,7 @@ export default function List({
     category: {
         id: number;
         title: string;
+        filters: categories_filters[];
     };
     data: Data;
 }) {
@@ -46,6 +57,8 @@ export default function List({
         data.filters.price.min,
         data.filters.price.max,
     ]);
+    console.log(category);
+    console.log(data);
     const products = data?.products;
     const router = useRouter();
     const query = router.query;
@@ -53,6 +66,15 @@ export default function List({
         router.push({
             pathname: "/category/" + category.id,
             query: { ...query, [queryIndex]: value },
+        });
+    };
+
+    const removeQuery = (queryIndex: string) => {
+        let newQuery = { ...query };
+        delete newQuery[queryIndex];
+        router.push({
+            pathname: "/category/" + category.id,
+            query: newQuery,
         });
     };
     const [showNav, setShowNav] = useState(false);
@@ -74,6 +96,15 @@ export default function List({
     };
     const handlePriceChangeCommit = () => {
         changeQuery("filter-price", JSON.stringify(priceRange));
+    };
+
+    const handleFilterChange = (type: string, value: string) => {
+        console.log(type, value);
+        if (value === "unselected") {
+            //Unset
+            return removeQuery("filter-" + type);
+        }
+        changeQuery("filter-" + type, value);
     };
 
     function valuetext(value: number) {
@@ -117,6 +148,47 @@ export default function List({
                                     },
                                 ]}
                             />
+                            {category.filters.map((filter) => {
+                                const filterData =
+                                    data.filters.otherFilters[filter.value];
+                                return (
+                                    <div key={filter.id}>
+                                        <TextField
+                                            value={filterData.value}
+                                            onChange={(e) =>
+                                                handleFilterChange(
+                                                    filter.value,
+                                                    e.target.value
+                                                )
+                                            }
+                                            select // tell TextField to render select
+                                            label={filter.title}
+                                        >
+                                            <MenuItem value={"unselected"}>
+                                                Välj {filter.title}
+                                            </MenuItem>
+                                            {filterData.list.map((filter) => {
+                                                const value = filter[0].content;
+                                                return (
+                                                    <MenuItem
+                                                        value={value}
+                                                        key={filter[0].id}
+                                                    >
+                                                        {value}
+                                                    </MenuItem>
+                                                );
+                                            })}
+                                            {/* <MenuItem value={10}>Ten</MenuItem>
+                                            <MenuItem value={20}>
+                                                Twenty
+                                            </MenuItem>
+                                            <MenuItem value={30}>
+                                                Thirty
+                                            </MenuItem> */}
+                                        </TextField>
+                                    </div>
+                                );
+                            })}
                         </Box>
                     </div>
                     <div className={productStyles.listHeader}>
@@ -173,14 +245,25 @@ export const getServerSideProps: GetServerSideProps = async ({
     const page = Number(query?.page ?? 1);
     const sortBy = Number(query?.sortby ?? 1);
     const priceQuery = query["filter-price"] ?? JSON.stringify([0, 0]);
-    console.log(priceQuery);
     const priceRange = JSON.parse(String(priceQuery));
+    const otherFilters = Object.keys(query)
+        .filter((key) => key !== "filter-price" && key.includes("filter"))
+        .reduce((obj, key) => {
+            return { ...obj, [key.split("-")[1]]: query[key] };
+        }, {});
+    console.log(otherFilters);
     const filters = {
         priceRange,
+        otherFilters,
     };
-    console.log(page);
     const category = await getCategory(params?.id as string);
-    const data = await getProducts(params?.id as string, page, sortBy, filters);
+    const data = await getProducts(
+        params?.id as string,
+        page,
+        sortBy,
+        filters,
+        category?.filters
+    );
 
     // console.log(products);
     return {
