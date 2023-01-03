@@ -36,16 +36,19 @@
     }
 
     .horzImage {
-        width: 150px;
+        flex: 15;
         overflow: hidden;
     }
 
     .horzDesc {
-        width: 200px;
+        flex: 20;
+        > p {
+            padding-right: 0.5rem;
+        }
     }
 
     .horzDiscountPrice {
-        width: 80px;
+        flex: 8;
         p {
             font-weight: bolder;
         }
@@ -57,17 +60,17 @@
         }
     }
 
+    .horzInStock {
+        flex: 8;
+        display: flex;
+        flex-direction: row;
+    }
+
     .horzPrice {
-        width: 80px;
+        flex: 8;
         p {
             font-weight: bolder;
         }
-    }
-
-    .horzInStock {
-        width: 80px;
-        display: flex;
-        flex-direction: row;
     }
 
     a {
@@ -76,6 +79,10 @@
             color: $primary;
             cursor: pointer;
         }
+    }
+
+    @media only screen and (max-width: 900px) {
+        padding: 1rem;
     }
 
     @media only screen and (max-width: 600px) {
@@ -87,23 +94,23 @@
         padding: 0.4rem 0.5rem;
         font-size: 0.85em;
         .horzImage {
-            width: 80px;
+            flex: 8;
         }
 
         .horzDesc {
-            width: 150px;
+            flex: 15;
         }
 
         .horzDiscountPrice {
-            width: 80px;
+            flex: 8;
         }
 
         .horzPrice {
-            width: 80px;
+            flex: 8;
         }
 
         .horzInStock {
-            width: 50px;
+            flex: 5;
         }
     }
 }
