@@ -8,7 +8,7 @@ type Filters = {
 export type OtherFilters = {
     [key: string]: {
         value: string;
-        list: { content: string; id: number }[][];
+        list: { content: string; id: number }[];
     };
 };
 
@@ -59,7 +59,6 @@ export async function getProducts(
     if (Object.keys(filters.otherFilters).length >= 1) {
         //let filter = []
         for (const [key, value] of Object.entries(filters.otherFilters)) {
-            console.log(`${key}: ${value}`);
             if (Array(value)) {
                 product_specs.push({
                     product_specs: {
@@ -73,8 +72,6 @@ export async function getProducts(
             }
         }
     }
-
-    console.log(product_specs);
 
     const products = await prisma.products.findMany({
         where: {
@@ -112,42 +109,53 @@ export async function getProducts(
                 where: { categoryid: Number(id) },
                 select: {
                     product_specs: {
-                        select: { content: true, id: true },
+                        select: {
+                            content: true,
+                            id: true,
+                        },
                         where: {
                             title: value,
                         },
                     },
                 },
+
                 orderBy: {
                     price: "desc",
                 },
             });
-            const filteredList = list.map((product) =>
-                product.product_specs.map((field) => ({
+
+            //Flatten array as it was returned as a nested array
+            const flatList = list
+                .flatMap((product) => product.product_specs)
+
+                .map((field) => ({
                     id: Number(field.id),
                     content: field.content,
                 }))
+                .filter((value, index, self) => self.indexOf(value) === index);
+
+            const uniqueList: typeof flatList = Object.values(
+                flatList.reduce(
+                    (obj, item) => ({ ...obj, [item.content]: item }),
+                    {}
+                )
             );
+
             if (filter.type === "multiselect") {
                 otherFilters[value] = {
-                    list: filteredList,
+                    list: uniqueList,
                     value: filters.otherFilters[value] ?? [],
                 };
             } else {
                 otherFilters[value] = {
-                    list: filteredList,
+                    list: uniqueList,
                     value: filters.otherFilters[value] ?? "unselected",
                 };
             }
         }
     }
-
-    //console.log(products);
-    //console.log(avg);
     const min = filterData[filterData.length - 1].price;
     const max = filterData[0].price;
-    console.log(min, max);
-    console.log(filters.priceRange[1] === 0 ? [min, max] : filters.priceRange);
     return {
         page,
         pageCount,

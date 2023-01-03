@@ -58,8 +58,6 @@ export default function List({
         data.filters.price.min,
         data.filters.price.max,
     ]);
-    console.log(category);
-    console.log(data);
     const products = data?.products;
     const router = useRouter();
     const query = router.query;
@@ -100,7 +98,6 @@ export default function List({
     };
 
     const handleFilterChange = (type: string, value: string) => {
-        console.log(type, value);
         if (value === "unselected") {
             //Unset
             return removeQuery("filter-" + type);
@@ -126,9 +123,9 @@ export default function List({
             </Head>
             <Main showNav={showNav}>
                 <div>
-                    <div className="p-1 section m-1 rounded">
+                    {/* <div className="p-1 rounded">
                         <p>{category.title}</p>
-                    </div>
+                    </div> */}
 
                     <div className={productStyles.filter}>
                         <Box sx={{ width: 300, padding: 1 }}>
@@ -184,26 +181,18 @@ export default function List({
                                                 <MenuItem value={"unselected"}>
                                                     Välj {filter.title}
                                                 </MenuItem>
-                                                {filterData.list.map(
-                                                    (filter) => {
-                                                        const value = filter[0];
-                                                        if (!value) {
-                                                            return <></>;
-                                                        }
-                                                        return (
-                                                            <MenuItem
-                                                                value={
-                                                                    value.content
-                                                                }
-                                                                key={
-                                                                    filter[0].id
-                                                                }
-                                                            >
-                                                                {value.content}
-                                                            </MenuItem>
-                                                        );
-                                                    }
-                                                )}
+                                                {filterData.list
+                                                    .filter((filter) => filter)
+                                                    .map((filter) => (
+                                                        <MenuItem
+                                                            value={
+                                                                filter.content
+                                                            }
+                                                            key={filter.id}
+                                                        >
+                                                            {filter.content}
+                                                        </MenuItem>
+                                                    ))}
                                             </TextField>
                                         )}
                                         {filter.type === "multiselect" && (
@@ -268,22 +257,18 @@ export default function List({
                                                     ),
                                                 }}
                                             >
-                                                {filterData.list.map(
-                                                    (filter) => {
-                                                        const value =
-                                                            filter[0].content;
-                                                        return (
-                                                            <MenuItem
-                                                                value={value}
-                                                                key={
-                                                                    filter[0].id
-                                                                }
-                                                            >
-                                                                {value}
-                                                            </MenuItem>
-                                                        );
-                                                    }
-                                                )}
+                                                {filterData.list
+                                                    .filter((filter) => filter)
+                                                    .map((filter) => (
+                                                        <MenuItem
+                                                            value={
+                                                                filter.content
+                                                            }
+                                                            key={filter.id}
+                                                        >
+                                                            {filter.content}
+                                                        </MenuItem>
+                                                    ))}
                                             </TextField>
                                         )}
                                     </FormControl>
@@ -365,7 +350,6 @@ export const getServerSideProps: GetServerSideProps = async ({
                     : query[key],
             };
         }, {});
-    console.log(otherFilters);
     const filters = {
         priceRange,
         otherFilters,
@@ -378,8 +362,6 @@ export const getServerSideProps: GetServerSideProps = async ({
         filters,
         category?.filters
     );
-
-    // console.log(products);
     return {
         props: {
             category,
