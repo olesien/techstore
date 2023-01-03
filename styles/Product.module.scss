@@ -77,6 +77,35 @@
             cursor: pointer;
         }
     }
+
+    @media only screen and (max-width: 600px) {
+        padding: 0.5rem 1rem;
+        font-size: 0.95em;
+    }
+
+    @media only screen and (max-width: 500px) {
+        padding: 0.4rem 0.5rem;
+        font-size: 0.85em;
+        .horzImage {
+            width: 80px;
+        }
+
+        .horzDesc {
+            width: 150px;
+        }
+
+        .horzDiscountPrice {
+            width: 80px;
+        }
+
+        .horzPrice {
+            width: 80px;
+        }
+
+        .horzInStock {
+            width: 50px;
+        }
+    }
 }
 
 .greenCircle {
@@ -120,5 +149,9 @@
         display: flex;
         justify-content: center;
         width: 200px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        padding: 1rem;
     }
 }
