@@ -9,6 +9,7 @@ import ProductList from "../../components/ProductList";
 import { categories_filters, products } from "@prisma/client";
 import {
     Box,
+    Chip,
     FormControl,
     InputLabel,
     MenuItem,
@@ -106,6 +107,12 @@ export default function List({
         }
         changeQuery("filter-" + type, value);
     };
+    const handleFilterArrayChange = (type: string, value: string[]) => {
+        if (value.length === 0) {
+            return removeQuery("filter-" + type);
+        }
+        changeQuery("filter-" + type, JSON.stringify(value));
+    };
 
     function valuetext(value: number) {
         return `${value} kr`;
@@ -157,40 +164,129 @@ export default function List({
                                     className={productStyles.filterOption}
                                     key={filter.id}
                                 >
-                                    <TextField
-                                        value={filterData.value}
-                                        onChange={(e) =>
-                                            handleFilterChange(
-                                                filter.value,
-                                                e.target.value
-                                            )
-                                        }
-                                        select // tell TextField to render select
-                                        label={filter.title}
-                                        key={filter.id}
-                                    >
-                                        <MenuItem value={"unselected"}>
-                                            Välj {filter.title}
-                                        </MenuItem>
-                                        {filterData.list.map((filter) => {
-                                            const value = filter[0].content;
-                                            return (
-                                                <MenuItem
-                                                    value={value}
-                                                    key={filter[0].id}
-                                                >
-                                                    {value}
+                                    <FormControl fullWidth>
+                                        {filter.type === "select" && (
+                                            <TextField
+                                                value={filterData.value}
+                                                onChange={(e) =>
+                                                    handleFilterChange(
+                                                        filter.value,
+                                                        e.target.value
+                                                    )
+                                                }
+                                                select // tell TextField to render select
+                                                label={filter.title}
+                                                key={filter.id}
+                                                SelectProps={{
+                                                    autoWidth: true,
+                                                }}
+                                            >
+                                                <MenuItem value={"unselected"}>
+                                                    Välj {filter.title}
                                                 </MenuItem>
-                                            );
-                                        })}
-                                        {/* <MenuItem value={10}>Ten</MenuItem>
-                                            <MenuItem value={20}>
-                                                Twenty
-                                            </MenuItem>
-                                            <MenuItem value={30}>
-                                                Thirty
-                                            </MenuItem> */}
-                                    </TextField>
+                                                {filterData.list.map(
+                                                    (filter) => {
+                                                        const value = filter[0];
+                                                        if (!value) {
+                                                            return <></>;
+                                                        }
+                                                        return (
+                                                            <MenuItem
+                                                                value={
+                                                                    value.content
+                                                                }
+                                                                key={
+                                                                    filter[0].id
+                                                                }
+                                                            >
+                                                                {value.content}
+                                                            </MenuItem>
+                                                        );
+                                                    }
+                                                )}
+                                            </TextField>
+                                        )}
+                                        {filter.type === "multiselect" && (
+                                            <TextField
+                                                select // tell TextField to render select
+                                                label={filter.title}
+                                                key={filter.id}
+                                                SelectProps={{
+                                                    displayEmpty: true,
+                                                    autoWidth: true,
+                                                    multiple: true,
+                                                    value: filterData.value,
+                                                    onChange: (e) => {
+                                                        handleFilterArrayChange(
+                                                            filter.value,
+                                                            e.target
+                                                                .value as string[]
+                                                        );
+                                                    },
+                                                    renderValue: (selected) => (
+                                                        <Box
+                                                            sx={{
+                                                                display: "flex",
+                                                                flexWrap:
+                                                                    "wrap",
+                                                                gap: 0.5,
+                                                            }}
+                                                        >
+                                                            {(
+                                                                selected as string[]
+                                                            ).map((value) => {
+                                                                // if (
+
+                                                                //     value.length <
+                                                                //         1
+                                                                // ) {
+                                                                //     return (
+                                                                //         <p
+                                                                //             key={
+                                                                //                 value
+                                                                //             }
+                                                                //         >
+                                                                //             {"Välj " +
+                                                                //                 filter.title}
+                                                                //         </p>
+                                                                //     );
+                                                                // }
+                                                                return (
+                                                                    <Chip
+                                                                        key={
+                                                                            value
+                                                                        }
+                                                                        label={
+                                                                            value
+                                                                        }
+                                                                        color="primary"
+                                                                        size="small"
+                                                                    />
+                                                                );
+                                                            })}
+                                                        </Box>
+                                                    ),
+                                                }}
+                                            >
+                                                {filterData.list.map(
+                                                    (filter) => {
+                                                        const value =
+                                                            filter[0].content;
+                                                        return (
+                                                            <MenuItem
+                                                                value={value}
+                                                                key={
+                                                                    filter[0].id
+                                                                }
+                                                            >
+                                                                {value}
+                                                            </MenuItem>
+                                                        );
+                                                    }
+                                                )}
+                                            </TextField>
+                                        )}
+                                    </FormControl>
                                 </div>
                             );
                         })}
@@ -242,6 +338,15 @@ export default function List({
 //     };
 // };
 
+function isJson(str: string) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
 export const getServerSideProps: GetServerSideProps = async ({
     params,
     query,
@@ -253,7 +358,12 @@ export const getServerSideProps: GetServerSideProps = async ({
     const otherFilters = Object.keys(query)
         .filter((key) => key !== "filter-price" && key.includes("filter"))
         .reduce((obj, key) => {
-            return { ...obj, [key.split("-")[1]]: query[key] };
+            return {
+                ...obj,
+                [key.split("-")[1]]: isJson(query[key] as string)
+                    ? JSON.parse(String(query[key]))
+                    : query[key],
+            };
         }, {});
     console.log(otherFilters);
     const filters = {

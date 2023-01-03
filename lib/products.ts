@@ -54,12 +54,24 @@ export async function getProducts(
         };
     }
 
-    let product_specs = {};
+    let product_specs = [];
 
     if (Object.keys(filters.otherFilters).length >= 1) {
-        product_specs = {
-            some: { content: { in: Object.values(filters.otherFilters) } },
-        };
+        //let filter = []
+        for (const [key, value] of Object.entries(filters.otherFilters)) {
+            console.log(`${key}: ${value}`);
+            if (Array(value)) {
+                product_specs.push({
+                    product_specs: {
+                        some: { content: { in: value }, title: key },
+                    },
+                });
+            } else {
+                product_specs.push({
+                    product_specs: { some: { content: value, title: key } },
+                });
+            }
+        }
     }
 
     console.log(product_specs);
@@ -68,7 +80,7 @@ export async function getProducts(
         where: {
             categoryid: Number(id),
             price,
-            product_specs,
+            AND: product_specs,
         },
         include: { product_images: { take: 1 } },
         skip: page * 10 - 10,
@@ -116,10 +128,17 @@ export async function getProducts(
                     content: field.content,
                 }))
             );
-            otherFilters[value] = {
-                list: filteredList,
-                value: filters.otherFilters[value] ?? "unselected",
-            };
+            if (filter.type === "multiselect") {
+                otherFilters[value] = {
+                    list: filteredList,
+                    value: filters.otherFilters[value] ?? [],
+                };
+            } else {
+                otherFilters[value] = {
+                    list: filteredList,
+                    value: filters.otherFilters[value] ?? "unselected",
+                };
+            }
         }
     }
 
