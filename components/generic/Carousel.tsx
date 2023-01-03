@@ -10,8 +10,8 @@ export default function Carousel({
     items,
     newImg = false,
 }: {
-    items: { title: string; image: string; id: number }[];
-    newImg: boolean;
+    items: { title?: string; image: string; id: number }[];
+    newImg?: boolean;
 }) {
     const [carouselIndex, setCarouselIndex] = useState(0);
     if (items.length === 0) return <></>;

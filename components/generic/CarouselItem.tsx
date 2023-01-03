@@ -7,10 +7,10 @@ export default function CarouselItem({
     id,
     newImg,
 }: {
-    title: string;
+    title?: string;
     image: string;
     id: number;
-    newImg: boolean;
+    newImg?: boolean;
 }) {
     return (
         <div className="horizontal-flex">

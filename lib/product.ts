@@ -5,11 +5,11 @@ type Error = {
     code: number;
     error: string;
 };
-// type Product_images = {
-//     product_Images: product_images;
-// };
+type Product_images = {
+    product_images: product_images[];
+};
 
-export type ProductType = (products & product_images) | Error;
+export type ProductType = (products & Product_images) | Error;
 
 export async function getProduct(id: number) {
     const product = await prisma.products.findFirst({
@@ -23,6 +23,8 @@ export async function getProduct(id: number) {
     if (!product) {
         return { code: 404, error: "Not Found" };
     }
+
+    console.log(product);
 
     //Bigints are annoying
     return { ...product, id: Number(product.id) };
