@@ -1,5 +1,5 @@
 import React from "react";
-import productStyles from "../../styles/Product.module.scss";
+import productStyles from "../../styles/Products.module.scss";
 
 export default function InStock({ instock }: { instock: number }) {
     return (

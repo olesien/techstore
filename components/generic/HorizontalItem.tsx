@@ -1,5 +1,5 @@
 import React from "react";
-import productStyles from "../../styles/Product.module.scss";
+import productStyles from "../../styles/Products.module.scss";
 import { Product } from "../../pages/category/[id]";
 import Button from "@mui/material/Button";
 import InStock from "./InStock";

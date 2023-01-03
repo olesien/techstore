@@ -8,8 +8,10 @@ import CarouselItem from "./CarouselItem";
 
 export default function Carousel({
     items,
+    newImg = false,
 }: {
     items: { title: string; image: string; id: number }[];
+    newImg: boolean;
 }) {
     const [carouselIndex, setCarouselIndex] = useState(0);
     if (items.length === 0) return <></>;
@@ -26,7 +28,7 @@ export default function Carousel({
             >
                 <FontAwesomeIcon icon={faChevronLeft} size={"2x"} />
             </div>
-            <CarouselItem {...items[carouselIndex]} />
+            <CarouselItem {...items[carouselIndex]} newImg={newImg} />
             <div
                 className="horizontal-flex button"
                 role="button"

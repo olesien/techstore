@@ -5,19 +5,24 @@ export default function CarouselItem({
     title,
     image,
     id,
+    newImg,
 }: {
     title: string;
     image: string;
     id: number;
+    newImg: boolean;
 }) {
     return (
         <div className="horizontal-flex">
-            <div className="vertical-flex bold">
-                <Link href={"/product/" + id} legacyBehavior>
-                    <a>{title}</a>
-                </Link>
-                <p>Nu på techstore!</p>
-            </div>
+            {newImg && (
+                <div className="vertical-flex bold">
+                    <Link href={"/product/" + id} legacyBehavior>
+                        <a>{title}</a>
+                    </Link>
+                    <p>Nu på techstore!</p>
+                </div>
+            )}
+
             <Image
                 alt="Vercel logo"
                 src={image}

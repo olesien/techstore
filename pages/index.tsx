@@ -72,6 +72,7 @@ export default function Home({}: {}) {
                                     id: 2,
                                 },
                             ]}
+                            newImg={true}
                         />
                     </section>
                     <p>Kampanjer</p>

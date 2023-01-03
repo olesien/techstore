@@ -8,7 +8,7 @@ datasource db {
 }
 
 model users {
-  id          BigInt    @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  id          Int       @id @unique(map: "id_UNIQUE") @default(autoincrement())
   name        String?   @db.VarChar(45)
   firstname   String?   @db.VarChar(45)
   lastname    String?   @db.VarChar(45)
@@ -34,28 +34,34 @@ model categories {
 }
 
 model orders {
-  id        BigInt   @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  productid BigInt
-  date      DateTime @db.Date
-  userid    BigInt
-  status    String?  @db.VarChar(45)
-  users     users    @relation(fields: [userid], references: [id], onUpdate: Restrict, map: "orders_ibfk_1")
-  products  products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "orders_ibfk_2")
+  id              Int               @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  productid       Int
+  date            DateTime          @db.Date
+  userid          Int
+  status          String?           @db.VarChar(45)
+  products        products          @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "orders_ibfk_2")
+  users           users             @relation(fields: [userid], references: [id], onUpdate: Restrict, map: "orders_ibfk_1")
+  orders_products orders_products[]
 
   @@index([productid], map: "productid")
   @@index([userid], map: "userid")
 }
 
 model orders_products {
-  id        BigInt @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  orderid   BigInt
-  productid BigInt
+  id        Int      @id @unique(map: "id_UNIQUE")
+  orderid   Int
+  productid Int
+  orders    orders   @relation(fields: [orderid], references: [id], onUpdate: Restrict, map: "orders_products_ibfk_1")
+  products  products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "orders_products_ibfk_2")
+
+  @@index([orderid], map: "orderid")
+  @@index([productid], map: "productid")
 }
 
 model product_images {
-  id        BigInt   @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  id        Int      @id @unique(map: "id_UNIQUE") @default(autoincrement())
   name      String?  @db.VarChar(45)
-  productid BigInt
+  productid Int
   image     String   @db.VarChar(50)
   products  products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "product_images_ibfk_1")
 
@@ -63,10 +69,10 @@ model product_images {
 }
 
 model product_specs {
-  id           BigInt   @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  id           Int      @id @unique(map: "id_UNIQUE")
   title        String   @db.VarChar(45)
   content      String   @db.Text
-  productid    BigInt
+  productid    Int
   speccategory String?  @db.VarChar(45)
   products     products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "product_specs_ibfk_1")
 
@@ -74,32 +80,34 @@ model product_specs {
 }
 
 model products {
-  id             BigInt           @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  categoryid     Int
-  name           String?          @db.VarChar(45)
-  quickspecs     String?          @db.VarChar(100)
-  description    String?          @db.Text
-  price          Int
-  oldprice       Int?
-  instock        Int?
-  orders         orders[]
-  product_images product_images[]
-  product_specs  product_specs[]
-  categories     categories       @relation(fields: [categoryid], references: [id], onUpdate: Restrict, map: "products_ibfk_1")
-  reviews        reviews[]
+  id              Int               @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  categoryid      Int
+  name            String?           @db.VarChar(45)
+  quickspecs      String?           @db.VarChar(100)
+  description     String?           @db.Text
+  price           Int
+  oldprice        Int?
+  instock         Int?
+  orders          orders[]
+  orders_products orders_products[]
+  product_images  product_images[]
+  product_specs   product_specs[]
+  categories      categories        @relation(fields: [categoryid], references: [id], onUpdate: Restrict, map: "products_ibfk_1")
+  reviews         reviews[]
 
   @@index([categoryid], map: "categoryid")
 }
 
 model reviews {
-  id        BigInt   @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  userid    BigInt
+  id        Int      @unique(map: "id_UNIQUE") @default(autoincrement())
+  userid    Int
   content   String?  @db.Text
   rating    Int?     @db.SmallInt
-  productid BigInt
+  productid Int
   products  products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "reviews_ibfk_1")
   users     users    @relation(fields: [userid], references: [id], onUpdate: Restrict, map: "reviews_ibfk_2")
 
+  @@id([id, userid])
   @@index([productid], map: "productid")
   @@index([userid], map: "userid")
 }

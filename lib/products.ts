@@ -84,6 +84,14 @@ export async function getProducts(
         take: 10,
         orderBy,
     });
+
+    if (products.length === 0) {
+        //Empty
+        return {
+            code: 404,
+            error: "Not Found",
+        };
+    }
     const pageCount = Math.ceil((await prisma.users.count()) / 10);
     let avg = await prisma.reviews.groupBy({
         by: ["productid"],

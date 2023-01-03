@@ -3,16 +3,13 @@ import Layout from "../../components/layout";
 import Head from "next/head";
 import Main from "../../components/Main";
 import { GetServerSideProps } from "next";
-import { getProduct } from "../../lib/product";
-import { products } from "@prisma/client";
-type Error = {
-    code: number;
-    error: string;
-};
+import { getProduct, ProductType } from "../../lib/product";
 
-type Product = products | Error;
+import productStyles from "../../styles/Product.module.scss";
+import productListStyles from "../../styles/Products.module.scss";
+import Carousel from "../../components/generic/Carousel";
 
-export default function Product({ product }: { product: Product }) {
+export default function Product({ product }: { product: ProductType }) {
     const [showNav, setShowNav] = useState(false);
 
     //404 Not found page?
@@ -28,7 +25,31 @@ export default function Product({ product }: { product: Product }) {
                 <title>{title}</title>
             </Head>
             <Main showNav={showNav}>
-                <div>{product.name}</div>
+                <div className={productStyles.grid}>
+                    <div className={productStyles.title}>
+                        <h3>{product.name}</h3>
+                        <p>{product.description}</p>
+                    </div>
+                    <div className={productStyles.img}>
+                        <Carousel items={product.product_images} />
+                    </div>
+                    <div className={productStyles.specs}>SPECS</div>
+                    <div className={productStyles.stock}>
+                        <p>Antal i lager</p>
+                        <div className="flex align-center">
+                            <div
+                                className={
+                                    Number(product.instock) > 0
+                                        ? productListStyles.greenCircle
+                                        : productListStyles.redCircle
+                                }
+                            ></div>
+                            {product.instock} st
+                        </div>
+                    </div>
+                    <div className={productStyles.buy}>BUY</div>
+                    <div className={productStyles.review}>REVIEW</div>
+                </div>
             </Main>
         </Layout>
     );

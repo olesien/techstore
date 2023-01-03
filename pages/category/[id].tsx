@@ -19,7 +19,7 @@ import {
     TextField,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import productStyles from "../../styles/Product.module.scss";
+import productStyles from "../../styles/Products.module.scss";
 
 export type ProductAddons = {
     product_images: string[];
@@ -43,6 +43,11 @@ export type Data = {
     products: Product[];
 };
 
+type Error = {
+    code: number;
+    error: string;
+};
+
 export default function List({
     category,
     data,
@@ -52,8 +57,11 @@ export default function List({
         title: string;
         filters: categories_filters[];
     };
-    data: Data;
+    data: Data | Error;
 }) {
+    if ("error" in data) {
+        return <p>{data.error}</p>;
+    }
     const [priceRange, setPriceRange] = useState([
         data.filters.price.min,
         data.filters.price.max,
