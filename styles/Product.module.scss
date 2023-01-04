@@ -91,3 +91,21 @@
             "bottomleft";
     }
 }
+.speclist {
+    padding: 0.5rem;
+    ul {
+        display: flex;
+        flex-direction: column;
+        // gap: 0.5rem;
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            > * {
+                flex: 1;
+            }
+            padding: 0.6rem;
+            border-bottom: 1px solid $background;
+        }
+    }
+}

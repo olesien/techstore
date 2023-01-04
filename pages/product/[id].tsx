@@ -9,10 +9,11 @@ import productStyles from "../../styles/Product.module.scss";
 import productListStyles from "../../styles/Products.module.scss";
 import Carousel from "../../components/generic/Carousel";
 import { Button } from "@mui/material";
+import SpecList from "../../components/SpecList";
 
 export default function Product({ product }: { product: ProductType }) {
     const [showNav, setShowNav] = useState(false);
-
+    console.log(product);
     //404 Not found page?
     if ("error" in product) {
         return <p>{product.error}</p>;
@@ -37,7 +38,9 @@ export default function Product({ product }: { product: ProductType }) {
                         </div>
                     </div>
                     <div className={productStyles.bottomleft}>
-                        <div className={productStyles.specs}>SPECS</div>
+                        <div className={productStyles.specs}>
+                            <SpecList list={product.product_specs} />
+                        </div>
                     </div>
                     <div className={productStyles.right}>
                         <div className={productStyles.stock}>

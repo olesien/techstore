@@ -69,11 +69,12 @@ model product_images {
 }
 
 model product_specs {
-  id           Int      @id @unique(map: "id_UNIQUE")
+  id           Int      @id @unique(map: "id_UNIQUE") @default(autoincrement())
   title        String   @db.VarChar(45)
   content      String   @db.Text
   productid    Int
   speccategory String?  @db.VarChar(45)
+  extrainfo    String?  @db.VarChar(45)
   products     products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "product_specs_ibfk_1")
 
   @@index([productid], map: "productid")
