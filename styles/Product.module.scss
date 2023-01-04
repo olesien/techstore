@@ -3,40 +3,91 @@
 .grid {
     display: grid;
     grid-template:
-        "title title stock"
-        "title title buy"
-        "img img buy"
-        "img img reviews"
-        "specs specs reviews"
-        "specs specs .";
+        "left left right"
+        "bottomleft bottomleft right";
+
+    // grid-template:
+    //     "title title stock"
+    //     "title title buy"
+    //     "img img buy"
+    //     "img img reviews"
+    //     "specs specs reviews";
     grid-gap: 1rem;
     grid-template-columns: 1fr 1fr 1fr;
     // grid-template-columns: 1fr 1fr 1fr;
     > div {
-        background-color: $white;
-        padding: 1rem;
-        align-self: start;
-        border-radius: 5px;
+        display: flex;
+        gap: 1rem;
+        flex-direction: column;
+
+        > div {
+            width: 100%;
+            background-color: $white;
+            padding: 1rem;
+            align-self: start;
+            border-radius: 5px;
+        }
     }
-    .title {
-        grid-area: title;
+
+    .left {
+        grid-area: left;
     }
-    .img {
-        grid-area: img;
+    .bottomleft {
+        grid-area: bottomleft;
     }
-    .specs {
-        grid-area: specs;
+    .right {
+        grid-area: right;
     }
+
+    // .title {
+    //     grid-area: title;
+    // }
+    // .img {
+    //     grid-area: img;
+    // }
+    // .specs {
+    //     grid-area: specs;
+    // }
     .stock {
-        grid-area: stock;
+        // grid-area: stock;
         p {
             padding-bottom: 0.5rem;
         }
     }
     .buy {
-        grid-area: buy;
+        // grid-area: buy;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: column;
+        padding: 1rem 0.5rem;
+
+        h3,
+        h1 {
+            margin: 0;
+        }
+
+        .buyBtn {
+            margin-top: 0.5rem;
+        }
+
+        .oldprice {
+            text-decoration: line-through;
+        }
+
+        .newprice {
+            color: $danger;
+        }
     }
+
     .reviews {
         grid-area: reviews;
+    }
+
+    @media only screen and (max-width: 1000px) {
+        grid-template:
+            "left"
+            "right"
+            "bottomleft";
     }
 }

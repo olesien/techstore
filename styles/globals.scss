@@ -155,3 +155,25 @@ button {
 .star-notfilled {
     color: $header;
 }
+
+.img-container {
+    width: 325px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    > img {
+        height: 250px;
+        width: auto;
+    }
+
+    @media only screen and (max-width: 450px) {
+        width: 250px;
+        height: 230px;
+
+        > img {
+            height: 200px;
+            width: auto;
+        }
+    }
+}

@@ -23,16 +23,18 @@ export default function CarouselItem({
                 </div>
             )}
 
-            <Image
-                alt="Vercel logo"
-                src={image}
-                width={300}
-                height={400}
-                style={{
-                    maxWidth: "100%",
-                    height: "auto",
-                }}
-            />
+            <div className="img-container">
+                <img
+                    alt="Vercel logo"
+                    src={image}
+                    // width={300}
+                    // height={400}
+                    style={{
+                        maxWidth: "100%",
+                        // height: "auto",
+                    }}
+                />
+            </div>
         </div>
     );
 }
