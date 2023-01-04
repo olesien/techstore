@@ -305,7 +305,9 @@ export default function List({
                             <MenuItem value={4}>Pris Lågt - Högt</MenuItem>
                         </TextField>
                     </div>
+
                     <ProductList products={products} />
+
                     <div className="p-1 flex center-flex">
                         <Pagination
                             count={data?.pageCount ?? 1}

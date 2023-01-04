@@ -1,5 +1,6 @@
-import { categories_filters } from "@prisma/client";
+import { categories_filters, reviews } from "@prisma/client";
 import prisma from "./prisma";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 type Filters = {
     priceRange: [min: number, max: number];
     otherFilters: { [index: string]: string };
@@ -73,119 +74,123 @@ export async function getProducts(
         }
     }
 
-    const products = await prisma.products.findMany({
-        where: {
-            categoryid: Number(id),
-            price,
-            AND: product_specs,
-        },
-        include: { product_images: { take: 1 } },
-        skip: page * 10 - 10,
-        take: 10,
-        orderBy,
-    });
+    try {
+        const products = await prisma.products.findMany({
+            where: {
+                categoryid: Number(id),
+                price,
+                AND: product_specs,
+            },
+            include: { product_images: { take: 1 } },
+            skip: page * 10 - 10,
+            take: 10,
+            orderBy,
+        });
 
-    if (products.length === 0) {
-        //Empty
-        return {
-            code: 404,
-            error: "Not Found",
-        };
-    }
-    const pageCount = Math.ceil((await prisma.users.count()) / 10);
-    let avg = await prisma.reviews.groupBy({
-        by: ["productid"],
-        _avg: {
-            rating: true,
-        },
-    });
+        const pageCount = Math.ceil((await prisma.users.count()) / 10);
+        const avg = await prisma.reviews.groupBy({
+            by: ["productid"],
+            _avg: {
+                rating: true,
+            },
+        });
 
-    let filterData = await prisma.products.findMany({
-        where: { categoryid: Number(id) },
-        orderBy: {
-            price: "desc",
-        },
-        include: { product_specs: true },
-    });
+        const filterData = await prisma.products.findMany({
+            where: { categoryid: Number(id) },
+            orderBy: {
+                price: "desc",
+            },
+            include: { product_specs: true },
+        });
 
-    const otherFilters: OtherFilters = {};
-    if (categoryFilters) {
-        for (let i = 0; i < categoryFilters.length; i++) {
-            const filter = categoryFilters[i];
-            const value = filter.value;
-            let list = await prisma.products.findMany({
-                where: { categoryid: Number(id) },
-                select: {
-                    product_specs: {
-                        select: {
-                            content: true,
-                            id: true,
-                        },
-                        where: {
-                            title: value,
+        const otherFilters: OtherFilters = {};
+        if (categoryFilters) {
+            for (let i = 0; i < categoryFilters.length; i++) {
+                const filter = categoryFilters[i];
+                const value = filter.value;
+                let list = await prisma.products.findMany({
+                    where: { categoryid: Number(id) },
+                    select: {
+                        product_specs: {
+                            select: {
+                                content: true,
+                                id: true,
+                            },
+                            where: {
+                                title: value,
+                            },
                         },
                     },
-                },
 
-                orderBy: {
-                    price: "desc",
-                },
-            });
+                    orderBy: {
+                        price: "desc",
+                    },
+                });
 
-            //Flatten array as it was returned as a nested array
-            const flatList = list
-                .flatMap((product) => product.product_specs)
+                //Flatten array as it was returned as a nested array
+                const flatList = list
+                    .flatMap((product) => product.product_specs)
 
-                .map((field) => ({
-                    id: Number(field.id),
-                    content: field.content,
-                }))
-                .filter((value, index, self) => self.indexOf(value) === index);
+                    .map((field) => ({
+                        id: Number(field.id),
+                        content: field.content,
+                    }))
+                    .filter(
+                        (value, index, self) => self.indexOf(value) === index
+                    );
 
-            const uniqueList: typeof flatList = Object.values(
-                flatList.reduce(
-                    (obj, item) => ({ ...obj, [item.content]: item }),
-                    {}
-                )
-            );
+                const uniqueList: typeof flatList = Object.values(
+                    flatList.reduce(
+                        (obj, item) => ({ ...obj, [item.content]: item }),
+                        {}
+                    )
+                );
 
-            if (filter.type === "multiselect") {
-                otherFilters[value] = {
-                    list: uniqueList,
-                    value: filters.otherFilters[value] ?? [],
-                };
-            } else {
-                otherFilters[value] = {
-                    list: uniqueList,
-                    value: filters.otherFilters[value] ?? "unselected",
-                };
+                if (filter.type === "multiselect") {
+                    otherFilters[value] = {
+                        list: uniqueList,
+                        value: filters.otherFilters[value] ?? [],
+                    };
+                } else {
+                    otherFilters[value] = {
+                        list: uniqueList,
+                        value: filters.otherFilters[value] ?? "unselected",
+                    };
+                }
             }
         }
-    }
-    const min = filterData[filterData.length - 1].price;
-    const max = filterData[0].price;
-    return {
-        page,
-        pageCount,
-        sortBy,
-        filters: {
-            price: {
-                min,
-                max,
-                activeRange:
-                    filters.priceRange[1] === 0
-                        ? [min, max]
-                        : filters.priceRange,
+        const min = filterData[filterData.length - 1]?.price ?? 0;
+        const max = filterData[0]?.price ?? 0;
+        return {
+            page,
+            pageCount,
+            sortBy,
+            filters: {
+                price: {
+                    min,
+                    max,
+                    activeRange:
+                        filters.priceRange[1] === 0
+                            ? [min, max]
+                            : filters.priceRange,
+                },
+                otherFilters,
             },
-            otherFilters,
-        },
-        products: products.map((product) => ({
-            ...product,
-            id: String(product.id),
-            product_images: product.product_images.map((image) => image.image),
-            review_avg:
-                avg.find((review) => review.productid === product.id)?._avg
-                    .rating ?? 0,
-        })),
-    };
+            products: products.map((product) => ({
+                ...product,
+                id: String(product.id),
+                product_images: product.product_images.map(
+                    (image) => image.image
+                ),
+                review_avg:
+                    avg.find((review) => review.productid === product.id)?._avg
+                        .rating ?? 0,
+            })),
+        };
+    } catch (err: any) {
+        return {
+            code: 500,
+            error: err.message,
+        };
+    }
 }

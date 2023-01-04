@@ -7,6 +7,9 @@
     > :nth-child(even) {
         background-color: $whiteTinted;
     }
+    > p {
+        padding: 1rem;
+    }
 }
 
 .horizontalItem {

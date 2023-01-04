@@ -6,6 +6,7 @@ import productStyles from "../styles/Products.module.scss";
 export default function ProductList({ products }: { products: Product[] }) {
     return (
         <div className={productStyles.list}>
+            {products.length === 0 && <p>Inga produkter kunde hittas</p>}
             {products.map((product) => (
                 <HorizontalItem key={Number(product.id)} product={product} />
             ))}

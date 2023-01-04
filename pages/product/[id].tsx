@@ -94,6 +94,9 @@ export default function Product({ product }: { product: ProductType }) {
                         </div>
                         <div className={productStyles.reviews}>
                             <ul>
+                                {product.reviews.length === 0 && (
+                                    <span>Inga recensioner ännu</span>
+                                )}
                                 {product.reviews.map((review) => {
                                     return (
                                         <li>
