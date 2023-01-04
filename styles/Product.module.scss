@@ -81,7 +81,45 @@
     }
 
     .reviews {
-        grid-area: reviews;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+
+        ul {
+            white-space: nowrap;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            li {
+                border-bottom: 1px solid $background;
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+                .reviewHeader {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.25rem;
+                    div {
+                        width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    > * {
+                        padding: 0.5rem;
+                    }
+
+                    div p {
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+        // Not logged in
+        > p {
+            font-weight: bold;
+            text-align: center;
+        }
     }
 
     @media only screen and (max-width: 1000px) {
@@ -89,6 +127,19 @@
             "left"
             "right"
             "bottomleft";
+    }
+
+    .reviewPreview {
+        display: flex;
+        position: absolute;
+
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        p {
+            font-weight: bold;
+            padding: 0.3rem;
+        }
     }
 }
 .speclist {

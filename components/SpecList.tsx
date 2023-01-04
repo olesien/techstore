@@ -44,15 +44,15 @@ export default function SpecList({ list }: { list: product_specs[] }) {
     };
     return (
         <div className={productStyles.speclist}>
-            {specs.map((category) => {
+            {specs.map((category, index) => {
                 return (
-                    <div>
+                    <div key={index}>
                         <h3>
                             {category?.category ?? "Produkt Specifikationer"}
                         </h3>
                         <ul>
                             {category.list.map((spec) => (
-                                <li>
+                                <li key={spec.id}>
                                     <p>{translate(spec.title)}</p>
                                     <p>
                                         {getContent(spec.content)}

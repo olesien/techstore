@@ -10,8 +10,13 @@ import productListStyles from "../../styles/Products.module.scss";
 import Carousel from "../../components/generic/Carousel";
 import { Button } from "@mui/material";
 import SpecList from "../../components/SpecList";
+import ProductRating from "../../components/generic/ProductRating";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPerson } from "@fortawesome/free-solid-svg-icons";
+import useUser from "../../lib/useUser";
 
 export default function Product({ product }: { product: ProductType }) {
+    const { user } = useUser();
     const [showNav, setShowNav] = useState(false);
     console.log(product);
     //404 Not found page?
@@ -19,6 +24,8 @@ export default function Product({ product }: { product: ProductType }) {
         return <p>{product.error}</p>;
     }
     const title = `${product.name} - Techstore`;
+
+    console.log(product.avg);
 
     return (
         <Layout toggleNav={() => setShowNav((prev) => !prev)}>
@@ -34,6 +41,12 @@ export default function Product({ product }: { product: ProductType }) {
                             <p>{product.description}</p>
                         </div>
                         <div className={productStyles.img}>
+                            <div className="right-side">
+                                <div className={productStyles.reviewPreview}>
+                                    <ProductRating rating={product.avg} />
+                                    <p>{product.reviews.length} recensioner</p>
+                                </div>
+                            </div>
                             <Carousel items={product.product_images} />
                         </div>
                     </div>
@@ -79,7 +92,45 @@ export default function Product({ product }: { product: ProductType }) {
                                 Köp
                             </Button>
                         </div>
-                        <div className={productStyles.review}>REVIEW</div>
+                        <div className={productStyles.reviews}>
+                            <ul>
+                                {product.reviews.map((review) => {
+                                    return (
+                                        <li>
+                                            <div
+                                                className={
+                                                    productStyles.reviewHeader
+                                                }
+                                            >
+                                                <FontAwesomeIcon
+                                                    icon={faPerson}
+                                                    size="lg"
+                                                />
+                                                <div>
+                                                    <p>Ludwig</p>
+                                                    <ProductRating
+                                                        rating={
+                                                            review.rating ?? 0
+                                                        }
+                                                    />
+                                                </div>
+                                                <p>2 veckor</p>
+                                            </div>
+                                            <div>
+                                                <p>{review.content}</p>
+                                            </div>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                            {user?.isLoggedIn === false ? (
+                                <p>Logga in för att lägga till recension</p>
+                            ) : (
+                                <Button variant="contained">
+                                    Lägg till recension
+                                </Button>
+                            )}
+                        </div>
                     </div>
                 </div>
             </Main>
