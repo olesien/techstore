@@ -6,6 +6,7 @@ export type User = {
     isLoggedIn: boolean;
     login: string;
     avatarUrl: string;
+    id: number;
 };
 
 async function userRoute(req: NextApiRequest, res: NextApiResponse<User>) {
@@ -21,6 +22,7 @@ async function userRoute(req: NextApiRequest, res: NextApiResponse<User>) {
             isLoggedIn: false,
             login: "",
             avatarUrl: "",
+            id: 0,
         });
     }
 }

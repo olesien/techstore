@@ -4,16 +4,14 @@ import Head from "next/head";
 import Main from "../../components/Main";
 import { GetServerSideProps } from "next";
 import { getProduct, ProductType } from "../../lib/product";
-
 import productStyles from "../../styles/Product.module.scss";
 import productListStyles from "../../styles/Products.module.scss";
 import Carousel from "../../components/generic/Carousel";
 import { Button } from "@mui/material";
 import SpecList from "../../components/SpecList";
 import ProductRating from "../../components/generic/ProductRating";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPerson } from "@fortawesome/free-solid-svg-icons";
 import useUser from "../../lib/useUser";
+import Reviews from "../../components/Reviews";
 
 export default function Product({ product }: { product: ProductType }) {
     const { user } = useUser();
@@ -93,46 +91,7 @@ export default function Product({ product }: { product: ProductType }) {
                             </Button>
                         </div>
                         <div className={productStyles.reviews}>
-                            <ul>
-                                {product.reviews.length === 0 && (
-                                    <span>Inga recensioner ännu</span>
-                                )}
-                                {product.reviews.map((review) => {
-                                    return (
-                                        <li>
-                                            <div
-                                                className={
-                                                    productStyles.reviewHeader
-                                                }
-                                            >
-                                                <FontAwesomeIcon
-                                                    icon={faPerson}
-                                                    size="lg"
-                                                />
-                                                <div>
-                                                    <p>Ludwig</p>
-                                                    <ProductRating
-                                                        rating={
-                                                            review.rating ?? 0
-                                                        }
-                                                    />
-                                                </div>
-                                                <p>2 veckor</p>
-                                            </div>
-                                            <div>
-                                                <p>{review.content}</p>
-                                            </div>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                            {user?.isLoggedIn === false ? (
-                                <p>Logga in för att lägga till recension</p>
-                            ) : (
-                                <Button variant="contained">
-                                    Lägg till recension
-                                </Button>
-                            )}
+                            <Reviews product={product} />
                         </div>
                     </div>
                 </div>

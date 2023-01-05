@@ -90,7 +90,7 @@ export const theme = createTheme({
         },
         secondary: {
             main: "#FFF",
-            contrastText: "#9D9D9D",
+            contrastText: "#000",
         },
         // success: {
         //     main: "#44A02D",

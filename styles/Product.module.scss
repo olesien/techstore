@@ -112,6 +112,50 @@
                     div p {
                         font-weight: bold;
                     }
+
+                    > span {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-end;
+                        justify-content: center;
+                        gap: 0.5rem;
+                        span {
+                            svg:hover {
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                }
+            }
+
+            > div p {
+                padding: 0.5rem;
+            }
+        }
+
+        form {
+            div {
+                padding-top: 0.5rem;
+            }
+
+            // Error
+            > p {
+                color: $danger;
+                margin-top: 0.5rem;
+            }
+            .btnContainer {
+                padding: 0;
+                padding-top: 1rem;
+                display: flex;
+                justify-content: space-around;
+            }
+
+            // Rating
+            span {
+                padding: 0.5rem;
+                svg:hover {
+                    cursor: pointer;
+                    color: $elementBackground;
                 }
             }
         }

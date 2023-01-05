@@ -100,13 +100,14 @@ model products {
 }
 
 model reviews {
-  id        Int      @unique(map: "id_UNIQUE") @default(autoincrement())
-  userid    Int
-  content   String?  @db.Text
-  rating    Int?     @db.SmallInt
-  productid Int
-  products  products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "reviews_ibfk_1")
-  users     users    @relation(fields: [userid], references: [id], onUpdate: Restrict, map: "reviews_ibfk_2")
+  id         Int       @unique(map: "id_UNIQUE") @default(autoincrement())
+  userid     Int
+  content    String    @db.Text
+  rating     Int       @db.SmallInt
+  productid  Int
+  timeposted DateTime? @db.Timestamp(0)
+  products   products  @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "reviews_ibfk_1")
+  users      users     @relation(fields: [userid], references: [id], onUpdate: Restrict, map: "reviews_ibfk_2")
 
   @@id([id, userid])
   @@index([productid], map: "productid")
