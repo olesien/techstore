@@ -3,13 +3,12 @@ import useUser from "../lib/useUser";
 import { useRouter } from "next/router";
 import fetchJson from "../lib/fetchJson";
 import styles from "../styles/Header.module.scss";
-import Image from "next/image";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { theme } from "../pages/_app";
 import {
     faBars,
-    faHome,
+    faBasketShopping,
     faRightFromBracket,
     faSignIn,
     faUser,
@@ -17,11 +16,17 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Login from "./login";
 import { useState } from "react";
+import Cart from "./Cart";
 
 export default function Header({ toggleNav }: { toggleNav: () => void }) {
     const [loginVisible, setLoginVisible] = useState(false);
+    const [visibleCart, setVisibleCart] = useState(false);
     const { user, mutateUser } = useUser();
     const router = useRouter();
+
+    const toggleCart = () => {
+        setVisibleCart((prevVisibility) => !prevVisibility);
+    };
 
     return (
         <header className={styles.header}>
@@ -29,16 +34,10 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                 <div>
                     <Link href="/" legacyBehavior>
                         <a>
-                            <Image
-                                src="/Logo.svg"
-                                height={75}
-                                width={75}
-                                alt="Techstore logo"
-                            />
+                            <img src="/Logo.svg" alt="Techstore logo" />
                         </a>
                     </Link>
                 </div>
-                {/* <div className="container-flex space-around"> */}
                 <div className={styles.containerFlex}>
                     <div className={styles.hamburger} onClick={toggleNav}>
                         <FontAwesomeIcon icon={faBars} size={"1x"} />
@@ -63,17 +62,6 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                 </div>
                 <nav>
                     <ul>
-                        {/* <li>
-                            <Link href="/" legacyBehavior>
-                                <a>
-                                    <FontAwesomeIcon
-                                        icon={faHome}
-                                        size={"1x"}
-                                    />
-                                    <span>Home</span>
-                                </a>
-                            </Link>
-                        </li> */}
                         {user?.isLoggedIn === false && (
                             <li
                                 role="button"
@@ -84,12 +72,8 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                                     )
                                 }
                             >
-                                {/* <Link href="/login" legacyBehavior>
-                                    <a> */}
                                 <FontAwesomeIcon icon={faSignIn} />
                                 <span>Logga In</span>
-                                {/* </a>
-                                </Link> */}
                             </li>
                         )}
                         {user?.isLoggedIn === true && (
@@ -125,9 +109,15 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                                 </li>
                             </>
                         )}
+                        <li>
+                            <Button variant="text" onClick={() => toggleCart()}>
+                                <FontAwesomeIcon icon={faBasketShopping} />
+                                <span>Kundvagn</span>
+                            </Button>
+                            {visibleCart && <Cart />}
+                        </li>
                     </ul>
                 </nav>
-                {/* </div> */}
             </div>
             {loginVisible && user?.isLoggedIn !== true && (
                 <Login closeMenu={() => setLoginVisible(false)} />

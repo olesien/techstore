@@ -12,18 +12,42 @@ import SpecList from "../../components/SpecList";
 import ProductRating from "../../components/generic/ProductRating";
 import useUser from "../../lib/useUser";
 import Reviews from "../../components/Reviews";
+import useBasket, { Basket } from "../../hooks/useBasket";
 
 export default function Product({ product }: { product: ProductType }) {
     const { user } = useUser();
     const [showNav, setShowNav] = useState(false);
-    console.log(product);
+    const { state: basket, setState: updateBasket } = useBasket();
     //404 Not found page?
     if ("error" in product) {
         return <p>{product.error}</p>;
     }
     const title = `${product.name} - Techstore`;
 
-    console.log(product.avg);
+    console.log(basket);
+
+    const toBasket = () => {
+        const filteredBasket = basket.filter(
+            (item: Basket) => item.id !== product.id
+        );
+
+        if (basket.length !== filteredBasket.length) {
+            //Item already exists in basket, add to quantity
+            console.log("Modify");
+            const basketIndex = basket.findIndex(
+                (item: Basket) => item.id === product.id
+            );
+            let newBasket = [...basket];
+            const quantity = basket[basketIndex].quantity;
+            newBasket.splice(basketIndex, 1, {
+                id: product.id,
+                quantity: quantity + 1,
+            });
+            updateBasket(newBasket);
+        } else {
+            updateBasket([...basket, { id: product.id, quantity: 1 }]);
+        }
+    };
 
     return (
         <Layout toggleNav={() => setShowNav((prev) => !prev)}>
@@ -86,6 +110,7 @@ export default function Product({ product }: { product: ProductType }) {
                                 color="success"
                                 fullWidth
                                 className={productStyles.buyBtn}
+                                onClick={() => toBasket()}
                             >
                                 Köp
                             </Button>
