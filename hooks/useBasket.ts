@@ -9,20 +9,28 @@ const useBasket = () => {
     const [state, setState] = useState<Basket[]>([]);
     useDebugValue(state);
 
-    const changeState = (newState: Basket[]) => {
-        setState(newState);
-    };
-
     //Get Item
     useEffect(() => {
-        const item = localStorage.getItem("techstore-basket");
-        if (item) setState(parse(item));
+        const getBasket = () => {
+            const item = localStorage.getItem("techstore-basket");
+            if (item) setState(parse(item));
+        };
+        getBasket();
+
+        //Listen for changes live
+        window.addEventListener("techstore-basket-change", () => getBasket());
+
+        //Unmount
+        return window.removeEventListener("techstore-basket-change", () =>
+            getBasket()
+        );
     }, []);
 
     //Set item
     useEffect(() => {
         if (state.length !== 0) {
             localStorage.setItem("techstore-basket", JSON.stringify(state));
+            window.dispatchEvent(new Event("techstore-basket-change"));
         }
     }, [state]);
 

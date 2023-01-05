@@ -16,16 +16,22 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Login from "./login";
 import { useState } from "react";
-import Cart from "./Cart";
+import Basket from "./Basket";
+import useBasket, { Basket as BasketType } from "../hooks/useBasket";
 
 export default function Header({ toggleNav }: { toggleNav: () => void }) {
     const [loginVisible, setLoginVisible] = useState(false);
     const [visibleCart, setVisibleCart] = useState(false);
     const { user, mutateUser } = useUser();
     const router = useRouter();
+    const { state: basket, setState: updateBasket } = useBasket();
 
     const toggleCart = () => {
         setVisibleCart((prevVisibility) => !prevVisibility);
+    };
+
+    const getCount = (basket: BasketType[]) => {
+        return basket.reduce((count, item) => count + item.quantity, 0);
     };
 
     return (
@@ -112,9 +118,14 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                         <li>
                             <Button variant="text" onClick={() => toggleCart()}>
                                 <FontAwesomeIcon icon={faBasketShopping} />
-                                <span>Kundvagn</span>
+                                <span>
+                                    Kundvagn
+                                    {basket.length > 0
+                                        ? ` (${getCount(basket)})`
+                                        : ""}
+                                </span>
                             </Button>
-                            {visibleCart && <Cart />}
+                            {visibleCart && <Basket />}
                         </li>
                     </ul>
                 </nav>
