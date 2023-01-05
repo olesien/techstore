@@ -15,7 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Login from "./login";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Basket from "./Basket";
 import useBasket, { Basket as BasketType } from "../hooks/useBasket";
 
@@ -33,6 +33,14 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
     const getCount = (basket: BasketType[]) => {
         return basket.reduce((count, item) => count + item.quantity, 0);
     };
+
+    useEffect(() => {
+        if (visibleCart) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "inherit";
+        }
+    }, [visibleCart]);
 
     return (
         <header className={styles.header}>
@@ -125,7 +133,7 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                                         : ""}
                                 </span>
                             </Button>
-                            {visibleCart && <Basket />}
+                            {visibleCart && <Basket toggleCart={toggleCart} />}
                         </li>
                     </ul>
                 </nav>

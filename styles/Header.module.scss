@@ -105,3 +105,19 @@
         justify-content: space-between;
     }
 }
+
+.cartContainer {
+    direction: rtl;
+    position: relative;
+}
+
+.cart {
+    border-radius: 5px;
+    z-index: 1001;
+    position: absolute;
+    width: 400px;
+    min-height: 100px;
+    background-color: $white;
+    top: 30px;
+    padding: 1rem;
+}
