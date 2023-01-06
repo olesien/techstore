@@ -7,14 +7,18 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { ProductByIdType } from "../pages/api/productsbyids/[ids]";
 import { Button } from "@mui/material";
 import BasketOverlay from "./BasketOverlay";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 const fetchURL = (url: string) => fetch(url).then((r) => r.json());
 
 export default function Basket({
     basket,
     toggleCart,
+    trash,
 }: {
     basket: BasketType[];
     toggleCart: () => void;
+    trash: () => void;
 }) {
     if (basket.length === 0) {
         return (
@@ -64,6 +68,13 @@ export default function Basket({
                 <div className={styles.sum}>
                     <p>Summa: </p>
                     <p>{summedCost(products)} kr</p>
+                    <span
+                        className={styles.clickableIcon}
+                        role="button"
+                        onClick={() => trash()}
+                    >
+                        <FontAwesomeIcon icon={faTrashCan} size="lg" />
+                    </span>
                 </div>
                 <Button variant="contained" color="success" fullWidth>
                     Till Kassa

@@ -99,8 +99,17 @@ const useBasket = () => {
             setState([...state, { id: Number(product.id), quantity: qtnty }]);
         }
     };
+    const trash = (productid?: number) => {
+        if (!productid || state.length < 2) {
+            setState([]);
+        } else {
+            setState((basket) =>
+                basket.filter((item) => Number(item.id) !== productid)
+            );
+        }
+    };
 
-    return { state, setState, getCount, toBasket };
+    return { state, setState, getCount, toBasket, trash };
 };
 
 const parse = (value: string) => {

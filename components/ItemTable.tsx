@@ -17,7 +17,7 @@ export default function ItemTable({
 }: {
     products: (Basket & ProductByIdType)[];
 }) {
-    const { state: basket, toBasket } = useBasket();
+    const { state: basket, toBasket, trash } = useBasket();
 
     return (
         <TableContainer>
@@ -99,6 +99,7 @@ export default function ItemTable({
                                         <span
                                             className={styles.clickableIcon}
                                             role="button"
+                                            onClick={() => trash(product.id)}
                                         >
                                             <FontAwesomeIcon
                                                 icon={faTrashCan}

@@ -24,7 +24,12 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
     const [visibleCart, setVisibleCart] = useState(false);
     const { user, mutateUser } = useUser();
     const router = useRouter();
-    const { state: basket, setState: updateBasket, getCount } = useBasket();
+    const {
+        state: basket,
+        setState: updateBasket,
+        getCount,
+        trash,
+    } = useBasket();
 
     const toggleCart = () => {
         setVisibleCart((prevVisibility) => !prevVisibility);
@@ -134,6 +139,7 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                                 <Basket
                                     basket={basket}
                                     toggleCart={() => toggleCart()}
+                                    trash={trash}
                                 />
                             )}
                         </li>
