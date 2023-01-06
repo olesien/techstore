@@ -11,10 +11,8 @@ import {
     Box,
     Chip,
     FormControl,
-    InputLabel,
     MenuItem,
     Pagination,
-    Select,
     Slider,
     TextField,
 } from "@mui/material";
@@ -62,6 +60,7 @@ export default function List({
     if ("error" in data) {
         return <p>{data.error}</p>;
     }
+
     const [priceRange, setPriceRange] = useState([
         data.filters.price.min,
         data.filters.price.max,
@@ -232,22 +231,6 @@ export default function List({
                                                             {(
                                                                 selected as string[]
                                                             ).map((value) => {
-                                                                // if (
-
-                                                                //     value.length <
-                                                                //         1
-                                                                // ) {
-                                                                //     return (
-                                                                //         <p
-                                                                //             key={
-                                                                //                 value
-                                                                //             }
-                                                                //         >
-                                                                //             {"Välj " +
-                                                                //                 filter.title}
-                                                                //         </p>
-                                                                //     );
-                                                                // }
                                                                 return (
                                                                     <Chip
                                                                         key={

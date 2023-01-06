@@ -5,14 +5,26 @@ import Button from "@mui/material/Button";
 import InStock from "./InStock";
 import Link from "next/link";
 import ProductRating from "./ProductRating";
-import useBasket from "../../hooks/useBasket";
+import useBasket, { Basket } from "../../hooks/useBasket";
 
-export default function HorizontalItem({ product }: { product: Product }) {
-    const { state: basket, toBasket } = useBasket();
+export default function HorizontalItem({
+    product,
+    basket,
+    toBasket,
+}: {
+    product: Product;
+    basket: Basket[];
+    toBasket: (
+        product: Product,
+        canBuy: boolean,
+        qtnty?: number,
+        remove?: boolean
+    ) => void;
+}) {
     const basketQuantity =
-        basket.find((item) => item.id === product.id)?.quantity ?? 0;
+        basket.find((item) => item.id === Number(product.id))?.quantity ?? 0;
 
-    const canBuy = (product.instock ?? 0) - basketQuantity >= 1;
+    const canBuy = (Number(product.instock) ?? 0) - basketQuantity >= 1;
     return (
         <div className={productStyles.horizontalItem}>
             <div className={productStyles.horzImage}>
