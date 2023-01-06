@@ -29,7 +29,6 @@ export default function SpecList({ list }: { list: product_specs[] }) {
         },
         []
     );
-    console.log(specs);
     const getContent = (content: string) => {
         if (content === "true") {
             return "Ja";

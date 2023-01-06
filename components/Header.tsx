@@ -24,17 +24,14 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
     const [visibleCart, setVisibleCart] = useState(false);
     const { user, mutateUser } = useUser();
     const router = useRouter();
-    const { state: basket, setState: updateBasket } = useBasket();
+    const { state: basket, setState: updateBasket, getCount } = useBasket();
 
     const toggleCart = () => {
         setVisibleCart((prevVisibility) => !prevVisibility);
     };
 
-    const getCount = (basket: BasketType[]) => {
-        return basket.reduce((count, item) => count + item.quantity, 0);
-    };
-
     useEffect(() => {
+        console.log(visibleCart);
         if (visibleCart) {
             document.body.style.overflow = "hidden";
         } else {
@@ -133,7 +130,9 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                                         : ""}
                                 </span>
                             </Button>
-                            {visibleCart && <Basket toggleCart={toggleCart} />}
+                            {visibleCart && (
+                                <Basket toggleCart={() => toggleCart()} />
+                            )}
                         </li>
                     </ul>
                 </nav>

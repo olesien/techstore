@@ -33,7 +33,6 @@ export default function Product({ product }: { product: ProductType }) {
 
         if (basket.length !== filteredBasket.length) {
             //Item already exists in basket, add to quantity
-            console.log("Modify");
             const basketIndex = basket.findIndex(
                 (item: Basket) => item.id === product.id
             );

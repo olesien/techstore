@@ -8,12 +8,21 @@ export type Basket = {
 const useBasket = () => {
     const [state, setState] = useState<Basket[]>([]);
     useDebugValue(state);
+    const getCount = (basket: Basket[]) => {
+        return basket.reduce((count, item) => count + item.quantity, 0);
+    };
 
     //Get Item
     useEffect(() => {
         const getBasket = () => {
             const item = localStorage.getItem("techstore-basket");
-            if (item) setState(parse(item));
+            if (item) {
+                const parsedItem = parse(item);
+                //Flatten arrays and compare
+                if (getCount(parsedItem) !== getCount(state)) {
+                    setState(parse(parsedItem));
+                }
+            }
         };
         getBasket();
 
@@ -30,11 +39,12 @@ const useBasket = () => {
     useEffect(() => {
         if (state.length !== 0) {
             localStorage.setItem("techstore-basket", JSON.stringify(state));
+            console.log("Dispatch update");
             window.dispatchEvent(new Event("techstore-basket-change"));
         }
-    }, [state]);
+    }, [getCount(state)]);
 
-    return { state, setState };
+    return { state, setState, getCount };
 };
 
 const parse = (value: string) => {
