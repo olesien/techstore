@@ -131,7 +131,10 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                                 </span>
                             </Button>
                             {visibleCart && (
-                                <Basket toggleCart={() => toggleCart()} />
+                                <Basket
+                                    basket={basket}
+                                    toggleCart={() => toggleCart()}
+                                />
                             )}
                         </li>
                     </ul>

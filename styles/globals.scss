@@ -167,7 +167,7 @@ button {
         width: auto;
     }
 
-    @media only screen and (max-width: 450px) {
+    @media only screen and (max-width: 470px) {
         width: 250px;
         height: 230px;
 
@@ -187,4 +187,7 @@ button {
     overflow: hidden;
     background-color: rgba(0, 0, 0, 0.2);
     z-index: 1000;
+    :hover {
+        cursor: pointer;
+    }
 }
