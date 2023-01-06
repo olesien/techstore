@@ -62,9 +62,8 @@ export default function ItemTable({
                                     </div>
                                 </TableCell>
                                 <TableCell className={styles.quantity_col}>
-                                    <FontAwesomeIcon
-                                        icon={faMinus}
-                                        size="sm"
+                                    <span
+                                        className={styles.clickableIcon}
                                         role="button"
                                         onClick={() =>
                                             toBasket(
@@ -74,24 +73,39 @@ export default function ItemTable({
                                                 true
                                             )
                                         }
-                                    />
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faMinus}
+                                            size="sm"
+                                        />
+                                    </span>
                                     <span>{product.quantity}</span>
-                                    <FontAwesomeIcon
-                                        icon={faPlus}
-                                        size="sm"
+                                    <span
+                                        className={styles.clickableIcon}
                                         role="button"
                                         onClick={() =>
                                             toBasket(product, canBuy)
                                         }
-                                    />
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faPlus}
+                                            size="sm"
+                                        />
+                                    </span>
                                 </TableCell>
-                                <TableCell>
-                                    {product.price} kr{"  "}
-                                    <FontAwesomeIcon
-                                        icon={faTrashCan}
-                                        size="lg"
-                                        role="button"
-                                    />
+                                <TableCell className={styles.price_col}>
+                                    <div>
+                                        <span>{product.price} kr</span>
+                                        <span
+                                            className={styles.clickableIcon}
+                                            role="button"
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faTrashCan}
+                                                size="lg"
+                                            />
+                                        </span>
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         );

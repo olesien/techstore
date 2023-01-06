@@ -122,7 +122,14 @@
     min-height: 100px;
     background-color: $white;
     top: 31px;
-    padding: 1rem;
+    // padding: 1rem;
+
+    > p {
+        text-align: center;
+        font-size: 1.1em;
+        font-weight: bold;
+        padding-top: 2rem;
+    }
 
     @media only screen and (max-width: 550px) {
         width: 340px;
@@ -154,10 +161,16 @@
     }
 
     .quantity_col {
-        // display: flex;
-        gap: 0.25rem;
         > * {
             padding: 0 0.25rem;
+        }
+    }
+
+    .price_col {
+        > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
     }
 
@@ -168,6 +181,14 @@
 
         p {
             padding: 0 0.25rem;
+        }
+    }
+
+    //Icons are clickable
+    .clickableIcon {
+        padding: 0.3rem;
+        :hover {
+            cursor: pointer;
         }
     }
 }

@@ -10,6 +10,7 @@ export type Basket = {
 
 const useBasket = () => {
     const [state, setState] = useState<Basket[]>([]);
+    const [initialRender, setInitialRender] = useState(true);
     useDebugValue(state);
     const getCount = (basket: Basket[]) => {
         return basket.reduce((count, item) => count + item.quantity, 0);
@@ -25,6 +26,9 @@ const useBasket = () => {
                 if (getCount(parsedItem) !== getCount(state)) {
                     setState(parse(parsedItem));
                 }
+            } else {
+                //Does not exist
+                setState([]);
             }
         };
         getBasket();
@@ -40,10 +44,21 @@ const useBasket = () => {
 
     //Set item
     useEffect(() => {
-        if (state.length !== 0) {
-            localStorage.setItem("techstore-basket", JSON.stringify(state));
-            console.log("Dispatch update");
-            window.dispatchEvent(new Event("techstore-basket-change"));
+        if (initialRender) {
+            setInitialRender(false);
+        } else {
+            if (state.length !== 0) {
+                localStorage.setItem("techstore-basket", JSON.stringify(state));
+                console.log("Dispatch update");
+                window.dispatchEvent(new Event("techstore-basket-change"));
+            } else {
+                //Remove
+                const exists = localStorage.getItem("techstore-basket");
+                if (exists) {
+                    localStorage.removeItem("techstore-basket");
+                    window.dispatchEvent(new Event("techstore-basket-change"));
+                }
+            }
         }
     }, [getCount(state)]);
 
@@ -66,7 +81,9 @@ const useBasket = () => {
             let newBasket = [...state];
             const quantity = state[basketIndex].quantity;
             const newTotal = quantity + (remove ? -qtnty : qtnty);
+            console.log(newTotal);
             if (newTotal === 0) {
+                console.log("removing");
                 newBasket.splice(basketIndex, 1);
             } else {
                 newBasket.splice(basketIndex, 1, {
@@ -74,6 +91,8 @@ const useBasket = () => {
                     quantity: newTotal,
                 });
             }
+
+            console.log(newBasket);
 
             setState(newBasket);
         } else if (!remove) {
