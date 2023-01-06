@@ -105,15 +105,17 @@ export default function Reviews({ product }: { product: Product }) {
                                             ? timeAgo(String(review.timeposted))
                                             : ""}
                                     </p>
-                                    <span>
-                                        <FontAwesomeIcon
-                                            icon={faXmark}
-                                            onClick={() =>
-                                                removeReview(review.id)
-                                            }
-                                            role="button"
-                                        />
-                                    </span>
+                                    {review.userid === (user?.id ?? 0) && (
+                                        <span>
+                                            <FontAwesomeIcon
+                                                icon={faXmark}
+                                                onClick={() =>
+                                                    removeReview(review.id)
+                                                }
+                                                role="button"
+                                            />
+                                        </span>
+                                    )}
                                 </span>
                             </div>
                             <div>

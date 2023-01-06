@@ -325,14 +325,6 @@ export default function List({
     );
 }
 
-// export const getStaticPaths: GetStaticPaths = async () => {
-//     const paths = await getAllCategoryIds();
-//     return {
-//         paths,
-//         fallback: false,
-//     };
-// };
-
 function isJson(str: string) {
     try {
         JSON.parse(str);

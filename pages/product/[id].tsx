@@ -3,7 +3,11 @@ import Layout from "../../components/layout";
 import Head from "next/head";
 import Main from "../../components/Main";
 import { GetServerSideProps } from "next";
-import { getProduct, ProductType } from "../../lib/product";
+import {
+    getProduct,
+    ProductType,
+    Product as ProductClean,
+} from "../../lib/product";
 import productStyles from "../../styles/Product.module.scss";
 import productListStyles from "../../styles/Products.module.scss";
 import Carousel from "../../components/generic/Carousel";
@@ -17,7 +21,7 @@ import useBasket, { Basket } from "../../hooks/useBasket";
 export default function Product({ product }: { product: ProductType }) {
     const { user } = useUser();
     const [showNav, setShowNav] = useState(false);
-    const { state: basket, setState: updateBasket } = useBasket();
+    const { state: basket, toBasket } = useBasket();
     //404 Not found page?
     if ("error" in product) {
         return <p>{product.error}</p>;
@@ -26,27 +30,10 @@ export default function Product({ product }: { product: ProductType }) {
 
     console.log(basket);
 
-    const toBasket = () => {
-        const filteredBasket = basket.filter(
-            (item: Basket) => item.id !== product.id
-        );
+    const basketQuantity =
+        basket.find((item) => item.id === product.id)?.quantity ?? 0;
 
-        if (basket.length !== filteredBasket.length) {
-            //Item already exists in basket, add to quantity
-            const basketIndex = basket.findIndex(
-                (item: Basket) => item.id === product.id
-            );
-            let newBasket = [...basket];
-            const quantity = basket[basketIndex].quantity;
-            newBasket.splice(basketIndex, 1, {
-                id: product.id,
-                quantity: quantity + 1,
-            });
-            updateBasket(newBasket);
-        } else {
-            updateBasket([...basket, { id: product.id, quantity: 1 }]);
-        }
-    };
+    const canBuy = (product.instock ?? 0) - basketQuantity >= 1;
 
     return (
         <Layout toggleNav={() => setShowNav((prev) => !prev)}>
@@ -109,9 +96,14 @@ export default function Product({ product }: { product: ProductType }) {
                                 color="success"
                                 fullWidth
                                 className={productStyles.buyBtn}
-                                onClick={() => toBasket()}
+                                onClick={() => toBasket(product, canBuy)}
+                                disabled={!canBuy}
                             >
-                                Köp
+                                {canBuy
+                                    ? "Köp"
+                                    : (product.instock ?? 0) < 1
+                                    ? "Utsålt"
+                                    : "Max antal"}
                             </Button>
                         </div>
                         <div className={productStyles.reviews}>

@@ -5,8 +5,14 @@ import Button from "@mui/material/Button";
 import InStock from "./InStock";
 import Link from "next/link";
 import ProductRating from "./ProductRating";
+import useBasket from "../../hooks/useBasket";
 
 export default function HorizontalItem({ product }: { product: Product }) {
+    const { state: basket, toBasket } = useBasket();
+    const basketQuantity =
+        basket.find((item) => item.id === product.id)?.quantity ?? 0;
+
+    const canBuy = (product.instock ?? 0) - basketQuantity >= 1;
     return (
         <div className={productStyles.horizontalItem}>
             <div className={productStyles.horzImage}>
@@ -46,9 +52,14 @@ export default function HorizontalItem({ product }: { product: Product }) {
                 <Button
                     variant="contained"
                     color="success"
-                    onClick={() => alert("Added to cart!!")}
+                    onClick={() => toBasket(product, canBuy)}
+                    disabled={!canBuy}
                 >
-                    Köp
+                    {canBuy
+                        ? "Köp"
+                        : (product.instock ?? 0) < 1
+                        ? "Utsålt"
+                        : "Max antal"}
                 </Button>
             </div>
         </div>

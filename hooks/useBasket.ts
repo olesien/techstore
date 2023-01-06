@@ -1,4 +1,7 @@
+import { ProductByIdType } from "./../pages/api/productsbyids/[ids]";
 import React, { useDebugValue, useEffect, useState } from "react";
+import { Product as Product2 } from "../lib/product";
+import { Product } from "../pages/category/[id]";
 
 export type Basket = {
     id: number;
@@ -44,7 +47,41 @@ const useBasket = () => {
         }
     }, [getCount(state)]);
 
-    return { state, setState, getCount };
+    const toBasket = (
+        product: Product2 | Product | (Basket & ProductByIdType),
+        canBuy: boolean,
+        qtnty = 1,
+        remove = false
+    ) => {
+        if (!canBuy) return;
+        const filteredBasket = state.filter(
+            (item: Basket) => item.id !== Number(product.id)
+        );
+
+        if (state.length !== filteredBasket.length) {
+            //Item already exists in basket, add to quantity
+            const basketIndex = state.findIndex(
+                (item: Basket) => item.id === Number(product.id)
+            );
+            let newBasket = [...state];
+            const quantity = state[basketIndex].quantity;
+            const newTotal = quantity + (remove ? -qtnty : qtnty);
+            if (newTotal === 0) {
+                newBasket.splice(basketIndex, 1);
+            } else {
+                newBasket.splice(basketIndex, 1, {
+                    id: Number(product.id),
+                    quantity: newTotal,
+                });
+            }
+
+            setState(newBasket);
+        } else if (!remove) {
+            setState([...state, { id: Number(product.id), quantity: qtnty }]);
+        }
+    };
+
+    return { state, setState, getCount, toBasket };
 };
 
 const parse = (value: string) => {
