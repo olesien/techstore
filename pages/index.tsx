@@ -8,8 +8,24 @@ import Image from "next/image";
 import Link from "next/link";
 import Carousel from "../components/generic/Carousel";
 import VerticalItem from "../components/generic/VerticalItem";
+import { RecentProduct, getRecentProducts } from "../lib/recentProducts";
+import { CheapProduct, getCheapProducts } from "../lib/cheapProducts";
+type Error = {
+    code: number;
+    error: string;
+};
 
-export default function Home({}: {}) {
+export default function Home({
+    recentProducts,
+    cheapProducts,
+}: {
+    recentProducts: RecentProduct[] | Error;
+    cheapProducts: CheapProduct[] | Error;
+}) {
+    if ("error" in recentProducts || "error" in cheapProducts) {
+        return <p>Error</p>;
+    }
+    console.log(recentProducts, cheapProducts);
     const [showNav, setShowNav] = useState(false);
     const items = [
         {
@@ -64,22 +80,22 @@ export default function Home({}: {}) {
                     <p>Nya Produkter</p>
                     <section className={utilStyles.section}>
                         <Carousel
-                            items={[
-                                { title: "I9", image: "/images/i9.png", id: 1 },
-                                {
-                                    title: "I10",
-                                    image: "/images/i9.png",
-                                    id: 2,
-                                },
-                            ]}
+                            items={recentProducts.map((product) => ({
+                                id: product.id,
+                                image: product.product_images[0],
+                                title: product.name,
+                            }))}
                             newImg={true}
                         />
                     </section>
                     <p>Kampanjer</p>
                     <section className={utilStyles.section}>
                         <ul className={utilStyles.productList}>
-                            {items.map((item) => (
-                                <VerticalItem key={item.id} {...item} />
+                            {cheapProducts.map((product) => (
+                                <VerticalItem
+                                    key={product.id}
+                                    product={product}
+                                />
                             ))}
                         </ul>
                     </section>
@@ -87,4 +103,16 @@ export default function Home({}: {}) {
             </Main>
         </Layout>
     );
+}
+
+export async function getStaticProps() {
+    const recentProducts = await getRecentProducts();
+    const cheapProducts = await getCheapProducts();
+
+    return {
+        props: {
+            recentProducts,
+            cheapProducts,
+        },
+    };
 }

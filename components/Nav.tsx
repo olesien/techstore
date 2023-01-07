@@ -64,11 +64,6 @@ export default function Nav({ showNav }: { showNav: boolean }) {
                     link={"/category/10"}
                     icon={faFan}
                 />
-                <NavItem
-                    title="DVD"
-                    link={"/category/11"}
-                    icon={faCompactDisc}
-                />
             </ul>
         </span>
     );

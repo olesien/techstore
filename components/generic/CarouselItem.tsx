@@ -12,6 +12,7 @@ export default function CarouselItem({
     id: number;
     newImg?: boolean;
 }) {
+    console.log(image);
     return (
         <div className="horizontal-flex">
             {newImg && (

@@ -83,7 +83,7 @@ model product_specs {
 model products {
   id              Int               @id @unique(map: "id_UNIQUE") @default(autoincrement())
   categoryid      Int
-  name            String?           @db.VarChar(45)
+  name            String            @db.VarChar(45)
   quickspecs      String?           @db.VarChar(100)
   description     String?           @db.Text
   price           Int
