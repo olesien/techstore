@@ -71,6 +71,10 @@
 .productList {
     display: flex;
     flex-flow: row nowrap;
+    > * {
+        flex: 1;
+        padding: 0 1rem;
+    }
 }
 
 .discount {

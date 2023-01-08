@@ -24,7 +24,7 @@ export default function CarouselItem({
                 </div>
             )}
 
-            <div className="img-container">
+            <div className="img-container img-container-size">
                 <img
                     alt="Vercel logo"
                     src={image}
