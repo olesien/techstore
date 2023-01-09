@@ -62,36 +62,38 @@ export default function ItemTable({
                                     </div>
                                 </TableCell>
                                 <TableCell className={styles.quantity_col}>
-                                    <span
-                                        className={styles.clickableIcon}
-                                        role="button"
-                                        onClick={() =>
-                                            toBasket(
-                                                product,
-                                                basketQuantity > 0,
-                                                1,
-                                                true
-                                            )
-                                        }
-                                    >
-                                        <FontAwesomeIcon
-                                            icon={faMinus}
-                                            size="sm"
-                                        />
-                                    </span>
-                                    <span>{product.quantity}</span>
-                                    <span
-                                        className={styles.clickableIcon}
-                                        role="button"
-                                        onClick={() =>
-                                            toBasket(product, canBuy)
-                                        }
-                                    >
-                                        <FontAwesomeIcon
-                                            icon={faPlus}
-                                            size="sm"
-                                        />
-                                    </span>
+                                    <div>
+                                        <span
+                                            className={styles.clickableIcon}
+                                            role="button"
+                                            onClick={() =>
+                                                toBasket(
+                                                    product,
+                                                    basketQuantity > 0,
+                                                    1,
+                                                    true
+                                                )
+                                            }
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faMinus}
+                                                size="sm"
+                                            />
+                                        </span>
+                                        <span>{product.quantity}</span>
+                                        <span
+                                            className={styles.clickableIcon}
+                                            role="button"
+                                            onClick={() =>
+                                                toBasket(product, canBuy)
+                                            }
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faPlus}
+                                                size="sm"
+                                            />
+                                        </span>
+                                    </div>
                                 </TableCell>
                                 <TableCell className={styles.price_col}>
                                     <div>

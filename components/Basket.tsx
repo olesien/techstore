@@ -9,6 +9,7 @@ import { Button } from "@mui/material";
 import BasketOverlay from "./BasketOverlay";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 const fetchURL = (url: string) => fetch(url).then((r) => r.json());
 
 export default function Basket({
@@ -76,7 +77,13 @@ export default function Basket({
                         <FontAwesomeIcon icon={faTrashCan} size="lg" />
                     </span>
                 </div>
-                <Button variant="contained" color="success" fullWidth>
+                <Button
+                    component={Link}
+                    href="/checkout"
+                    variant="contained"
+                    color="success"
+                    fullWidth
+                >
                     Till Kassa
                 </Button>
             </>

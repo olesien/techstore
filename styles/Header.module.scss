@@ -75,11 +75,9 @@
         padding: 0;
     }
 
-    li {
-        span {
-            padding-left: 5px;
-            text-transform: none;
-        }
+    li button span {
+        padding-left: 5px;
+        text-transform: none;
     }
 }
 
@@ -161,6 +159,11 @@
     }
 
     .quantity_col {
+        div {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
         > * {
             padding: 0 0.25rem;
         }
@@ -191,5 +194,18 @@
         :hover {
             cursor: pointer;
         }
+    }
+
+    table {
+        max-height: 650px;
+        overflow-y: scroll;
+        display: inline-block;
+        > * {
+            width: 100%;
+        }
+    }
+
+    a {
+        color: $white;
     }
 }

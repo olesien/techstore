@@ -51,6 +51,7 @@ model orders_products {
   id        Int      @id @unique(map: "id_UNIQUE")
   orderid   Int
   productid Int
+  quantity  String   @db.VarChar(45)
   orders    orders   @relation(fields: [orderid], references: [id], onUpdate: Restrict, map: "orders_products_ibfk_1")
   products  products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "orders_products_ibfk_2")
 
