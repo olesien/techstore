@@ -5,8 +5,9 @@ import styles from "../styles/Header.module.scss";
 import ItemTable from "./ItemTable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { ProductWithBasket } from "../pages/api/addorder";
 
-const summedCost = (productList: (BasketType & ProductByIdType)[]) => {
+const summedCost = (productList: ProductWithBasket) => {
     const cost = productList.reduce((total, product) => {
         return total + product.price * product.quantity;
     }, 0);

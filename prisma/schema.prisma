@@ -35,23 +35,27 @@ model categories {
 
 model orders {
   id              Int               @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  productid       Int
   date            DateTime          @db.Date
-  userid          Int
+  userid          Int?
   status          String?           @db.VarChar(45)
-  products        products          @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "orders_ibfk_2")
-  users           users             @relation(fields: [userid], references: [id], onUpdate: Restrict, map: "orders_ibfk_1")
+  firstname       String?           @db.VarChar(45)
+  lastname        String?           @db.VarChar(45)
+  mail            String            @db.VarChar(45)
+  postnumber      Int
+  postcity        String            @db.VarChar(45)
+  phonenumber     String?           @db.VarChar(45)
+  address         String            @db.VarChar(45)
+  users           users?            @relation(fields: [userid], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "orders_ibfk_1")
   orders_products orders_products[]
 
-  @@index([productid], map: "productid")
-  @@index([userid], map: "userid")
+  @@index([userid], map: "orders_ibfk_2")
 }
 
 model orders_products {
-  id        Int      @id @unique(map: "id_UNIQUE")
+  id        Int      @id @unique(map: "id_UNIQUE") @default(autoincrement())
   orderid   Int
   productid Int
-  quantity  String   @db.VarChar(45)
+  quantity  Int
   orders    orders   @relation(fields: [orderid], references: [id], onUpdate: Restrict, map: "orders_products_ibfk_1")
   products  products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "orders_products_ibfk_2")
 
@@ -90,7 +94,6 @@ model products {
   price           Int
   oldprice        Int?
   instock         Int?
-  orders          orders[]
   orders_products orders_products[]
   product_images  product_images[]
   product_specs   product_specs[]

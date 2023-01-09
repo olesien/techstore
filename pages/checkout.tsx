@@ -10,6 +10,7 @@ import ProductsOverview from "../components/ProductsOverview";
 import utilStyles from "../styles/utils.module.scss";
 import FormInput from "../components/generic/FormInput";
 import Button from "@mui/material/Button";
+import fetchJson, { FetchError } from "../lib/fetchJson";
 const fetchURL = (url: string) => fetch(url).then((r) => r.json());
 function removeEmpty(obj: object) {
     return Object.fromEntries(
@@ -84,7 +85,66 @@ export default function checkout() {
 
     console.log(user);
 
-    const sendOrder = () => {};
+    const sendOrder = async (e: React.SyntheticEvent) => {
+        e.preventDefault();
+        console.log(form);
+        const validRegex =
+            /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        let formErrors: Order = {};
+
+        if (!form.mail || !form.mail.match(validRegex)) {
+            formErrors = {
+                ...errors,
+                mail: "Mailet är för kort eller är fel",
+            };
+        }
+
+        if (!form.address || form.address.length < 6) {
+            formErrors = {
+                ...errors,
+                address: "Addressen är för kort",
+            };
+        }
+
+        if (!form.postnumber || String(form.postnumber).length < 6) {
+            formErrors = {
+                ...errors,
+                postnumber: "Postnumeret är för kort",
+            };
+        }
+
+        if (!form.postcity || form.postcity.length < 3) {
+            formErrors = {
+                ...errors,
+                postcity: "Postorten är för kort",
+            };
+        }
+
+        setErrors(formErrors);
+
+        if (Object.keys(formErrors).length > 0) {
+            return setErrorMsg("Kolla igenom formuläret igen");
+        }
+
+        try {
+            await fetchJson("/api/addorder", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ form, products }),
+            });
+            setErrorMsg("");
+            setErrors({});
+            //Redirect to order success
+        } catch (error) {
+            if (error instanceof FetchError) {
+                setErrorMsg(error.data.message);
+            } else {
+                console.error("An unexpected error happened:", error);
+            }
+        }
+    };
     return (
         <Layout nonav={true} title="Ordrar - Techstore">
             <div className={mainStyles.main}>
