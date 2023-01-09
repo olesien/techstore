@@ -85,11 +85,10 @@ export default function Register() {
         }
     };
     return (
-        <Layout toggleNav={() => setShowNav((prev) => !prev)}>
-            <Head>
-                <link rel="shortcut icon" href="/Logo.svg" />
-                <title>Registrera - Techstore</title>
-            </Head>
+        <Layout
+            toggleNav={() => setShowNav((prev) => !prev)}
+            title="Registrera - Techstore"
+        >
             <Main showNav={showNav}>
                 <div className={styles.register}>
                     {errorMsg && <p className="error">{errorMsg}</p>}

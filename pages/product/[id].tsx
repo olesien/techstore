@@ -36,11 +36,7 @@ export default function Product({ product }: { product: ProductType }) {
     const canBuy = (product.instock ?? 0) - basketQuantity >= 1;
 
     return (
-        <Layout toggleNav={() => setShowNav((prev) => !prev)}>
-            <Head>
-                <link rel="shortcut icon" href="/Logo.svg" />
-                <title>{title}</title>
-            </Head>
+        <Layout toggleNav={() => setShowNav((prev) => !prev)} title={title}>
             <Main showNav={showNav}>
                 <div className={productStyles.grid}>
                     <div className={productStyles.left}>

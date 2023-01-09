@@ -123,11 +123,7 @@ export default function List({
     }
 
     return (
-        <Layout toggleNav={() => setShowNav((prev) => !prev)}>
-            <Head>
-                <link rel="shortcut icon" href="/Logo.svg" />
-                <title>{title}</title>
-            </Head>
+        <Layout toggleNav={() => setShowNav((prev) => !prev)} title={title}>
             <Main showNav={showNav}>
                 <div>
                     {/* <div className="p-1 rounded">

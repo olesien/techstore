@@ -10,6 +10,7 @@ import BasketOverlay from "./BasketOverlay";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import ProductsOverview from "./ProductsOverview";
 const fetchURL = (url: string) => fetch(url).then((r) => r.json());
 
 export default function Basket({
@@ -56,27 +57,10 @@ export default function Basket({
         return { ...product, quantity: basketItem?.quantity };
     });
 
-    const summedCost = (productList: (BasketType & ProductByIdType)[]) => {
-        const cost = productList.reduce((total, product) => {
-            return total + product.price * product.quantity;
-        }, 0);
-        return cost;
-    };
     return (
         <BasketOverlay toggleCart={toggleCart}>
             <>
-                <ItemTable products={products} />
-                <div className={styles.sum}>
-                    <p>Summa: </p>
-                    <p>{summedCost(products)} kr</p>
-                    <span
-                        className={styles.clickableIcon}
-                        role="button"
-                        onClick={() => trash()}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} size="lg" />
-                    </span>
-                </div>
+                <ProductsOverview products={products} trash={trash} />
                 <Button
                     component={Link}
                     href="/checkout"

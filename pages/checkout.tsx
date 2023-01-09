@@ -1,11 +1,31 @@
 import useSWR from "swr";
 import React from "react";
 import { UserDetails } from "./api/userdetails";
+import Head from "next/head";
+import mainStyles from "../styles/Main.module.scss";
+import Layout from "../components/layout";
+import useBasket from "../hooks/useBasket";
+const fetchURL = (url: string) => fetch(url).then((r) => r.json());
 
 export default function checkout() {
     const { data: user } = useSWR<UserDetails>("/api/userdetails");
+    const {
+        state: basket,
+        setState: updateBasket,
+        getCount,
+        trash,
+    } = useBasket();
+    const basketIds = basket.map((item) => item.id);
+    const { data, isLoading, error } = useSWR(
+        "/api/productsbyids/" + JSON.stringify(basketIds),
+        fetchURL
+    );
     console.log(user);
-    return <div>checkout</div>;
+    return (
+        <Layout nonav={true} title="Ordrar - Techstore">
+            <div className={mainStyles.main}>hi</div>
+        </Layout>
+    );
 }
 
 // export const getServerSideProps = withIronSessionSsr(

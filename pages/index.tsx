@@ -54,11 +54,10 @@ export default function Home({
         },
     ];
     return (
-        <Layout toggleNav={() => setShowNav((prev) => !prev)}>
-            <Head>
-                <link rel="shortcut icon" href="/Logo.svg" />
-                <title>Hem - Techstore</title>
-            </Head>
+        <Layout
+            toggleNav={() => setShowNav((prev) => !prev)}
+            title="Hem - Techstore"
+        >
             <Main showNav={showNav}>
                 <div>
                     <section className={utilStyles.hero}>

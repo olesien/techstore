@@ -19,7 +19,13 @@ import { useEffect, useState } from "react";
 import Basket from "./Basket";
 import useBasket, { Basket as BasketType } from "../hooks/useBasket";
 
-export default function Header({ toggleNav }: { toggleNav: () => void }) {
+export default function Header({
+    toggleNav,
+    nonav,
+}: {
+    toggleNav?: () => void;
+    nonav?: boolean;
+}) {
     const [loginVisible, setLoginVisible] = useState(false);
     const [visibleCart, setVisibleCart] = useState(false);
     const { user, mutateUser } = useUser();
@@ -55,9 +61,17 @@ export default function Header({ toggleNav }: { toggleNav: () => void }) {
                     </Link>
                 </div>
                 <div className={styles.containerFlex}>
-                    <div className={styles.hamburger} onClick={toggleNav}>
-                        <FontAwesomeIcon icon={faBars} size={"1x"} />
+                    <div>
+                        {!nonav && (
+                            <div
+                                className={styles.hamburger}
+                                onClick={toggleNav}
+                            >
+                                <FontAwesomeIcon icon={faBars} size={"1x"} />
+                            </div>
+                        )}
                     </div>
+
                     <div className="container-flex">
                         <TextField
                             id="filled-basic"

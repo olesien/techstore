@@ -12,11 +12,10 @@ export default function SgProfile() {
     });
 
     return (
-        <Layout toggleNav={() => setShowNav((prev) => !prev)}>
-            <Head>
-                <link rel="shortcut icon" href="/Logo.svg" />
-                <title>Ordrar - Techstore</title>
-            </Head>
+        <Layout
+            toggleNav={() => setShowNav((prev) => !prev)}
+            title="Ordrar - Techstore"
+        >
             <Main showNav={showNav}>
                 <h1>Your name is: {user?.login}</h1>
             </Main>
