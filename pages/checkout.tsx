@@ -5,10 +5,16 @@ import Head from "next/head";
 import mainStyles from "../styles/Main.module.scss";
 import Layout from "../components/layout";
 import useBasket from "../hooks/useBasket";
+import { ProductByIdType } from "./api/productsbyids/[ids]";
+import ProductsOverview from "../components/ProductsOverview";
 const fetchURL = (url: string) => fetch(url).then((r) => r.json());
 
 export default function checkout() {
-    const { data: user } = useSWR<UserDetails>("/api/userdetails");
+    const {
+        data: user,
+        isLoading: isLoadingUser,
+        error: userError,
+    } = useSWR<UserDetails>("/api/userdetails");
     const {
         state: basket,
         setState: updateBasket,
@@ -20,10 +26,41 @@ export default function checkout() {
         "/api/productsbyids/" + JSON.stringify(basketIds),
         fetchURL
     );
+
+    if (isLoadingUser || userError) {
+        return (
+            <Layout
+                nonav={true}
+                title="Ordrar - Techstore"
+                loading={isLoadingUser}
+                error={userError}
+            />
+        );
+    }
+
+    if (isLoading || error) {
+        return (
+            <Layout
+                nonav={true}
+                title="Ordrar - Techstore"
+                loading={isLoading}
+                error={error}
+            />
+        );
+    }
+
+    const products = data.products.map((product: ProductByIdType) => {
+        const basketItem = basket.find((item) => item.id === product.id);
+        return { ...product, quantity: basketItem?.quantity };
+    });
+
     console.log(user);
     return (
         <Layout nonav={true} title="Ordrar - Techstore">
-            <div className={mainStyles.main}>hi</div>
+            <div className={mainStyles.main}>
+                {" "}
+                <ProductsOverview products={products} trash={trash} />
+            </div>
         </Layout>
     );
 }

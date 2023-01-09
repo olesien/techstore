@@ -1,16 +1,21 @@
 import Head from "next/head";
 import Header from "./Header";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function layout({
     toggleNav,
     children,
-    nonav,
     title,
+    nonav,
+    loading,
+    error,
 }: {
     toggleNav?: () => void;
-    children: React.ReactNode;
-    nonav?: boolean;
+    children?: React.ReactNode;
     title: string;
+    nonav?: boolean;
+    loading?: boolean;
+    error?: string;
 }) {
     return (
         <>
@@ -21,7 +26,19 @@ export default function layout({
             <Header toggleNav={toggleNav} nonav={nonav} />
 
             <main>
-                <div className="container">{children}</div>
+                <div className="container">
+                    {loading ? (
+                        <div className="loading">
+                            <ClipLoader />
+                        </div>
+                    ) : error ? (
+                        <div className="error">
+                            <p>{error}</p>
+                        </div>
+                    ) : (
+                        children
+                    )}
+                </div>
             </main>
         </>
     );

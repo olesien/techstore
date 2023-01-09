@@ -21,7 +21,7 @@ export default function ProductsOverview({
     trash: () => void;
 }) {
     return (
-        <div>
+        <div className={styles.productoverview}>
             <ItemTable products={products} />
             <div className={styles.sum}>
                 <p>Summa: </p>

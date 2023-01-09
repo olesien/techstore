@@ -133,6 +133,12 @@
         width: 340px;
     }
 
+    a {
+        color: $white;
+    }
+}
+
+.productoverview {
     .product_col {
         display: flex;
         align-items: center;
@@ -162,10 +168,7 @@
         div {
             display: flex;
             align-items: center;
-            justify-content: space-evenly;
-        }
-        > * {
-            padding: 0 0.25rem;
+            justify-content: flex-start;
         }
     }
 
@@ -199,13 +202,14 @@
     table {
         max-height: 650px;
         overflow-y: scroll;
-        display: inline-block;
-        > * {
-            width: 100%;
-        }
-    }
+        display: table;
+        // > * {
+        //     width: 100%;
+        // }
 
-    a {
-        color: $white;
+        tbody,
+        thead {
+            margin: auto;
+        }
     }
 }
