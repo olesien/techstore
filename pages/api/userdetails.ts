@@ -10,8 +10,6 @@ type Error = {
 
 export type UserDetails =
     | {
-          id: number;
-          name: string | null;
           firstname: string | null;
           lastname: string | null;
           mail: string;
@@ -34,8 +32,6 @@ async function userDetailsRoute(
         try {
             const userDetails = await prisma.users.findFirst({
                 select: {
-                    id: true,
-                    name: true,
                     firstname: true,
                     lastname: true,
                     mail: true,

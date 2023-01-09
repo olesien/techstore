@@ -25,8 +25,7 @@ async function productsByIds(req: NextApiRequest, res: NextApiResponse) {
     const idArray = JSON.parse(String(ids)) as number[];
     console.log(idArray);
     //return res.json({ code: 404, error: "Not Found" });
-    if (idArray.length === 0)
-        return res.status(404).json({ message: "Not found" });
+    if (idArray.length === 0) return res.json({ products: [] });
     console.log(ids);
     try {
         const products = await prisma.products.findMany({

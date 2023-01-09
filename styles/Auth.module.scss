@@ -45,26 +45,3 @@
         cursor: pointer;
     }
 }
-
-.register {
-    background-color: white;
-    padding: 1rem;
-
-    form {
-        display: flex;
-        flex-direction: column;
-        padding-top: 1rem;
-        gap: 2rem;
-        > * {
-            padding: 1rem;
-        }
-
-        div {
-            display: flex;
-            gap: 0.5rem;
-            > * {
-                flex: 1;
-            }
-        }
-    }
-}

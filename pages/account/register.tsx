@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useUser from "../../lib/useUser";
 import fetchJson, { FetchError } from "../../lib/fetchJson";
-import styles from "../../styles/Auth.module.scss";
+import styles from "../../styles/utils.module.scss";
 import Layout from "../../components/layout";
 import Head from "next/head";
 import Main from "../../components/Main";
@@ -90,7 +90,7 @@ export default function Register() {
             title="Registrera - Techstore"
         >
             <Main showNav={showNav}>
-                <div className={styles.register}>
+                <div className={styles.formContainer}>
                     {errorMsg && <p className="error">{errorMsg}</p>}
                     <form onSubmit={register}>
                         <FormInput

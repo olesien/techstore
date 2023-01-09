@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { UserDetails } from "./api/userdetails";
 import Head from "next/head";
 import mainStyles from "../styles/Main.module.scss";
@@ -7,7 +7,25 @@ import Layout from "../components/layout";
 import useBasket from "../hooks/useBasket";
 import { ProductByIdType } from "./api/productsbyids/[ids]";
 import ProductsOverview from "../components/ProductsOverview";
+import utilStyles from "../styles/utils.module.scss";
+import FormInput from "../components/generic/FormInput";
+import Button from "@mui/material/Button";
 const fetchURL = (url: string) => fetch(url).then((r) => r.json());
+function removeEmpty(obj: object) {
+    return Object.fromEntries(
+        Object.entries(obj).filter(([_, v]) => v != null)
+    );
+}
+
+export interface Order {
+    mail?: string;
+    firstname?: string;
+    lastname?: string;
+    address?: string;
+    postnumber?: string | number;
+    postcity?: string;
+    phonenumber?: string;
+}
 
 export default function checkout() {
     const {
@@ -26,6 +44,16 @@ export default function checkout() {
         "/api/productsbyids/" + JSON.stringify(basketIds),
         fetchURL
     );
+
+    const [form, setForm] = useState<Order>({});
+    const [errorMsg, setErrorMsg] = useState("");
+    const [errors, setErrors] = useState<Order>({});
+
+    useEffect(() => {
+        if (user) {
+            setForm(removeEmpty(user));
+        }
+    }, [user]);
 
     if (isLoadingUser || userError) {
         return (
@@ -55,11 +83,149 @@ export default function checkout() {
     });
 
     console.log(user);
+
+    const sendOrder = () => {};
     return (
         <Layout nonav={true} title="Ordrar - Techstore">
             <div className={mainStyles.main}>
-                {" "}
-                <ProductsOverview products={products} trash={trash} />
+                <div>
+                    <p>Valda produkter</p>
+                    <section className={utilStyles.section}>
+                        <ProductsOverview products={products} trash={trash} />
+                    </section>
+                    <p>Dina detaljer</p>
+                    <section
+                        className={
+                            utilStyles.section + " " + utilStyles.formContainer
+                        }
+                    >
+                        <form onSubmit={sendOrder}>
+                            {errorMsg && <p className="error">{errorMsg}</p>}
+                            <FormInput
+                                required
+                                id={"techstore-email"}
+                                title={"Epost Address"}
+                                hint={
+                                    "Efter order kommer du att få en orderbekräftelse"
+                                }
+                                aria={"enter-mail"}
+                                type={"email"}
+                                error={errors.mail}
+                                value={form.mail ?? ""}
+                                onChange={(mail) =>
+                                    setForm((form) => ({ ...form, mail }))
+                                }
+                            />
+                            <div>
+                                <FormInput
+                                    id={"techstore-firstname"}
+                                    title={"Förnamn"}
+                                    hint={""}
+                                    aria={"enter-firstname"}
+                                    type={"text"}
+                                    error={errors.firstname}
+                                    value={form.firstname ?? ""}
+                                    onChange={(firstname) =>
+                                        setForm((form) => ({
+                                            ...form,
+                                            firstname,
+                                        }))
+                                    }
+                                />
+                                <FormInput
+                                    id={"techstore-lastname"}
+                                    title={"Efternamn"}
+                                    hint={""}
+                                    aria={"enter-lastname"}
+                                    type={"text"}
+                                    error={errors.lastname}
+                                    value={form.lastname ?? ""}
+                                    onChange={(lastname) =>
+                                        setForm((form) => ({
+                                            ...form,
+                                            lastname,
+                                        }))
+                                    }
+                                />
+                            </div>
+                            <FormInput
+                                required
+                                id={"techstore-address"}
+                                title={"Adress"}
+                                hint={"Skriv in adress, exempelvis engatan 6A"}
+                                aria={"enter-adress-example-engatan-6A"}
+                                type={"text"}
+                                error={errors.address}
+                                value={form.address ?? ""}
+                                onChange={(address) =>
+                                    setForm((form) => ({ ...form, address }))
+                                }
+                            />
+                            <div>
+                                <FormInput
+                                    required
+                                    id={"techstore-postnumber"}
+                                    title={"Postnummer"}
+                                    hint={"Skriv in postnummer, t.ex 25615"}
+                                    aria={"enter-postnumber"}
+                                    type={"number"}
+                                    error={
+                                        errors.postnumber
+                                            ? String(errors.postnumber)
+                                            : undefined
+                                    }
+                                    value={
+                                        form.postnumber
+                                            ? String(form.postnumber)
+                                            : ""
+                                    }
+                                    onChange={(postnumber) =>
+                                        setForm((form) => ({
+                                            ...form,
+                                            postnumber,
+                                        }))
+                                    }
+                                />
+                                <FormInput
+                                    required
+                                    id={"techstore-postcity"}
+                                    title={"Postort"}
+                                    hint={"T.ex malmö"}
+                                    aria={"enter-postcity"}
+                                    type={"text"}
+                                    error={errors.postcity}
+                                    value={form.postcity ?? ""}
+                                    onChange={(postcity) =>
+                                        setForm((form) => ({
+                                            ...form,
+                                            postcity,
+                                        }))
+                                    }
+                                />
+                            </div>
+                            <FormInput
+                                id={"techstore-phonenumber"}
+                                title={"Telefonnummer"}
+                                hint={"Ditt telefon nummer"}
+                                aria={"enter-phonenumber"}
+                                type={"tel"}
+                                error={errors.phonenumber}
+                                value={form.phonenumber ?? ""}
+                                onChange={(phonenumber) =>
+                                    setForm((form) => ({
+                                        ...form,
+                                        phonenumber,
+                                    }))
+                                }
+                            />
+                            <div>
+                                <Button type="submit" variant="contained">
+                                    Lägg order
+                                </Button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
             </div>
         </Layout>
     );
