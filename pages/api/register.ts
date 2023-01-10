@@ -11,7 +11,7 @@ const saltRounds = 15;
 export interface Register {
     mail: string;
     password: string;
-    firstname?: string;
+    firstname: string;
     lastname?: string;
     address?: string;
     postnumber?: number;
@@ -36,8 +36,7 @@ async function registerRoute(req: NextApiRequest, res: NextApiResponse) {
             return res.status(500).json({ message: "Encryption error" });
         }
 
-        const data: Register = { mail, password: hashedPassword };
-        if (firstname) data.firstname = firstname;
+        const data: Register = { mail, password: hashedPassword, firstname };
         if (lastname) data.lastname = lastname;
         if (address) data.address = address;
         if (postnumber) data.postnumber = Number(postnumber);
@@ -51,7 +50,9 @@ async function registerRoute(req: NextApiRequest, res: NextApiResponse) {
             !mail ||
             !mail.match(validRegex) ||
             !password ||
-            password.length < 4
+            password.length < 4 ||
+            !firstname ||
+            firstname.length < 4
         ) {
             return res
                 .status(400)

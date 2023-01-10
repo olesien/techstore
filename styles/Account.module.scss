@@ -1,0 +1,38 @@
+@import "colors.scss";
+
+.orders {
+    .toggle {
+        width: 40px;
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        align-items: center;
+        text-align: center;
+        justify-content: flex-end;
+    }
+    .toggle:hover {
+        cursor: pointer;
+        color: $primary;
+        svg {
+            fill: $primary;
+        }
+    }
+
+    .product {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        img {
+            width: 40px;
+            height: auto;
+        }
+    }
+
+    .status {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+    }
+}

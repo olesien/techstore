@@ -196,3 +196,15 @@ button {
         cursor: pointer;
     }
 }
+
+.gray-box {
+    background-color: $elementBackground;
+    width: 15px;
+    height: 15px;
+}
+
+.green-box {
+    background-color: $success;
+    width: 15px;
+    height: 15px;
+}

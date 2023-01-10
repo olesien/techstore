@@ -59,6 +59,13 @@ export default function Register() {
                 password2: "Lösenorden matchar ej",
             };
         }
+
+        if (!form.firstname || form.firstname.length < 4) {
+            formErrors = {
+                ...errors,
+                firstname: "Ditt förnamn är för kort",
+            };
+        }
         setErrors(formErrors);
 
         if (Object.keys(formErrors).length > 0) {
@@ -108,6 +115,7 @@ export default function Register() {
                         />
                         <div>
                             <FormInput
+                                required
                                 id={"techstore-firstname"}
                                 title={"Förnamn"}
                                 hint={""}

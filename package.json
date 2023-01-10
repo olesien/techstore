@@ -19,6 +19,7 @@
     "bcrypt": "^5.1.0",
     "clsx": "^1.2.1",
     "date-fns": "^2.29.3",
+    "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "gray-matter": "^4.0.3",
     "iron-session": "^6.3.1",

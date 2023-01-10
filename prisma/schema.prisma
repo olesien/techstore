@@ -52,12 +52,13 @@ model orders {
 }
 
 model orders_products {
-  id        Int      @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  orderid   Int
-  productid Int
-  quantity  Int
-  orders    orders   @relation(fields: [orderid], references: [id], onUpdate: Restrict, map: "orders_products_ibfk_1")
-  products  products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "orders_products_ibfk_2")
+  id         Int      @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  orderid    Int
+  productid  Int
+  quantity   Int
+  item_price Int
+  orders     orders   @relation(fields: [orderid], references: [id], onUpdate: Restrict, map: "orders_products_ibfk_1")
+  products   products @relation(fields: [productid], references: [id], onUpdate: Restrict, map: "orders_products_ibfk_2")
 
   @@index([orderid], map: "orderid")
   @@index([productid], map: "productid")

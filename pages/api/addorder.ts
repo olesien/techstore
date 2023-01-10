@@ -83,6 +83,7 @@ async function addorder(req: NextApiRequest, res: NextApiResponse) {
             postnumber: Number(form.postnumber),
             postcity: form.postcity,
             address: form.address,
+            status: "order mottagen",
         };
 
         if (req.session?.user && req.session?.user.isLoggedIn) {
@@ -111,6 +112,7 @@ async function addorder(req: NextApiRequest, res: NextApiResponse) {
             orderid: order.id,
             productid: product.id,
             quantity: product.quantity,
+            item_price: product.price,
         }));
 
         const orderedProducts = await prisma.orders_products.createMany({
