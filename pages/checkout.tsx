@@ -11,6 +11,7 @@ import utilStyles from "../styles/utils.module.scss";
 import FormInput from "../components/generic/FormInput";
 import Button from "@mui/material/Button";
 import fetchJson, { FetchError } from "../lib/fetchJson";
+import { useRouter } from "next/router";
 const fetchURL = (url: string) => fetch(url).then((r) => r.json());
 function removeEmpty(obj: object) {
     return Object.fromEntries(
@@ -29,6 +30,7 @@ export interface Order {
 }
 
 export default function checkout() {
+    const router = useRouter();
     const {
         data: user,
         isLoading: isLoadingUser,
@@ -137,6 +139,8 @@ export default function checkout() {
             setErrorMsg("");
             setErrors({});
             //Redirect to order success
+            router.push("/successfulorder");
+            trash();
         } catch (error) {
             if (error instanceof FetchError) {
                 setErrorMsg(error.data.message);
@@ -148,7 +152,7 @@ export default function checkout() {
     return (
         <Layout nonav={true} title="Ordrar - Techstore">
             <div className={mainStyles.main}>
-                <div>
+                <div className={mainStyles.subMain}>
                     <p>Valda produkter</p>
                     <section className={utilStyles.section}>
                         <ProductsOverview products={products} trash={trash} />

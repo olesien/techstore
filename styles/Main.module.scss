@@ -41,6 +41,12 @@
     @media only screen and (max-width: 768px) {
         gap: 0;
     }
+
+    .subMain {
+        > p {
+            padding-left: 1rem;
+        }
+    }
 }
 
 .active {
