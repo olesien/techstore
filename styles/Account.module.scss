@@ -27,6 +27,11 @@
             width: 40px;
             height: auto;
         }
+
+        a:hover {
+            color: $primary;
+            cursor: pointer;
+        }
     }
 
     .status {

@@ -10,6 +10,7 @@ import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
+import Link from "next/link";
 
 export default function OrderItemProducts({
     products,
@@ -49,7 +50,11 @@ export default function OrderItemProducts({
                                                 .name ?? "produkt"
                                         }
                                     />
-                                    <p>{product.products.name}</p>
+                                    <Link
+                                        href={`/product/${product.productid}`}
+                                    >
+                                        {product.products.name}
+                                    </Link>
                                 </div>
                             </TableCell>
                             <TableCell>{product.item_price} kr</TableCell>
