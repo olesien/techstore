@@ -1,26 +1,20 @@
 import React, { useState } from "react";
-import useUser from "../../lib/useUser";
 import Layout from "../../components/layout";
 import useSWR from "swr";
 import MainAccount from "../../components/MainAccount";
 import { OrdersWithErrors } from "../api/orders";
 import utilStyles from "../../styles/utils.module.scss";
-
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import styles from "../../styles/Account.module.scss";
 import OrderItem from "../../components/OrderItem";
 
 export default function SgProfile() {
     const [showNav, setShowNav] = useState(false);
-    const { user } = useUser({
-        redirectTo: "/",
-    });
     const {
         data: orders,
         isLoading,
@@ -38,15 +32,12 @@ export default function SgProfile() {
         );
     }
 
-    console.log(orders);
-
     return (
         <Layout
             toggleNav={() => setShowNav((prev) => !prev)}
             title="Ordrar - Techstore"
         >
             <MainAccount showNav={showNav}>
-                {/* <h1>Your name is: {user?.login}</h1> */}
                 <section className={utilStyles.section + " " + styles.orders}>
                     <TableContainer>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">

@@ -83,7 +83,7 @@ async function addorder(req: NextApiRequest, res: NextApiResponse) {
             postnumber: Number(form.postnumber),
             postcity: form.postcity,
             address: form.address,
-            status: "order mottagen",
+            status: "Mottagen",
         };
 
         if (req.session?.user && req.session?.user.isLoggedIn) {

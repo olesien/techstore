@@ -1,10 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Order } from "../pages/api/orders";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import dayjs from "dayjs";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import styles from "../styles/Account.module.scss";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
