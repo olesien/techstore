@@ -110,17 +110,13 @@
 }
 
 .successfulorder {
-    background: linear-gradient(
-        90deg,
-        rgba(255, 0, 0, 1) 0%,
-        rgba(14, 121, 9, 1) 50%,
-        rgba(0, 149, 255, 1) 100%
-    );
-    padding: 1rem;
-    border-radius: 5px;
-    > div {
-        border-radius: 5px;
-        background-color: white;
-        padding: 1rem;
-    }
+    background-color: white;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 100%;
+    text-align: center;
+    padding: 3rem 0.5rem;
 }

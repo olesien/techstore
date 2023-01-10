@@ -10,6 +10,12 @@ export default function () {
     });
 
     useEffect(() => {
+        //Initial
+        // setWindowSize({
+        //     width: window.innerWidth,
+        //     height: window.innerHeight,
+        // });
+
         function handleResize() {
             setWindowSize({
                 width: window.innerWidth,
