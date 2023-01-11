@@ -42,6 +42,9 @@ export default function search({
         >
             <Main showNav={showNav}>
                 <div>
+                    <div className="text-center p-1">
+                        <p>Resultat för "{query?.query ?? ""}"</p>
+                    </div>
                     <RenderList
                         data={data}
                         products={products}
