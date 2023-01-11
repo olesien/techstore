@@ -14,7 +14,6 @@
     //     "specs specs reviews";
     grid-gap: 1rem;
     grid-template-columns: 1fr 1fr 1fr;
-    // grid-template-columns: 1fr 1fr 1fr;
     > div {
         display: flex;
         gap: 1rem;
@@ -85,6 +84,8 @@
         flex-direction: column;
         align-items: center;
         gap: 1rem;
+        width: 100%;
+        overflow: hidden;
 
         ul {
             width: 95%;
@@ -126,6 +127,12 @@
                             }
                         }
                     }
+                }
+                > div p {
+                    overflow: hidden;
+                    white-space: normal;
+                    text-overflow: ellipsis;
+                    max-width: 200px;
                 }
             }
 
@@ -172,6 +179,9 @@
             "left"
             "right"
             "bottomleft";
+        .reviews ul li > div > p {
+            max-width: 90%;
+        }
     }
 
     .reviewPreview {
