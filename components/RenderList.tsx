@@ -12,7 +12,7 @@ export default function RenderList({
     changeQuery,
 }: {
     products: Product[];
-    data: Data;
+    data: Partial<Data> & Pick<Data, "page" | "pageCount">;
     changeQuery: (queryIndex: string, value: number | string) => void;
 }) {
     const handlePageChange = (

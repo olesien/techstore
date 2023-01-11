@@ -19,6 +19,7 @@ import {
 import { useRouter } from "next/router";
 import productStyles from "../../styles/Products.module.scss";
 import RenderList from "../../components/RenderList";
+import useQueries from "../../hooks/useQueries";
 
 export type ProductAddons = {
     product_images: string[];
@@ -59,8 +60,15 @@ export default function List({
     data: Data | Error;
 }) {
     const [showNav, setShowNav] = useState(false);
+    const { changeQuery, removeQuery } = useQueries();
     if ("error" in data) {
-        return <p>{data.error}</p>;
+        return (
+            <Layout
+                toggleNav={() => setShowNav((prev) => !prev)}
+                title="Ordrar - Techstore"
+                error={data.error}
+            />
+        );
     }
 
     const [priceRange, setPriceRange] = useState([
@@ -68,23 +76,6 @@ export default function List({
         data.filters.price.max,
     ]);
     const products = data?.products;
-    const router = useRouter();
-    const query = router.query;
-    const changeQuery = (queryIndex: string, value: number | string) => {
-        router.push({
-            pathname: "/category/" + category.id,
-            query: { ...query, [queryIndex]: value },
-        });
-    };
-
-    const removeQuery = (queryIndex: string) => {
-        let newQuery = { ...query };
-        delete newQuery[queryIndex];
-        router.push({
-            pathname: "/category/" + category.id,
-            query: newQuery,
-        });
-    };
 
     const title = `${category?.title} - Techstore`;
 

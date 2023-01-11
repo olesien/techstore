@@ -22,9 +22,26 @@ export default function Home({
     recentProducts: RecentProduct[] | Error;
     cheapProducts: CheapProduct[] | Error;
 }) {
-    if ("error" in recentProducts || "error" in cheapProducts) {
-        return <p>Error</p>;
+    if ("error" in recentProducts) {
+        return (
+            <Layout
+                toggleNav={() => setShowNav((prev) => !prev)}
+                title="Ordrar - Techstore"
+                error={recentProducts.error}
+            />
+        );
     }
+
+    if ("error" in cheapProducts) {
+        return (
+            <Layout
+                toggleNav={() => setShowNav((prev) => !prev)}
+                title="Ordrar - Techstore"
+                error={cheapProducts.error}
+            />
+        );
+    }
+
     console.log(recentProducts, cheapProducts);
     const [showNav, setShowNav] = useState(false);
     const items = [

@@ -24,7 +24,13 @@ export default function Product({ product }: { product: ProductType }) {
     const { state: basket, toBasket } = useBasket();
     //404 Not found page?
     if ("error" in product) {
-        return <p>{product.error}</p>;
+        return (
+            <Layout
+                toggleNav={() => setShowNav((prev) => !prev)}
+                title="Ordrar - Techstore"
+                error={product.error}
+            />
+        );
     }
     const title = `${product.name} - Techstore`;
 

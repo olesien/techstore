@@ -15,9 +15,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Login from "./login";
-import { useEffect, useState } from "react";
+import { KeyboardEventHandler, useEffect, useState } from "react";
 import Basket from "./Basket";
 import useBasket, { Basket as BasketType } from "../hooks/useBasket";
+import useQueries from "../hooks/useQueries";
 
 export default function Header({
     toggleNav,
@@ -26,9 +27,10 @@ export default function Header({
     toggleNav?: () => void;
     nonav?: boolean;
 }) {
+    const { query } = useQueries();
     const [loginVisible, setLoginVisible] = useState(false);
     const [visibleCart, setVisibleCart] = useState(false);
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState(query?.query ?? "");
     const { user, mutateUser } = useUser();
     const router = useRouter();
     const {
@@ -41,7 +43,11 @@ export default function Header({
     const toggleCart = () => {
         setVisibleCart((prevVisibility) => !prevVisibility);
     };
-
+    const keySubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.code === "Enter") {
+            makeSearch();
+        }
+    };
     const makeSearch = () => {
         router.push(`/search?query=${search}`);
     };
@@ -93,6 +99,7 @@ export default function Header({
                                     borderRadius: 1,
                                 },
                             }}
+                            onKeyDown={keySubmit}
                         />
                         <Button variant="contained" onClick={makeSearch}>
                             Sök
