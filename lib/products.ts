@@ -178,7 +178,6 @@ export async function getProducts(
             },
             products: products.map((product) => ({
                 ...product,
-                id: String(product.id),
                 product_images: product.product_images.map(
                     (image) => image.image
                 ),

@@ -28,6 +28,7 @@ export default function Header({
 }) {
     const [loginVisible, setLoginVisible] = useState(false);
     const [visibleCart, setVisibleCart] = useState(false);
+    const [search, setSearch] = useState("");
     const { user, mutateUser } = useUser();
     const router = useRouter();
     const {
@@ -39,6 +40,10 @@ export default function Header({
 
     const toggleCart = () => {
         setVisibleCart((prevVisibility) => !prevVisibility);
+    };
+
+    const makeSearch = () => {
+        router.push(`/search?query=${search}`);
     };
 
     useEffect(() => {
@@ -74,6 +79,8 @@ export default function Header({
 
                     <div className="container-flex">
                         <TextField
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
                             id="filled-basic"
                             label="Sök bland produkter"
                             variant="filled"
@@ -87,7 +94,9 @@ export default function Header({
                                 },
                             }}
                         />
-                        <Button variant="contained">Sök</Button>
+                        <Button variant="contained" onClick={makeSearch}>
+                            Sök
+                        </Button>
                     </div>
                 </div>
                 <nav>

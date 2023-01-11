@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useUser from "../../lib/useUser";
 import Layout from "../../components/layout";
 import useSWR from "swr";
 import MainAccount from "../../components/MainAccount";
@@ -15,6 +16,9 @@ import OrderItem from "../../components/OrderItem";
 
 export default function SgProfile() {
     const [showNav, setShowNav] = useState(false);
+    const { user } = useUser({
+        redirectTo: "/",
+    });
     const {
         data: orders,
         isLoading,

@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/router";
 import productStyles from "../../styles/Products.module.scss";
+import RenderList from "../../components/RenderList";
 
 export type ProductAddons = {
     product_images: string[];
@@ -57,6 +58,7 @@ export default function List({
     };
     data: Data | Error;
 }) {
+    const [showNav, setShowNav] = useState(false);
     if ("error" in data) {
         return <p>{data.error}</p>;
     }
@@ -83,19 +85,8 @@ export default function List({
             query: newQuery,
         });
     };
-    const [showNav, setShowNav] = useState(false);
+
     const title = `${category?.title} - Techstore`;
-
-    const handlePageChange = (
-        event: React.ChangeEvent<unknown>,
-        value: number
-    ) => {
-        changeQuery("page", value);
-    };
-
-    const handleChange = (event: any) => {
-        changeQuery("sortby", event.target.value);
-    };
 
     const handlePriceChange = (event: any) => {
         setPriceRange(event.target.value);
@@ -126,10 +117,6 @@ export default function List({
         <Layout toggleNav={() => setShowNav((prev) => !prev)} title={title}>
             <Main showNav={showNav}>
                 <div>
-                    {/* <div className="p-1 rounded">
-                        <p>{category.title}</p>
-                    </div> */}
-
                     <div className={productStyles.filter}>
                         <Box sx={{ width: 300, padding: 1 }}>
                             <p>Pris</p>
@@ -263,41 +250,11 @@ export default function List({
                             );
                         })}
                     </div>
-                    <div className={productStyles.listHeader}>
-                        <p>
-                            Visar {products.length}
-                            {data?.pageCount > 1
-                                ? ` av ${data?.pageCount} `
-                                : " "}
-                            produkter
-                        </p>
-                        <TextField
-                            value={String(data.sortBy)}
-                            onChange={handleChange}
-                            select // tell TextField to render select
-                            label="Sortera"
-                            size="small"
-                        >
-                            <MenuItem value={1}>Produkt A-Ö</MenuItem>
-                            <MenuItem value={2}>Produkt Ö-A</MenuItem>
-                            <MenuItem value={3}>Pris Högt - Lågt</MenuItem>
-                            <MenuItem value={4}>Pris Lågt - Högt</MenuItem>
-                        </TextField>
-                    </div>
-
-                    <ProductList products={products} />
-
-                    <div className="p-1 flex center-flex">
-                        <Pagination
-                            count={data?.pageCount ?? 1}
-                            variant="outlined"
-                            color="primary"
-                            showFirstButton
-                            showLastButton
-                            page={data?.page ?? 1}
-                            onChange={handlePageChange}
-                        />
-                    </div>
+                    <RenderList
+                        data={data}
+                        products={products}
+                        changeQuery={changeQuery}
+                    />
                 </div>
             </Main>
         </Layout>

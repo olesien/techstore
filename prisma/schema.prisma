@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -10,7 +11,7 @@ datasource db {
 model users {
   id          Int       @id @unique(map: "id_UNIQUE") @default(autoincrement())
   name        String?   @db.VarChar(45)
-  firstname   String?   @db.VarChar(45)
+  firstname   String    @db.VarChar(45)
   lastname    String?   @db.VarChar(45)
   mail        String    @unique(map: "mail_UNIQUE") @db.VarChar(55)
   password    String    @db.VarChar(150)
@@ -37,7 +38,7 @@ model orders {
   id              Int               @id @unique(map: "id_UNIQUE") @default(autoincrement())
   date            DateTime          @db.Date
   userid          Int?
-  status          String?           @db.VarChar(45)
+  status          String            @db.VarChar(45)
   firstname       String?           @db.VarChar(45)
   lastname        String?           @db.VarChar(45)
   mail            String            @db.VarChar(45)
@@ -102,6 +103,7 @@ model products {
   reviews         reviews[]
 
   @@index([categoryid], map: "categoryid")
+  @@fulltext([name], map: "name")
 }
 
 model reviews {
