@@ -75,6 +75,15 @@
         flex: 1;
         padding: 0 1rem;
     }
+
+    @media only screen and (max-width: 710px) {
+        font-size: 0.8em;
+    }
+
+    @media only screen and (max-width: 580px) {
+        flex-flow: column nowrap;
+        font-size: 0.95em;
+    }
 }
 
 .discount {

@@ -16,7 +16,7 @@ export default function CarouselItem({
     return (
         <div className="horizontal-flex">
             {newImg && (
-                <div className="vertical-flex bold">
+                <div className="vertical-flex bold flex-1">
                     <Link href={"/product/" + id} legacyBehavior>
                         <a>{title}</a>
                     </Link>
@@ -24,17 +24,13 @@ export default function CarouselItem({
                 </div>
             )}
 
-            <div className="img-container img-container-size">
-                <img
-                    alt="Vercel logo"
-                    src={image}
-                    // width={300}
-                    // height={400}
-                    style={{
-                        maxWidth: "100%",
-                        // height: "auto",
-                    }}
-                />
+            <div
+                className={
+                    "img-container flex-1" +
+                    (newImg ? " img-container-halfsize" : " img-container-size")
+                }
+            >
+                <img alt="Vercel logo" src={image} />
             </div>
         </div>
     );

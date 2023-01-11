@@ -7,7 +7,7 @@ import { CheapProduct } from "../../lib/cheapProducts";
 export default function VerticalItem({ product }: { product: CheapProduct }) {
     return (
         <div className="vertical-flex">
-            <div className="img-container">
+            <div className="img-container p-1">
                 <img
                     alt={"Bild av " + product.name}
                     src={product.product_images[0]}

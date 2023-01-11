@@ -157,11 +157,31 @@ button {
 }
 
 .img-container {
-    width: 100%;
-    height: 275px;
+    height: auto;
+    max-width: 325px;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.img-container-halfsize {
+    > img {
+        width: auto;
+        height: 300px;
+    }
+
+    @media only screen and (max-width: 570px) {
+        > img {
+            width: auto;
+            height: 200px;
+        }
+    }
+}
+
+.img-container-size {
+    max-width: 100%;
+    width: 325px;
+    height: 300px;
     > img {
         height: 250px;
         width: auto;
@@ -176,11 +196,6 @@ button {
             width: auto;
         }
     }
-}
-
-.img-container-size {
-    width: 325px;
-    height: 300px;
 }
 
 .overlay {
@@ -211,4 +226,8 @@ button {
 
 .text-center {
     text-align: center;
+}
+
+.flex-1 {
+    flex: 1;
 }
