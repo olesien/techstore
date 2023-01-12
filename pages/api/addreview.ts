@@ -45,7 +45,7 @@ async function addreview(req: NextApiRequest, res: NextApiResponse) {
                 timeposted: new Date(Date.now()),
             },
         });
-        return res.json(review);
+        return res.status(200).json(review);
     } catch (error) {
         res.status(500).json({ message: (error as Error).message });
     }

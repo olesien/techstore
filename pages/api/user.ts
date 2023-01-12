@@ -13,12 +13,12 @@ async function userRoute(req: NextApiRequest, res: NextApiResponse<User>) {
     if (req.session.user) {
         // in a real world application you might read the user id from the session and then do a database request
         // to get more information on the user if needed
-        res.json({
+        res.status(200).json({
             ...req.session.user,
             isLoggedIn: true,
         });
     } else {
-        res.json({
+        res.status(200).json({
             isLoggedIn: false,
             login: "",
             avatarUrl: "",

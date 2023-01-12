@@ -12,12 +12,8 @@ import FormInput from "../components/generic/FormInput";
 import Button from "@mui/material/Button";
 import fetchJson, { FetchError } from "../lib/fetchJson";
 import { useRouter } from "next/router";
+import { removeEmpty } from "../lib/utils";
 const fetchURL = (url: string) => fetch(url).then((r) => r.json());
-function removeEmpty(obj: object) {
-    return Object.fromEntries(
-        Object.entries(obj).filter(([_, v]) => v != null)
-    );
-}
 
 export interface Order {
     mail?: string;

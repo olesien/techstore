@@ -4,8 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "../../lib/prisma";
 type Error = {
-    code: number;
-    error: string;
+    message: string;
 };
 
 export type UserDetails =
@@ -50,15 +49,14 @@ async function userDetailsRoute(
                 return { code: 404, error: "Not Found" };
             }
 
-            return res.json(userDetails);
+            return res.status(200).json(userDetails);
         } catch (err: any) {
-            return res.json({
-                code: 500,
-                error: err.message,
+            return res.status(500).json({
+                message: err.message,
             });
         }
     } else {
-        res.json(null);
+        res.status(200).json(null);
     }
 }
 

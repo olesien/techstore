@@ -23,7 +23,7 @@ async function addreview(req: NextApiRequest, res: NextApiResponse) {
                 id,
             },
         });
-        return res.json(deletedReview);
+        return res.status(200).json(deletedReview);
     } catch (error) {
         res.status(500).json({ message: (error as Error).message });
     }

@@ -49,9 +49,9 @@ async function userDetailsRoute(
                 },
             });
 
-            return res.json(userDetails);
+            return res.status(200).json(userDetails);
         } catch (err: any) {
-            return res.status(200).json({
+            return res.status(500).json({
                 message: err.message,
             });
         }

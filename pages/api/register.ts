@@ -5,8 +5,7 @@ import { sessionOptions } from "../../lib/session";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 import bcrypt from "bcrypt";
-
-const saltRounds = 15;
+import { saltRounds } from "../../lib/utils";
 
 export interface Register {
     mail: string;
@@ -33,7 +32,7 @@ async function registerRoute(req: NextApiRequest, res: NextApiResponse) {
     bcrypt.hash(password, saltRounds, async function (err, hashedPassword) {
         // Store hash in your password DB.
         if (err) {
-            return res.status(500).json({ message: "Encryption error" });
+            return res.status(500).json({ message: "Kryptering misslyckades" });
         }
 
         const data: Register = { mail, password: hashedPassword, firstname };
@@ -56,14 +55,24 @@ async function registerRoute(req: NextApiRequest, res: NextApiResponse) {
         ) {
             return res
                 .status(400)
-                .json({ message: "The inputs are not correct" });
+                .json({ message: "Ett eller flera fält stämde ej" });
         }
 
         try {
-            //Login
+            //Register
 
             //Check so mail does not exist?
+            const exists = await prisma.users.findFirst({
+                where: { mail },
+            });
 
+            if (exists) {
+                return res
+                    .status(403)
+                    .json({ message: "Detta mail finns redan" });
+            }
+
+            //Create user
             const newUser = await prisma.users.create({
                 data,
             });
@@ -77,12 +86,15 @@ async function registerRoute(req: NextApiRequest, res: NextApiResponse) {
                 } as User;
                 req.session.user = user;
                 await req.session.save();
-                res.json(user);
+                res.status(200).json(user);
             } else {
-                return res.status(404).json({ message: "Register failed" });
+                return res
+                    .status(404)
+                    .json({ message: "Registrering misslyckades" });
             }
         } catch (error) {
-            res.status(500).json({ message: (error as Error).message });
+            console.log(error);
+            res.status(500).json({ message: "Internt server fel inträffade" });
         }
     });
 }

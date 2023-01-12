@@ -14,7 +14,7 @@ import TableRow from "@mui/material/TableRow";
 import styles from "../../styles/Account.module.scss";
 import OrderItem from "../../components/OrderItem";
 
-export default function SgProfile() {
+export default function Orders() {
     const [showNav, setShowNav] = useState(false);
     const { user } = useUser({
         redirectTo: "/",

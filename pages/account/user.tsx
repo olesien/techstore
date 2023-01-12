@@ -1,71 +1,89 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useUser from "../../lib/useUser";
-import fetchJson, { FetchError } from "../../lib/fetchJson";
-import styles from "../../styles/utils.module.scss";
 import Layout from "../../components/layout";
-import Head from "next/head";
-import Main from "../../components/Main";
-
+import useSWR from "swr";
+import MainAccount from "../../components/MainAccount";
+import { OrdersWithErrors } from "../api/orders";
+import styles from "../../styles/utils.module.scss";
 import FormInput from "../../components/generic/FormInput";
+import { Register } from "./register";
 import Button from "@mui/material/Button";
+import { removeEmpty } from "../../lib/utils";
+import fetchJson, { FetchError } from "../../lib/fetchJson";
+import { useSWRConfig } from "swr";
 
-export interface Register {
-    mail?: string;
-    password?: string;
-    password2?: string;
-    firstname?: string;
-    lastname?: string;
-    address?: string;
-    postnumber?: string;
-    postcity?: string;
-    phonenumber?: string;
-}
-
-export default function Register() {
-    // Register
-    const { mutateUser } = useUser({
-        redirectTo: "/",
-        redirectIfFound: true,
-    });
+export default function User() {
     const [errorMsg, setErrorMsg] = useState("");
     const [errors, setErrors] = useState<Register>({});
     const [showNav, setShowNav] = useState(false);
     const [form, setForm] = useState<Register>({});
-    //Prevent spread up
+    const { mutate } = useSWRConfig();
+    const { mutateUser, user } = useUser({
+        redirectTo: "/account/user",
+    });
 
-    const register = async (e: React.SyntheticEvent) => {
+    const {
+        data: userDetails,
+        isLoading,
+        error,
+    } = useSWR<OrdersWithErrors>("/api/userdetails");
+
+    console.log(userDetails);
+    useEffect(() => {
+        if (userDetails) {
+            setForm(removeEmpty(userDetails));
+        }
+
+        if (user) {
+            setForm((oldForm) => ({ ...oldForm, mail: user.login }));
+        }
+    }, [userDetails, user]);
+
+    if (isLoading || error || !userDetails || "message" in userDetails) {
+        return (
+            <Layout
+                toggleNav={() => setShowNav((prev) => !prev)}
+                title="Ordrar - Techstore"
+                error={error}
+                loading={isLoading}
+            />
+        );
+    }
+
+    const updateFields = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         console.log(form);
         const validRegex =
             /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
         let formErrors: Register = {};
 
-        if (!form.mail || !form.mail.match(validRegex)) {
+        if (form.mail && !form.mail.match(validRegex)) {
             formErrors = {
                 ...errors,
                 mail: "Mailet är för kort eller är fel",
             };
         }
 
-        if (!form.password || form.password.length < 4) {
+        if (form.password && form.password.length < 4) {
             formErrors = {
                 ...errors,
                 password: "Lösenordet är för kort",
             };
         }
-        if (form.password !== form.password2) {
+        if (form.password && form.password !== form.password2) {
             formErrors = {
                 ...errors,
                 password2: "Lösenorden matchar ej",
             };
         }
 
-        if (!form.firstname || form.firstname.length < 4) {
+        if (form.firstname && form.firstname.length < 4) {
             formErrors = {
                 ...errors,
                 firstname: "Ditt förnamn är för kort",
             };
         }
+
         //This will not be checked on the backend as it's not really important information
 
         if (form.lastname && form.lastname.length < 4) {
@@ -105,6 +123,7 @@ export default function Register() {
                     "Ditt telefonnummer är för kort eller innehåller inte bara nummer",
             };
         }
+
         setErrors(formErrors);
 
         if (Object.keys(formErrors).length > 0) {
@@ -113,13 +132,18 @@ export default function Register() {
 
         try {
             mutateUser(
-                await fetchJson("/api/register", {
+                await fetchJson("/api/changeuser", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(form),
                 })
+            );
+            mutate(
+                (key) => true, // which cache keys are updated
+                undefined, // update cache data to `undefined`
+                { revalidate: true } // do not revalidate
             );
             setErrorMsg("");
         } catch (error) {
@@ -130,17 +154,17 @@ export default function Register() {
             }
         }
     };
+
     return (
         <Layout
             toggleNav={() => setShowNav((prev) => !prev)}
-            title="Registrera - Techstore"
+            title="Ändra uppgifter - Techstore"
         >
-            <Main showNav={showNav}>
+            <MainAccount showNav={showNav}>
                 <div className={styles.formContainer}>
                     {errorMsg && <p className="error">{errorMsg}</p>}
-                    <form onSubmit={register}>
+                    <form onSubmit={updateFields}>
                         <FormInput
-                            required
                             id={"techstore-email"}
                             title={"Epost Address"}
                             hint={"Kommer att användas för inloggning"}
@@ -154,7 +178,6 @@ export default function Register() {
                         />
                         <div>
                             <FormInput
-                                required
                                 id={"techstore-firstname"}
                                 title={"Förnamn"}
                                 hint={""}
@@ -230,7 +253,6 @@ export default function Register() {
                             }
                         />
                         <FormInput
-                            required
                             id={"techstore-password"}
                             title={"Passord"}
                             hint={"Ditt passord kommer att bli krypterat"}
@@ -243,7 +265,6 @@ export default function Register() {
                             }
                         />
                         <FormInput
-                            required
                             id={"techstore-password2"}
                             title={"Skriv in Passord igen"}
                             hint={"Skriv in det igen"}
@@ -257,12 +278,12 @@ export default function Register() {
                         />
                         <div>
                             <Button type="submit" variant="outlined">
-                                Registrera
+                                Ändra uppgifter
                             </Button>
                         </div>
                     </form>
                 </div>
-            </Main>
+            </MainAccount>
         </Layout>
     );
 }

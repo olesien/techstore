@@ -76,7 +76,12 @@ async function addorder(req: NextApiRequest, res: NextApiResponse) {
         let data: Partial<orders> &
             Pick<
                 orders,
-                "date" | "mail" | "postnumber" | "postcity" | "address"
+                | "date"
+                | "mail"
+                | "postnumber"
+                | "postcity"
+                | "address"
+                | "status"
             > = {
             date: new Date(Date.now()),
             mail: form.mail,
@@ -143,7 +148,7 @@ async function addorder(req: NextApiRequest, res: NextApiResponse) {
                 console.log(productWithQuantity, productsByIds, product);
             }
         });
-        return res.json(order);
+        return res.status(200).json(order);
     } catch (error) {
         res.status(500).json({ message: (error as Error).message });
     }
