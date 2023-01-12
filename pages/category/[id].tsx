@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 import productStyles from "../../styles/Products.module.scss";
 import RenderList from "../../components/RenderList";
 import useQueries from "../../hooks/useQueries";
+import SliderWithValue from "../../components/SliderWithValue";
 
 export type ProductAddons = {
     product_images: string[];
@@ -235,6 +236,15 @@ export default function List({
                                                         </MenuItem>
                                                     ))}
                                             </TextField>
+                                        )}
+                                        {filter.type === "slider" && (
+                                            <SliderWithValue
+                                                filter={filter}
+                                                filterData={filterData}
+                                                handleCommit={
+                                                    handleFilterArrayChange
+                                                }
+                                            />
                                         )}
                                     </FormControl>
                                 </div>
