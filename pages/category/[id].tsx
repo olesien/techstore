@@ -1,22 +1,11 @@
 import { useState } from "react";
 import Layout from "../../components/layout";
-import Head from "next/head";
 import Main from "../../components/Main";
 import { GetServerSideProps } from "next";
-import { getCategory, getAllCategoryIds } from "../../lib/category";
+import { getCategory } from "../../lib/category";
 import { OtherFilters, getProducts } from "../../lib/products";
-import ProductList from "../../components/ProductList";
 import { categories_filters, products } from "@prisma/client";
-import {
-    Box,
-    Chip,
-    FormControl,
-    MenuItem,
-    Pagination,
-    Slider,
-    TextField,
-} from "@mui/material";
-import { useRouter } from "next/router";
+import { Box, Chip, FormControl, MenuItem, TextField } from "@mui/material";
 import productStyles from "../../styles/Products.module.scss";
 import RenderList from "../../components/RenderList";
 import useQueries from "../../hooks/useQueries";
@@ -37,7 +26,7 @@ export type Data = {
         price: {
             min: number;
             max: number;
-            activeRange: [min: number, max: number];
+            activeRange: number[];
         };
         otherFilters: OtherFilters;
     };
@@ -72,20 +61,9 @@ export default function List({
         );
     }
 
-    const [priceRange, setPriceRange] = useState([
-        data.filters.price.min,
-        data.filters.price.max,
-    ]);
     const products = data?.products;
 
     const title = `${category?.title} - Techstore`;
-
-    const handlePriceChange = (event: any) => {
-        setPriceRange(event.target.value);
-    };
-    const handlePriceChangeCommit = () => {
-        changeQuery("filter-price", JSON.stringify(priceRange));
-    };
 
     const handleFilterChange = (type: string, value: string) => {
         if (value === "unselected") {
@@ -94,47 +72,43 @@ export default function List({
         }
         changeQuery("filter-" + type, value);
     };
-    const handleFilterArrayChange = (type: string, value: string[]) => {
+    const handleFilterArrayChange = (
+        type: string,
+        value: (string | number)[]
+    ) => {
         if (value.length === 0) {
             return removeQuery("filter-" + type);
         }
         changeQuery("filter-" + type, JSON.stringify(value));
     };
 
-    function valuetext(value: number) {
-        return `${value} kr`;
-    }
-
     return (
         <Layout toggleNav={() => setShowNav((prev) => !prev)} title={title}>
             <Main showNav={showNav}>
                 <div>
                     <div className={productStyles.filter}>
-                        <Box sx={{ width: 300, padding: 1 }}>
-                            <p>Pris</p>
-                            <Slider
-                                getAriaLabel={() => "Price Range"}
-                                value={priceRange}
-                                onChange={handlePriceChange}
-                                onChangeCommitted={handlePriceChangeCommit}
-                                valueLabelDisplay="auto"
-                                getAriaValueText={valuetext}
-                                step={100}
-                                min={data.filters.price.min}
-                                max={data.filters.price.max}
-                                marks={[
+                        <SliderWithValue
+                            filter={{
+                                id: 1,
+                                title: "Pris",
+                                value: "price",
+                            }}
+                            filterData={{
+                                value: data.filters.price.activeRange,
+                                list: [
                                     {
-                                        value: data.filters.price.min,
-                                        label: data.filters.price.min + " kr",
+                                        content: data.filters.price.min,
+                                        id: 1,
                                     },
-
                                     {
-                                        value: data.filters.price.max,
-                                        label: data.filters.price.max + " kr",
+                                        content: data.filters.price.max,
+                                        id: 2,
                                     },
-                                ]}
-                            />
-                        </Box>
+                                ],
+                            }}
+                            handleCommit={handleFilterArrayChange}
+                            type="kr"
+                        />
                         {category.filters.map((filter) => {
                             const filterData =
                                 data.filters.otherFilters[filter.value];
@@ -241,9 +215,15 @@ export default function List({
                                             <SliderWithValue
                                                 filter={filter}
                                                 filterData={filterData}
-                                                handleCommit={
-                                                    handleFilterArrayChange
+                                                handleCommit={(index, values) =>
+                                                    handleFilterArrayChange(
+                                                        index,
+                                                        values.map((value) =>
+                                                            String(value)
+                                                        )
+                                                    )
                                                 }
+                                                type="st"
                                             />
                                         )}
                                     </FormControl>

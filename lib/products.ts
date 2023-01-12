@@ -2,14 +2,14 @@ import { categories_filters, reviews } from "@prisma/client";
 import prisma from "./prisma";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 type Filters = {
-    priceRange: [min: number, max: number];
+    priceRange: number[];
     otherFilters: { [index: string]: string };
 };
 
 export type OtherFilters = {
     [key: string]: {
-        value: string;
-        list: { content: string; id: number }[];
+        value: string | number[];
+        list: { content: string | number; id: number }[];
     };
 };
 

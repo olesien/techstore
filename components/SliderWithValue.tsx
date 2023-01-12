@@ -4,22 +4,24 @@ import React, { useEffect, useState } from "react";
 export default function SliderWithValue({
     filter,
     filterData,
+    type,
     handleCommit,
 }: {
     filter: {
         id: number;
         title: string;
         value: string;
-        type: string;
     };
     filterData: {
-        value: string;
+        value: string[] | number[] | string;
         list: {
-            content: string;
+            content: string | number;
             id: number;
         }[];
     };
-    handleCommit: (index: string, value: string[]) => void;
+
+    type: string;
+    handleCommit: (index: string, values: number[]) => void;
 }) {
     const [values, setValues] = useState<number[]>([]);
     const handleChangeChange = (event: any) => {
@@ -29,8 +31,10 @@ export default function SliderWithValue({
     //Update
     useEffect(() => {
         console.log(filterData);
-        if (filterData.value && filterData.value !== "unselected") {
-            // setValues(JSON.parse(filterData.value) as number[]);
+        if (filterData.value && typeof filterData.value !== "string") {
+            console.log(filterData.value);
+            setValues(filterData.value.map((value) => Number(value)));
+            //setValues(JSON.parse(filterData.value) as number[]);
         } else {
             const pureValues = filterData.list.map((item) =>
                 Number(item.content)
@@ -38,13 +42,12 @@ export default function SliderWithValue({
             setValues([Math.min(...pureValues), Math.max(...pureValues)]);
             console.log([Math.min(...pureValues), Math.max(...pureValues)]);
         }
-        console.log(filterData.value);
     }, [filterData]);
 
     console.log(values);
 
     function valuetext(value: number) {
-        return `${value} st`;
+        return `${value} type`;
     }
 
     //JSON.parse(filterData.value) as number[]
@@ -58,36 +61,19 @@ export default function SliderWithValue({
                 value={values}
                 onChange={handleChangeChange}
                 onChangeCommitted={() => {
-                    handleCommit(
-                        filter.value,
-                        values.map((value) => String(value))
-                    );
+                    handleCommit(filter.value, values);
                 }}
                 valueLabelDisplay="auto"
                 getAriaValueText={valuetext}
-                // step={1}
-                // min={data.filters.price.min}
-                // max={data.filters.price.max}
                 marks={filterData.list.map((item) => ({
                     value: Number(item.content),
-                    label: `${item.content} st`,
+                    label: `${item.content} ${type}`,
                 }))}
                 min={Math.min(...pureValues)}
                 max={Math.max(...pureValues)}
                 step={Math.floor(
                     (Math.max(...pureValues) - Math.min(...pureValues)) / 10
                 )}
-                // marks={[
-                //     {
-                //         value: data.filters.price.min,
-                //         label: data.filters.price.min + " kr",
-                //     },
-
-                //     {
-                //         value: data.filters.price.max,
-                //         label: data.filters.price.max + " kr",
-                //     },
-                // ]}
             />
         </Box>
     );
