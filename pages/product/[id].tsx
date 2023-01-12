@@ -57,7 +57,14 @@ export default function Product({ product }: { product: ProductType }) {
                                     <p>{product.reviews.length} recensioner</p>
                                 </div>
                             </div>
-                            <Carousel items={product.product_images} />
+                            <Carousel
+                                items={product.product_images.map((img) => ({
+                                    ...img,
+                                    image:
+                                        `/images/categories/${product.categoryid}/` +
+                                        img.image,
+                                }))}
+                            />
                         </div>
                     </div>
                     <div className={productStyles.bottomleft}>

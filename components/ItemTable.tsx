@@ -47,7 +47,10 @@ export default function ItemTable({
                             >
                                 <TableCell className={styles.product_col}>
                                     <img
-                                        src={product.product_images[0].image}
+                                        src={
+                                            `/images/categories/${product.categoryid}/` +
+                                            product.product_images[0].image
+                                        }
                                         title={
                                             product.product_images[0].name ??
                                             "produkt"

@@ -31,7 +31,8 @@ export default function HorizontalItem({
                 <img
                     src={
                         product.product_images.length > 0
-                            ? product.product_images[0]
+                            ? `/images/categories/${product.categoryid}/` +
+                              product.product_images[0]
                             : "/images/notfound.png"
                     }
                     alt={product.name ?? "Image"}

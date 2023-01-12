@@ -14,7 +14,7 @@ export default function CarouselItem({
 }) {
     console.log(image);
     return (
-        <div className="horizontal-flex">
+        <div className="horizontal-flex max-width">
             {newImg && (
                 <div className="vertical-flex bold flex-1">
                     <Link href={"/product/" + id} legacyBehavior>

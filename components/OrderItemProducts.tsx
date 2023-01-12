@@ -39,6 +39,7 @@ export default function OrderItemProducts({
                                 <div className={styles.product}>
                                     <img
                                         src={
+                                            `/images/categories/${product.products.categoryid}/` +
                                             product.products.product_images[0]
                                                 .image
                                         }

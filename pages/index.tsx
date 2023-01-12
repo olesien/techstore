@@ -98,7 +98,9 @@ export default function Home({
                         <Carousel
                             items={recentProducts.map((product) => ({
                                 id: product.id,
-                                image: product.product_images[0],
+                                image:
+                                    `/images/categories/${product.categoryid}/` +
+                                    product.product_images[0],
                                 title: product.name,
                             }))}
                             newImg={true}

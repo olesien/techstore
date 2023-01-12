@@ -10,7 +10,10 @@ export default function VerticalItem({ product }: { product: CheapProduct }) {
             <div className="img-container p-1">
                 <img
                     alt={"Bild av " + product.name}
-                    src={product.product_images[0]}
+                    src={
+                        `/images/categories/${product.categoryid}/` +
+                        product.product_images[0]
+                    }
                 />
             </div>
             <div className="vertical-flex ">
