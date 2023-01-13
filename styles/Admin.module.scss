@@ -1,0 +1,32 @@
+@import "colors.scss";
+.product_col {
+    display: flex;
+    align-items: center;
+    img {
+        width: 50px;
+        height: auto;
+    }
+
+    > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        padding: 0.5rem 1rem;
+
+        // Instock
+        > div {
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+    }
+}
+
+.search {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}

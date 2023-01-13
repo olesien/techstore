@@ -235,3 +235,12 @@ button {
 .max-width {
     width: 100%;
 }
+
+.clickable {
+    font-weight: bold;
+}
+
+.clickable:hover {
+    cursor: pointer;
+    color: $primary;
+}

@@ -18,9 +18,15 @@ async function productListRoute(
     req: NextApiRequest,
     res: NextApiResponse<AllProductsWithErrors>
 ) {
+    const search = String(req.query?.adminsearch ?? "");
+    const queries: { where?: { name: { search: string } } } = {};
+    if (search.length > 1) {
+        queries["where"] = { name: { search } };
+    }
     if (req.session.user && req.session.user.admin) {
         try {
             const products = await prisma.products.findMany({
+                ...queries,
                 include: { product_images: { take: 1 }, categories: true },
             });
 
