@@ -40,7 +40,7 @@ export default function productlist() {
             <Layout
                 toggleNav={() => setShowNav((prev) => !prev)}
                 title="Ordrar - Techstore"
-                error={error}
+                error={error?.message}
                 loading={isLoading}
             />
         );

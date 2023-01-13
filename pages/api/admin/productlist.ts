@@ -33,7 +33,7 @@ async function productListRoute(
             return res.status(200).json(products);
         } catch (err: any) {
             return res.status(500).json({
-                message: err.message,
+                message: err?.message,
             });
         }
     } else {
