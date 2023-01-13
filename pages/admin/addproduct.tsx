@@ -8,6 +8,8 @@ import useQueries from "../../hooks/useQueries";
 import Button from "@mui/material/Button";
 import useUser from "../../lib/useUser";
 import FormInput from "../../components/generic/FormInput";
+import { categories } from "@prisma/client";
+import { getAllCategories } from "../../lib/category";
 
 export interface Product {
     name?: string;
@@ -19,7 +21,11 @@ export interface Product {
     instock?: string;
 }
 
-export default function productlist() {
+export default function productlist({
+    categories,
+}: {
+    categories: Pick<categories, "id" | "name">;
+}) {
     const { query, changeQuery } = useQueries();
     const [showNav, setShowNav] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
@@ -29,6 +35,7 @@ export default function productlist() {
     const addProduct = () => {
         console.log(form);
     };
+    console.log(categories);
 
     return (
         <AdminRoute>
@@ -177,4 +184,14 @@ export default function productlist() {
             </Layout>
         </AdminRoute>
     );
+}
+
+export async function getStaticProps() {
+    const categories = await getAllCategories();
+
+    return {
+        props: {
+            categories,
+        },
+    };
 }

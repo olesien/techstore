@@ -1,13 +1,11 @@
 import prisma from "./prisma";
 import translate from "./translations";
-export async function getAllCategoryIds() {
-    // const categories = [{ id: 1, title: "test" }];
+export async function getAllCategories() {
     const categoryIds = await prisma.categories.findMany();
     return categoryIds.map((category) => {
         return {
-            params: {
-                id: String(category.id),
-            },
+            id: category.id,
+            name: String(category.name),
         };
     });
 }

@@ -53,8 +53,6 @@ export default function productlist() {
             makeSearch();
         }
     };
-
-    console.log(products);
     return (
         <AdminRoute>
             <Layout
