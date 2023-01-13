@@ -7,6 +7,7 @@ export type User = {
     login: string;
     avatarUrl: string;
     id: number;
+    admin: boolean;
 };
 
 async function userRoute(req: NextApiRequest, res: NextApiResponse<User>) {
@@ -23,6 +24,7 @@ async function userRoute(req: NextApiRequest, res: NextApiResponse<User>) {
             login: "",
             avatarUrl: "",
             id: 0,
+            admin: false,
         });
     }
 }

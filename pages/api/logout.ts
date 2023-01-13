@@ -10,6 +10,7 @@ function logoutRoute(req: NextApiRequest, res: NextApiResponse<User>) {
         login: "",
         avatarUrl: "",
         id: 0,
+        admin: false,
     });
 }
 

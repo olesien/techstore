@@ -83,6 +83,7 @@ async function registerRoute(req: NextApiRequest, res: NextApiResponse) {
                     login: newUser.mail,
                     avatarUrl: "",
                     id: newUser.id,
+                    admin: false,
                 } as User;
                 req.session.user = user;
                 await req.session.save();
