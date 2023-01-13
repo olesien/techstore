@@ -10,6 +10,9 @@ import useUser from "../../lib/useUser";
 import FormInput from "../../components/generic/FormInput";
 import { categories } from "@prisma/client";
 import { getAllCategories } from "../../lib/category";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import translate from "../../lib/translations";
 
 export interface Product {
     name?: string;
@@ -24,7 +27,7 @@ export interface Product {
 export default function productlist({
     categories,
 }: {
-    categories: Pick<categories, "id" | "name">;
+    categories: Pick<categories, "id" | "name">[];
 }) {
     const { query, changeQuery } = useQueries();
     const [showNav, setShowNav] = useState(false);
@@ -73,19 +76,53 @@ export default function productlist({
                         <div className={utilStyles.formContainer}>
                             {errorMsg && <p className="error">{errorMsg}</p>}
                             <form onSubmit={addProduct}>
-                                <FormInput
-                                    type={"text"}
-                                    required
-                                    id={"techstore-productname"}
-                                    title={"Produkt namn"}
-                                    hint={"Namnet på produkter"}
-                                    aria={"enter-product-name"}
-                                    error={errors.name}
-                                    value={form.name ?? ""}
-                                    onChange={(name) =>
-                                        setForm((form) => ({ ...form, name }))
-                                    }
-                                />
+                                <div>
+                                    <FormInput
+                                        type={"text"}
+                                        required
+                                        id={"techstore-productname"}
+                                        title={"Produkt namn"}
+                                        hint={"Namnet på produkter"}
+                                        aria={"enter-product-name"}
+                                        error={errors.name}
+                                        value={form.name ?? ""}
+                                        onChange={(name) =>
+                                            setForm((form) => ({
+                                                ...form,
+                                                name,
+                                            }))
+                                        }
+                                    />
+                                    <span>
+                                        <TextField
+                                            value={form.categoryid ?? "0"}
+                                            onChange={(e) =>
+                                                setForm((form) => ({
+                                                    ...form,
+                                                    categoryid: e.target.value,
+                                                }))
+                                            }
+                                            select // tell TextField to render select
+                                            label={"Kategori"}
+                                            SelectProps={{
+                                                autoWidth: true,
+                                            }}
+                                        >
+                                            <MenuItem value={"0"}>
+                                                Välj Kategori
+                                            </MenuItem>
+                                            {categories.map((category) => (
+                                                <MenuItem
+                                                    value={category.id}
+                                                    key={category.id}
+                                                >
+                                                    {translate(category.name)}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </span>
+                                </div>
+
                                 <FormInput
                                     type={"text"}
                                     multiline
