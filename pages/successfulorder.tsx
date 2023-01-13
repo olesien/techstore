@@ -9,7 +9,6 @@ import Link from "next/link";
 
 export default function successfulorder() {
     const { width, height } = useWindowDimensions();
-    console.log(width, height);
     return (
         <Layout nonav={true} title="Ordrar - Beställt!">
             <div className={mainStyles.main}>

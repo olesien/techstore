@@ -7,14 +7,17 @@ import {
     faFan,
     faFloppyDisk,
     faGaugeHigh,
+    faList,
     faMemory,
     faMicrochip,
     faMusic,
     faPalette,
     faPlug,
+    faPlus,
     faTruck,
     faUserGear,
 } from "@fortawesome/free-solid-svg-icons";
+import useUser from "../lib/useUser";
 
 export default function MainAccount({
     showNav,
@@ -24,7 +27,11 @@ export default function MainAccount({
     children: JSX.Element;
 }) {
     const { width } = useWindowDimensions();
-    console.log(width);
+    const { user } = useUser({
+        redirectTo: "/",
+    });
+
+    if (!user || !user.isLoggedIn) return <></>;
 
     const showChildren = !showNav || Number(width) > 768;
 
@@ -33,9 +40,17 @@ export default function MainAccount({
         { title: "Kunduppgifter", link: "/account/user", icon: faUserGear },
     ];
 
+    const adminLinks = [
+        { title: "Ordrar", link: "/account/orders", icon: faTruck },
+        { title: "Kunduppgifter", link: "/account/user", icon: faUserGear },
+        { header: "Admin" },
+        { title: "Alla produkter", link: "/admin/productlist", icon: faList },
+        { title: "Lägg till produkt", link: "/admin/addproduct", icon: faPlus },
+    ];
+
     return (
         <div className={styles.main}>
-            <Nav showNav={showNav} links={links} />
+            <Nav showNav={showNav} links={user.admin ? adminLinks : links} />
             {showChildren ? <div>{children}</div> : <div />}
         </div>
     );

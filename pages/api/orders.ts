@@ -24,7 +24,7 @@ export type Order =
 
 export type OrdersWithErrors = Order[] | Error;
 
-async function userDetailsRoute(
+async function ordersRoute(
     req: NextApiRequest,
     res: NextApiResponse<OrdersWithErrors>
 ) {
@@ -57,9 +57,9 @@ async function userDetailsRoute(
         }
     } else {
         return res.status(403).json({
-            message: "Forbidden",
+            message: "Förbjuden",
         });
     }
 }
 
-export default withIronSessionApiRoute(userDetailsRoute, sessionOptions);
+export default withIronSessionApiRoute(ordersRoute, sessionOptions);

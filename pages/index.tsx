@@ -41,8 +41,6 @@ export default function Home({
             />
         );
     }
-
-    console.log(recentProducts, cheapProducts);
     const [showNav, setShowNav] = useState(false);
     const items = [
         {

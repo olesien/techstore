@@ -10,9 +10,17 @@ import TableRow from "@mui/material/TableRow";
 import utilStyles from "../../styles/utils.module.scss";
 import styles from "../../styles/Account.module.scss";
 import TableBody from "@mui/material/TableBody";
+import useSWR from "swr";
+import { AllProductsWithErrors } from "../api/admin/productlist";
 
 export default function productlist() {
     const [showNav, setShowNav] = useState(false);
+    const {
+        data: products,
+        isLoading,
+        error,
+    } = useSWR<AllProductsWithErrors>("/api/admin/productlist");
+    console.log(products);
     return (
         <AdminRoute>
             <Layout
