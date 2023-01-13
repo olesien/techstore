@@ -187,7 +187,8 @@
     .reviewPreview {
         display: flex;
         position: absolute;
-
+        background-color: rgba(500, 500, 500, 0.6);
+        border-radius: 5px;
         flex-direction: column;
         align-items: center;
         justify-content: center;
