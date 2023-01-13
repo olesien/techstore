@@ -41,12 +41,14 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
                     } else {
                         return res
                             .status(400)
-                            .json({ message: "Password is incorrect" });
+                            .json({ message: "Passordet stämmer inte" });
                     }
                 }
             );
         } else {
-            return res.status(404).json({ message: "Mail not found" });
+            return res
+                .status(404)
+                .json({ message: "Ditt mail kunde inte hittas" });
         }
     } catch (error) {
         res.status(500).json({ message: (error as Error).message });

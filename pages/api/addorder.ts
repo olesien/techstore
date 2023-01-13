@@ -31,7 +31,9 @@ async function addorder(req: NextApiRequest, res: NextApiResponse) {
         !form.postcity ||
         form.postcity.length < 3
     ) {
-        return res.status(400).json({ message: "The inputs are not correct" });
+        return res
+            .status(400)
+            .json({ message: "En eller flera fält stämmer inte" });
     }
 
     //STEP 2: Verify there are enough of each product
@@ -65,7 +67,8 @@ async function addorder(req: NextApiRequest, res: NextApiResponse) {
 
     if (badQuantities.length > 0) {
         res.status(400).json({
-            message: "One or more items are too high quantity",
+            message:
+                "En eller flera produkter har inte så många i lager som beställts",
             data: badQuantities,
         });
     }

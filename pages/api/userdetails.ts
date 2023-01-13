@@ -46,7 +46,7 @@ async function userDetailsRoute(
             });
 
             if (!userDetails) {
-                return { code: 404, error: "Not Found" };
+                return { code: 404, error: "Hittades ej" };
             }
 
             return res.status(200).json(userDetails);

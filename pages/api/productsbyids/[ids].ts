@@ -21,7 +21,8 @@ export type ProductByIdType = products & { product_images: product_images[] };
 
 async function productsByIds(req: NextApiRequest, res: NextApiResponse) {
     const { ids } = req.query;
-    if (!ids) return res.status(400).json({ message: "No ids passed" });
+    if (!ids)
+        return res.status(400).json({ message: "Inga idn skickades med" });
     const idArray = JSON.parse(String(ids)) as number[];
     console.log(idArray);
     if (idArray.length === 0) return res.status(200).json({ products: [] });
@@ -39,7 +40,7 @@ async function productsByIds(req: NextApiRequest, res: NextApiResponse) {
         });
 
         if (products.length < 1) {
-            return res.status(404).json({ message: "Not found" });
+            return res.status(404).json({ message: "Hittades ej" });
         }
 
         return res.status(200).json({
