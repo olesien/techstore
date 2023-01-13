@@ -4,6 +4,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import { ChangeEventHandler } from "react";
 export default function FormInput({
+    multiline,
     required,
     id,
     title,
@@ -14,6 +15,7 @@ export default function FormInput({
     value,
     onChange,
 }: {
+    multiline?: boolean;
     required?: boolean;
     id: string;
     title: string;
@@ -33,6 +35,8 @@ export default function FormInput({
             >
                 <InputLabel htmlFor={id}>{error ?? title}</InputLabel>
                 <Input
+                    multiline={multiline ?? false}
+                    rows={multiline ? 4 : undefined}
                     id={id}
                     aria-describedby={aria}
                     type={type}
