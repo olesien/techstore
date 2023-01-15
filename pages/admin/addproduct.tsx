@@ -7,13 +7,14 @@ import adminStyles from "../../styles/Admin.module.scss";
 import useQueries from "../../hooks/useQueries";
 import Button from "@mui/material/Button";
 import FormInput from "../../components/generic/FormInput";
-import { categories } from "@prisma/client";
+import { Prisma, categories } from "@prisma/client";
 import { getAllCategories } from "../../lib/category";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import translate from "../../lib/translations";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+    faCross,
     faPlusCircle,
     faTrash,
     faUpload,
@@ -24,6 +25,8 @@ import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Autocomplete from "@mui/material/Autocomplete";
+import { getAllSpecTypes } from "../../lib/specifications";
 
 export interface Product {
     name?: string;
@@ -34,18 +37,16 @@ export interface Product {
     oldprice?: string;
     instock?: string;
 }
-function generate(element: React.ReactElement) {
-    return [0, 1, 2].map((value) =>
-        React.cloneElement(element, {
-            key: value,
-        })
-    );
-}
 
 export default function productlist({
     categories,
+    specTypes,
 }: {
     categories: Pick<categories, "id" | "name">[];
+    specTypes: (Prisma.PickArray<
+        Prisma.Product_specsGroupByOutputType,
+        "title"[]
+    > & {})[];
 }) {
     const [showNav, setShowNav] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
@@ -55,7 +56,7 @@ export default function productlist({
     const [newCategory, setNewCategory] = useState<string>("");
     const [specs, setSpecs] = useState<
         { name: string; items: { title: string; content: string }[] }[]
-    >([{ name: "", items: [] }]);
+    >([{ name: "Huvud specifikationer", items: [{ title: "", content: "" }] }]);
 
     const selectFiles = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = event.target;
@@ -81,7 +82,10 @@ export default function productlist({
             if (exists) {
                 return currentSpecs;
             } else {
-                currentSpecs.push({ name: newCategory, items: [] });
+                currentSpecs.push({
+                    name: newCategory,
+                    items: [{ title: "", content: "" }],
+                });
                 return [...currentSpecs];
             }
         });
@@ -90,11 +94,69 @@ export default function productlist({
         setNewCategory("");
     };
 
+    const addField = (categoryId: number) => {
+        setSpecs((categories) => {
+            const category = categories.find(
+                (category, index) => index === categoryId
+            );
+            if (category) {
+                category.items.push({ title: "", content: "" });
+                categories.splice(categoryId, 1, category);
+            }
+
+            return [...categories];
+        });
+    };
+
+    const removeField = (categoryId: number, fieldId: number) => {
+        setSpecs((categories) => {
+            const category = categories.find(
+                (category, index) => index === categoryId
+            );
+            if (category) {
+                category.items.splice(fieldId, 1);
+                if (category.items.length > 0) {
+                    categories.splice(categoryId, 1, category);
+                } else {
+                    categories.splice(categoryId, 1);
+                }
+            }
+
+            return [...categories];
+        });
+    };
+
+    const changeValue = (
+        categoryId: number,
+        fieldId: number,
+        type: "title" | "content",
+        value: string
+    ) => {
+        setSpecs((categories) => {
+            const category = categories.find(
+                (category, index) => index === categoryId
+            );
+            if (category) {
+                const field = category.items.find(
+                    (item, index) => index === fieldId
+                );
+                if (field) {
+                    field[type] = value;
+                    category.items.splice(fieldId, 1, field);
+                }
+
+                categories.splice(categoryId, 1, category);
+            }
+
+            return [...categories];
+        });
+    };
+
     const addProduct = () => {
         console.log(form);
     };
-    console.log(categories);
-    console.log(photos);
+
+    console.log(specs);
 
     return (
         <AdminRoute>
@@ -340,34 +402,144 @@ export default function productlist({
                                     {/* SPECS */}
                                     <div className={adminStyles.formSection}>
                                         <p>Produkt Specifikationer</p>
-                                        {specs.map((category) => {
-                                            return <div>{category.name}</div>;
+                                        {specs.map((category, index) => {
+                                            return (
+                                                <div
+                                                    className={
+                                                        adminStyles.category
+                                                    }
+                                                    key={index}
+                                                >
+                                                    <h4>{category.name}</h4>
+                                                    {category.items.map(
+                                                        (field, i) => (
+                                                            <div
+                                                                key={i}
+                                                                className={
+                                                                    adminStyles.field
+                                                                }
+                                                            >
+                                                                <div>
+                                                                    <Autocomplete
+                                                                        id="free-solo-demo"
+                                                                        freeSolo
+                                                                        options={specTypes.map(
+                                                                            (
+                                                                                option
+                                                                            ) =>
+                                                                                option.title
+                                                                        )}
+                                                                        value={
+                                                                            field.title
+                                                                        }
+                                                                        inputValue={
+                                                                            field.title
+                                                                        }
+                                                                        onChange={(
+                                                                            e,
+                                                                            value
+                                                                        ) => {
+                                                                            changeValue(
+                                                                                i,
+                                                                                index,
+                                                                                "title",
+                                                                                value ??
+                                                                                    ""
+                                                                            );
+                                                                        }}
+                                                                        onInputChange={(
+                                                                            e,
+                                                                            value
+                                                                        ) => {
+                                                                            changeValue(
+                                                                                i,
+                                                                                index,
+                                                                                "title",
+                                                                                value ??
+                                                                                    ""
+                                                                            );
+                                                                        }}
+                                                                        renderInput={(
+                                                                            params
+                                                                        ) => (
+                                                                            <TextField
+                                                                                {...params}
+                                                                                label="Spec"
+                                                                            />
+                                                                        )}
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <TextField
+                                                                        id="techstore-category-title"
+                                                                        label="Titel"
+                                                                        variant="filled"
+                                                                        value={
+                                                                            field.content
+                                                                        }
+                                                                        onChange={(
+                                                                            e
+                                                                        ) =>
+                                                                            changeValue(
+                                                                                i,
+                                                                                index,
+                                                                                "content",
+                                                                                e
+                                                                                    .target
+                                                                                    .value
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <FontAwesomeIcon
+                                                                        icon={
+                                                                            faTrash
+                                                                        }
+                                                                        role="button"
+                                                                        className="clickable"
+                                                                        onClick={() =>
+                                                                            removeField(
+                                                                                index,
+                                                                                i
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    )}
+
+                                                    <div>
+                                                        <Button
+                                                            variant="contained"
+                                                            component="label"
+                                                            onClick={() =>
+                                                                addField(index)
+                                                            }
+                                                        >
+                                                            <FontAwesomeIcon
+                                                                icon={
+                                                                    faPlusCircle
+                                                                }
+                                                            />
+                                                            Lägg till fält
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            );
                                         })}
-                                        <div
-                                            className={
-                                                adminStyles.addNewCategory
-                                            }
-                                        >
-                                            <div
-                                                className={
-                                                    adminStyles.categoryInput
-                                                }
-                                            >
-                                                <FormInput
-                                                    type="text"
-                                                    hint=""
-                                                    id={
-                                                        "techstore-category-title"
-                                                    }
-                                                    title={"Titel"}
-                                                    aria={
-                                                        "enter-productspec-title"
-                                                    }
-                                                    error={undefined}
+                                        <div className={adminStyles.addNew}>
+                                            <div>
+                                                <TextField
+                                                    id="techstore-category-title"
+                                                    label="Titel"
+                                                    variant="filled"
                                                     value={newCategory}
-                                                    onChange={(newCategory) =>
+                                                    size="small"
+                                                    onChange={(e) =>
                                                         setNewCategory(
-                                                            newCategory
+                                                            e.target.value
                                                         )
                                                     }
                                                 />
@@ -403,10 +575,12 @@ export default function productlist({
 
 export async function getStaticProps() {
     const categories = await getAllCategories();
+    const specTypes = await getAllSpecTypes();
 
     return {
         props: {
             categories,
+            specTypes,
         },
     };
 }

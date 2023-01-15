@@ -39,17 +39,25 @@
     }
 }
 
-.addNewCategory {
+.field {
     display: flex;
     align-items: center;
+    > * {
+        flex: 1;
+    }
+
+    gap: 1rem;
+}
+
+.addNew {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 1rem;
     > div {
         display: flex;
         align-items: center;
-    }
-
-    .categoryInput {
-        padding-top: 1rem;
     }
 }
 
@@ -57,5 +65,15 @@
     padding: 1rem;
     p {
         padding: 1.5rem;
+    }
+}
+
+.inputPadding {
+    padding-top: 1rem;
+}
+
+.category {
+    > * {
+        padding-top: 1rem;
     }
 }
