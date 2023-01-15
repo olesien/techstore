@@ -132,6 +132,7 @@ export default function productlist({
         type: "title" | "content",
         value: string
     ) => {
+        console.log(categoryId, fieldId, type, value);
         setSpecs((categories) => {
             const category = categories.find(
                 (category, index) => index === categoryId
@@ -402,133 +403,142 @@ export default function productlist({
                                     {/* SPECS */}
                                     <div className={adminStyles.formSection}>
                                         <p>Produkt Specifikationer</p>
-                                        {specs.map((category, index) => {
-                                            return (
-                                                <div
-                                                    className={
-                                                        adminStyles.category
-                                                    }
-                                                    key={index}
-                                                >
-                                                    <h4>{category.name}</h4>
-                                                    {category.items.map(
-                                                        (field, i) => (
-                                                            <div
-                                                                key={i}
-                                                                className={
-                                                                    adminStyles.field
+                                        {specs.map(
+                                            (category, categoryIndex) => {
+                                                return (
+                                                    <div
+                                                        className={
+                                                            adminStyles.category
+                                                        }
+                                                        key={categoryIndex}
+                                                    >
+                                                        <h4>{category.name}</h4>
+                                                        {category.items.map(
+                                                            (
+                                                                field,
+                                                                fieldIndex
+                                                            ) => (
+                                                                <div
+                                                                    key={
+                                                                        fieldIndex
+                                                                    }
+                                                                    className={
+                                                                        adminStyles.field
+                                                                    }
+                                                                >
+                                                                    <div>
+                                                                        <Autocomplete
+                                                                            id="free-solo-demo"
+                                                                            freeSolo
+                                                                            options={specTypes.map(
+                                                                                (
+                                                                                    option
+                                                                                ) =>
+                                                                                    option.title
+                                                                            )}
+                                                                            value={
+                                                                                field.title
+                                                                            }
+                                                                            inputValue={
+                                                                                field.title
+                                                                            }
+                                                                            onChange={(
+                                                                                e,
+                                                                                value
+                                                                            ) => {
+                                                                                changeValue(
+                                                                                    categoryIndex,
+                                                                                    fieldIndex,
+                                                                                    "title",
+                                                                                    value ??
+                                                                                        ""
+                                                                                );
+                                                                            }}
+                                                                            onInputChange={(
+                                                                                e,
+                                                                                value
+                                                                            ) => {
+                                                                                changeValue(
+                                                                                    categoryIndex,
+                                                                                    fieldIndex,
+                                                                                    "title",
+                                                                                    value ??
+                                                                                        ""
+                                                                                );
+                                                                            }}
+                                                                            renderInput={(
+                                                                                params
+                                                                            ) => (
+                                                                                <TextField
+                                                                                    {...params}
+                                                                                    label="Spec"
+                                                                                />
+                                                                            )}
+                                                                        />
+                                                                    </div>
+                                                                    <div>
+                                                                        <TextField
+                                                                            id="techstore-category-title"
+                                                                            label="Värde"
+                                                                            variant="filled"
+                                                                            value={
+                                                                                field.content
+                                                                            }
+                                                                            onChange={(
+                                                                                e
+                                                                            ) =>
+                                                                                changeValue(
+                                                                                    categoryIndex,
+                                                                                    fieldIndex,
+                                                                                    "content",
+                                                                                    e
+                                                                                        .target
+                                                                                        .value
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                    </div>
+                                                                    <div>
+                                                                        <FontAwesomeIcon
+                                                                            icon={
+                                                                                faTrash
+                                                                            }
+                                                                            role="button"
+                                                                            className="clickable"
+                                                                            onClick={() =>
+                                                                                removeField(
+                                                                                    categoryIndex,
+                                                                                    fieldIndex
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        )}
+
+                                                        <div>
+                                                            <Button
+                                                                variant="contained"
+                                                                component="label"
+                                                                onClick={() =>
+                                                                    addField(
+                                                                        categoryIndex
+                                                                    )
                                                                 }
                                                             >
-                                                                <div>
-                                                                    <Autocomplete
-                                                                        id="free-solo-demo"
-                                                                        freeSolo
-                                                                        options={specTypes.map(
-                                                                            (
-                                                                                option
-                                                                            ) =>
-                                                                                option.title
-                                                                        )}
-                                                                        value={
-                                                                            field.title
-                                                                        }
-                                                                        inputValue={
-                                                                            field.title
-                                                                        }
-                                                                        onChange={(
-                                                                            e,
-                                                                            value
-                                                                        ) => {
-                                                                            changeValue(
-                                                                                i,
-                                                                                index,
-                                                                                "title",
-                                                                                value ??
-                                                                                    ""
-                                                                            );
-                                                                        }}
-                                                                        onInputChange={(
-                                                                            e,
-                                                                            value
-                                                                        ) => {
-                                                                            changeValue(
-                                                                                i,
-                                                                                index,
-                                                                                "title",
-                                                                                value ??
-                                                                                    ""
-                                                                            );
-                                                                        }}
-                                                                        renderInput={(
-                                                                            params
-                                                                        ) => (
-                                                                            <TextField
-                                                                                {...params}
-                                                                                label="Spec"
-                                                                            />
-                                                                        )}
-                                                                    />
-                                                                </div>
-                                                                <div>
-                                                                    <TextField
-                                                                        id="techstore-category-title"
-                                                                        label="Titel"
-                                                                        variant="filled"
-                                                                        value={
-                                                                            field.content
-                                                                        }
-                                                                        onChange={(
-                                                                            e
-                                                                        ) =>
-                                                                            changeValue(
-                                                                                i,
-                                                                                index,
-                                                                                "content",
-                                                                                e
-                                                                                    .target
-                                                                                    .value
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                </div>
-                                                                <div>
-                                                                    <FontAwesomeIcon
-                                                                        icon={
-                                                                            faTrash
-                                                                        }
-                                                                        role="button"
-                                                                        className="clickable"
-                                                                        onClick={() =>
-                                                                            removeField(
-                                                                                index,
-                                                                                i
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        )
-                                                    )}
-
-                                                    <div>
-                                                        <Button
-                                                            variant="contained"
-                                                            component="label"
-                                                            onClick={() =>
-                                                                addField(index)
-                                                            }
-                                                        >
-                                                            <FontAwesomeIcon
-                                                                icon={
-                                                                    faPlusCircle
-                                                                }
-                                                            />
-                                                            Lägg till fält
-                                                        </Button>
+                                                                <FontAwesomeIcon
+                                                                    icon={
+                                                                        faPlusCircle
+                                                                    }
+                                                                />
+                                                                Lägg till fält
+                                                            </Button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            );
-                                        })}
+                                                );
+                                            }
+                                        )}
                                         <div className={adminStyles.addNew}>
                                             <div>
                                                 <TextField
