@@ -22,6 +22,18 @@ export type ProductType = (products & Product_addons) | Error;
 
 export type Product = products & Product_addons;
 
+export async function getProductIds() {
+    try {
+        const productIds = await prisma.products.findMany({
+            select: { id: true },
+        });
+        return productIds;
+    } catch (err) {
+        console.log(err);
+        return [];
+    }
+}
+
 export async function getProduct(id: number) {
     try {
         const product = await prisma.products.findFirst({

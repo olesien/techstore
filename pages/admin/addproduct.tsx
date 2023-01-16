@@ -4,31 +4,11 @@ import Layout from "../../components/layout";
 import MainAccount from "../../components/MainAccount";
 import utilStyles from "../../styles/utils.module.scss";
 import adminStyles from "../../styles/Admin.module.scss";
-import useQueries from "../../hooks/useQueries";
 import Button from "@mui/material/Button";
-import FormInput from "../../components/generic/FormInput";
 import { Prisma, categories, products } from "@prisma/client";
 import { getAllCategories } from "../../lib/category";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import translate from "../../lib/translations";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faCross,
-    faPlusCircle,
-    faTrash,
-    faUpload,
-} from "@fortawesome/free-solid-svg-icons";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import IconButton from "@mui/material/IconButton";
-import Avatar from "@mui/material/Avatar";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Autocomplete from "@mui/material/Autocomplete";
 import { getAllSpecTypes } from "../../lib/specifications";
 import fetchJson, { FetchError } from "../../lib/fetchJson";
-import { AddProduct, NewProduct } from "../api/admin/addproduct";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import Specifications from "../../components/admin/Specifications";
@@ -37,7 +17,7 @@ import AddImages from "../../components/admin/AddImages";
 import AddProductForm from "../../components/admin/AddProductForm";
 import useProductForm from "../../hooks/useProductForm";
 
-export default function productlist({
+export default function AddProduct({
     categories,
     specTypes,
 }: {
