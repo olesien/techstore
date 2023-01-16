@@ -8,13 +8,18 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import React from "react";
 import { NewProduct } from "../../pages/api/admin/addproduct";
+import { product_images } from "@prisma/client";
 
 export default function ListImages({
     photos,
     setPhotos,
+    setExistingPhotos,
+    categoryId,
 }: {
-    photos: NewProduct["photos"];
-    setPhotos: React.Dispatch<React.SetStateAction<File[]>>;
+    photos: NewProduct["photos"] | product_images[];
+    setPhotos?: React.Dispatch<React.SetStateAction<File[]>>;
+    setExistingPhotos?: React.Dispatch<React.SetStateAction<product_images[]>>;
+    categoryId?: number;
 }) {
     return (
         <div>
@@ -27,12 +32,24 @@ export default function ListImages({
                                 edge="end"
                                 aria-label="delete"
                                 onClick={() => {
-                                    setPhotos((currentPhotos) =>
-                                        currentPhotos.filter(
-                                            (current) =>
-                                                current.name !== photo.name
-                                        )
-                                    );
+                                    if ("size" in photo && setPhotos) {
+                                        setPhotos((currentPhotos) =>
+                                            currentPhotos.filter(
+                                                (current) =>
+                                                    current.name !== photo.name
+                                            )
+                                        );
+                                    } else if (
+                                        !("size" in photo) &&
+                                        setExistingPhotos
+                                    ) {
+                                        setExistingPhotos((currentPhotos) =>
+                                            currentPhotos.filter(
+                                                (current) =>
+                                                    current.id !== photo.id
+                                            )
+                                        );
+                                    }
                                 }}
                             >
                                 <FontAwesomeIcon icon={faTrash} />
@@ -41,12 +58,19 @@ export default function ListImages({
                     >
                         <ListItemAvatar>
                             <Avatar>
-                                <img src={URL.createObjectURL(photo)} alt="X" />
+                                <img
+                                    src={
+                                        "size" in photo
+                                            ? URL.createObjectURL(photo)
+                                            : `/images/categories/${
+                                                  categoryId ?? 1
+                                              }/${photo.image}`
+                                    }
+                                    alt="X"
+                                />
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemText
-                            primary={`${photo.name} (${photo.size})`}
-                        />
+                        <ListItemText primary={`${photo.name}`} />
                     </ListItem>
                 ))}
             </List>

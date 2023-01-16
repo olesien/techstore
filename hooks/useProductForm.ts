@@ -1,4 +1,4 @@
-import { categories } from "@prisma/client";
+import { categories, product_images } from "@prisma/client";
 import React, { useState } from "react";
 import { AddProduct, NewProduct } from "../pages/api/admin/addproduct";
 

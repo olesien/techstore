@@ -33,6 +33,9 @@ export default function EditProduct({
     product: Product;
 }) {
     const [showNav, setShowNav] = useState(false);
+    const [existingPhotos, setExistingPhotos] = useState(
+        product.product_images
+    );
     const router = useRouter();
     const {
         errorMsg,
@@ -202,10 +205,19 @@ export default function EditProduct({
                                         selectFiles={selectFiles}
                                         photosLength={photos.length}
                                     />
+                                    {existingPhotos.length > 0 && (
+                                        <ListImages
+                                            photos={existingPhotos}
+                                            setExistingPhotos={
+                                                setExistingPhotos
+                                            }
+                                        />
+                                    )}
                                     {photos.length > 0 && (
                                         <ListImages
                                             photos={photos}
                                             setPhotos={setPhotos}
+                                            categoryId={product.categoryid}
                                         />
                                     )}
                                     {/* SPECS */}
