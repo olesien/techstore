@@ -2,6 +2,7 @@ import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "../../../lib/session";
 import { NextApiRequest, NextApiResponse } from "next";
 import multer from "multer";
+import fs from "fs";
 export interface AddProduct {
     name?: string;
     categoryid?: string;
@@ -48,13 +49,17 @@ async function parseFormData(
         files: req.files,
     };
 }
-
 // IMPORTANT: Prevents next from trying to parse the form
 export const config = {
     api: {
         bodyParser: false,
     },
 };
+
+const upload = multer({
+    dest: "/public/test",
+});
+
 async function addProductRoute(req: NextApiRequest, res: NextApiResponse) {
     if (req.session.user && req.session.user.admin) {
         const result = await parseFormData(req, res);
@@ -68,8 +73,24 @@ async function addProductRoute(req: NextApiRequest, res: NextApiResponse) {
             mimetype: string;
             buffer: Buffer;
             size: number;
-        };
+        }[];
         console.log(form, specs, photos);
+
+        const time = Date.now();
+
+        //Upload
+
+        try {
+            photos.forEach((photo) => {
+                fs.writeFileSync(
+                    "./public/" + time + "-" + photo.originalname,
+                    photo.buffer
+                );
+            });
+            // file written successfully
+        } catch (err) {
+            console.error(err);
+        }
     } else {
         console.log("Permission denied");
     }
