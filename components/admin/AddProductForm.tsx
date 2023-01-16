@@ -18,47 +18,48 @@ export default function AddProductForm({
     categories: Pick<categories, "id" | "name">[];
 }) {
     return (
-        <div>
-            <FormInput
-                type={"text"}
-                required
-                id={"techstore-productname"}
-                title={"Produkt namn"}
-                hint={"Namnet på produkter"}
-                aria={"enter-product-name"}
-                error={errors.name}
-                value={form.name ?? ""}
-                onChange={(name) =>
-                    setForm((form) => ({
-                        ...form,
-                        name,
-                    }))
-                }
-            />
-            <span>
-                <TextField
-                    value={form.categoryid ?? "0"}
-                    onChange={(e) =>
+        <>
+            <div>
+                <FormInput
+                    type={"text"}
+                    required
+                    id={"techstore-productname"}
+                    title={"Produkt namn"}
+                    hint={"Namnet på produkter"}
+                    aria={"enter-product-name"}
+                    error={errors.name}
+                    value={form.name ?? ""}
+                    onChange={(name) =>
                         setForm((form) => ({
                             ...form,
-                            categoryid: e.target.value,
+                            name,
                         }))
                     }
-                    select // tell TextField to render select
-                    label={"Kategori"}
-                    SelectProps={{
-                        autoWidth: true,
-                    }}
-                >
-                    <MenuItem value={"0"}>Välj Kategori</MenuItem>
-                    {categories.map((category) => (
-                        <MenuItem value={category.id} key={category.id}>
-                            {translate(category.name)}
-                        </MenuItem>
-                    ))}
-                </TextField>
-            </span>
-
+                />
+                <span>
+                    <TextField
+                        value={form.categoryid ?? "0"}
+                        onChange={(e) =>
+                            setForm((form) => ({
+                                ...form,
+                                categoryid: e.target.value,
+                            }))
+                        }
+                        select // tell TextField to render select
+                        label={"Kategori"}
+                        SelectProps={{
+                            autoWidth: true,
+                        }}
+                    >
+                        <MenuItem value={"0"}>Välj Kategori</MenuItem>
+                        {categories.map((category) => (
+                            <MenuItem value={category.id} key={category.id}>
+                                {translate(category.name)}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                </span>
+            </div>
             <FormInput
                 type={"text"}
                 multiline
@@ -143,6 +144,6 @@ export default function AddProductForm({
                     }
                 />
             </div>
-        </div>
+        </>
     );
 }
