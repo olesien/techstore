@@ -108,15 +108,18 @@ export default function productlist() {
                                             >
                                                 <img
                                                     src={
-                                                        `/images/categories/${product.categoryid}/` +
                                                         product
                                                             .product_images[0]
-                                                            .image
+                                                            ? `/images/categories/${product.categoryid}/` +
+                                                              product
+                                                                  .product_images[0]
+                                                                  .image
+                                                            : "/images/notfound.png"
                                                     }
                                                     title={
                                                         product
                                                             .product_images[0]
-                                                            .name ?? "produkt"
+                                                            ?.name ?? "produkt"
                                                     }
                                                 ></img>
                                                 <div>
