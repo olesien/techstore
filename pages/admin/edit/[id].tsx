@@ -18,6 +18,7 @@ import AddProductForm from "../../../components/admin/AddProductForm";
 import useProductForm from "../../../hooks/useProductForm";
 import { GetServerSideProps, GetStaticProps } from "next/types";
 import { Product, getProduct, getProductIds } from "../../../lib/product";
+import { NewProduct } from "../../api/admin/addproduct";
 
 export default function EditProduct({
     categories,
@@ -44,6 +45,7 @@ export default function EditProduct({
         newCategory,
         setNewCategory,
         specs,
+        setSpecs,
         selectFiles,
         addCategory,
         addField,
@@ -52,8 +54,10 @@ export default function EditProduct({
     } = useProductForm();
 
     useEffect(() => {
+        //Set main form
         setForm((form) => {
             form.name = product.name;
+            form.categoryid = String(product.categoryid);
             if (product.quickspecs) {
                 form.quickspecs = product.quickspecs;
             }
@@ -71,6 +75,38 @@ export default function EditProduct({
             }
             return form;
         });
+
+        //Set images
+
+        //Set specs
+        // const specs: {
+        //     name: string;
+        //     items: {
+        //         title: string;
+        //         content: string;
+        //     }[];
+        // }[]
+        const newSpecs = product.product_specs.reduce((specs, spec) => {
+            const categoryIndex = specs.findIndex(
+                (cat) =>
+                    cat.name == (spec.speccategory ?? "Huvud specifikationer")
+            );
+            if (categoryIndex >= 0) {
+                const category = specs[categoryIndex];
+                category.items.push({
+                    title: spec.title,
+                    content: spec.content,
+                });
+                specs.splice(categoryIndex, 1, category);
+            } else {
+                specs.push({
+                    name: spec.speccategory ?? "Huvud specifikationer",
+                    items: [{ title: spec.title, content: spec.content }],
+                });
+            }
+            return specs;
+        }, [] as NewProduct["specs"]);
+        setSpecs(newSpecs);
     }, [product]);
 
     console.log(product);
