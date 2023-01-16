@@ -151,9 +151,6 @@ export default function productlist({
     const addProduct = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         console.log("Adding product");
-        console.log(form);
-        console.log(photos);
-        console.log(specs);
 
         let formData = new FormData();
 
@@ -205,7 +202,6 @@ export default function productlist({
             >
                 <MainAccount showNav={showNav}>
                     <section className={utilStyles.section}>
-                        <p>Lägg till produkt</p>
                         {/* - > Content
                         Product Name
                         Product Description 
@@ -364,56 +360,9 @@ export default function productlist({
                                         }
                                     />
                                 </div>
-                                <div className={adminStyles.uploadSection}>
-                                    <div>
-                                        <List>
-                                            {photos.map((photo, index) => (
-                                                <ListItem
-                                                    key={index}
-                                                    secondaryAction={
-                                                        <IconButton
-                                                            edge="end"
-                                                            aria-label="delete"
-                                                            onClick={() => {
-                                                                setPhotos(
-                                                                    (
-                                                                        currentPhotos
-                                                                    ) =>
-                                                                        currentPhotos.filter(
-                                                                            (
-                                                                                current
-                                                                            ) =>
-                                                                                current.name !==
-                                                                                photo.name
-                                                                        )
-                                                                );
-                                                            }}
-                                                        >
-                                                            <FontAwesomeIcon
-                                                                icon={faTrash}
-                                                            />
-                                                        </IconButton>
-                                                    }
-                                                >
-                                                    <ListItemAvatar>
-                                                        <Avatar>
-                                                            <img
-                                                                src={URL.createObjectURL(
-                                                                    photo
-                                                                )}
-                                                                alt="X"
-                                                            />
-                                                        </Avatar>
-                                                    </ListItemAvatar>
-                                                    <ListItemText
-                                                        primary={`${photo.name} (${photo.size})`}
-                                                    />
-                                                </ListItem>
-                                            ))}
-                                        </List>
-                                    </div>
+                                <div className={adminStyles.additionSection}>
+                                    <h2>Produkt Bilder</h2>
                                     <div className={adminStyles.formSection}>
-                                        <p>Produkt Bilder</p>
                                         <Button
                                             variant="contained"
                                             component="label"
@@ -438,9 +387,60 @@ export default function productlist({
                                             />
                                         </Button>
                                     </div>
+                                    {photos.length > 0 && (
+                                        <div>
+                                            <List>
+                                                {photos.map((photo, index) => (
+                                                    <ListItem
+                                                        key={index}
+                                                        secondaryAction={
+                                                            <IconButton
+                                                                edge="end"
+                                                                aria-label="delete"
+                                                                onClick={() => {
+                                                                    setPhotos(
+                                                                        (
+                                                                            currentPhotos
+                                                                        ) =>
+                                                                            currentPhotos.filter(
+                                                                                (
+                                                                                    current
+                                                                                ) =>
+                                                                                    current.name !==
+                                                                                    photo.name
+                                                                            )
+                                                                    );
+                                                                }}
+                                                            >
+                                                                <FontAwesomeIcon
+                                                                    icon={
+                                                                        faTrash
+                                                                    }
+                                                                />
+                                                            </IconButton>
+                                                        }
+                                                    >
+                                                        <ListItemAvatar>
+                                                            <Avatar>
+                                                                <img
+                                                                    src={URL.createObjectURL(
+                                                                        photo
+                                                                    )}
+                                                                    alt="X"
+                                                                />
+                                                            </Avatar>
+                                                        </ListItemAvatar>
+                                                        <ListItemText
+                                                            primary={`${photo.name} (${photo.size})`}
+                                                        />
+                                                    </ListItem>
+                                                ))}
+                                            </List>
+                                        </div>
+                                    )}
                                     {/* SPECS */}
+                                    <h2>Produkt Specifikationer</h2>
                                     <div className={adminStyles.formSection}>
-                                        <p>Produkt Specifikationer</p>
                                         {specs.map(
                                             (category, categoryIndex) => {
                                                 return (

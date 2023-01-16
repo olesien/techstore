@@ -31,11 +31,17 @@
     gap: 1rem;
 }
 
-.uploadSection {
+.additionSection {
     display: flex;
     flex-direction: column;
     svg {
         padding-right: 5px;
+    }
+    h2 {
+        font-size: 1.25em;
+    }
+    > div {
+        border-left: 3px solid $primary;
     }
 }
 
