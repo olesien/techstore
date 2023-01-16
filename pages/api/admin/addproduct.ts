@@ -3,6 +3,7 @@ import { sessionOptions } from "../../../lib/session";
 import { NextApiRequest, NextApiResponse } from "next";
 import multer from "multer";
 import fs from "fs";
+import prisma from "../../../lib/prisma";
 export interface AddProduct {
     name?: string;
     categoryid?: string;
@@ -13,16 +14,18 @@ export interface AddProduct {
     instock?: string;
 }
 
+export interface AddProductForm {
+    name: string;
+    categoryid: number;
+    quickspecs: string;
+    description: string;
+    price: number;
+    oldprice?: number;
+    instock: number;
+}
+
 export interface NewProduct {
-    form: Pick<
-        AddProduct,
-        | "name"
-        | "categoryid"
-        | "description"
-        | "instock"
-        | "price"
-        | "quickspecs"
-    >;
+    form: AddProduct;
     photos: File[];
     specs: { name: string; items: { title: string; content: string }[] }[];
 }
@@ -78,18 +81,134 @@ async function addProductRoute(req: NextApiRequest, res: NextApiResponse) {
 
         const time = Date.now();
 
-        //Upload
+        // name?: string;
+        // categoryid?: string;
+        // quickspecs?: string;
+        // description?: string;
+        // price?: string;
+        // oldprice?: string;
+        // instock?: string;
 
+        if (!("name" in form) || !form.name || form.name.length < 2) {
+            return res
+                .status(400)
+                .json({ message: "Namnet är odefinerat eller för kort" });
+        }
+
+        if (
+            !("categoryid" in form) ||
+            !form.categoryid ||
+            !(await prisma.categories.findFirst({
+                where: { id: Number(form.categoryid) },
+            }))
+        ) {
+            return res
+                .status(400)
+                .json({ message: "Kategorin är odefinerad eller finns ej" });
+        }
+
+        if (
+            !("quickspecs" in form) ||
+            !form.quickspecs ||
+            form.quickspecs.length < 2
+        ) {
+            return res
+                .status(400)
+                .json({ message: "Quickspecs är odefinerat eller för kort" });
+        }
+
+        if (
+            !("description" in form) ||
+            !form.description ||
+            form.description.length < 20
+        ) {
+            return res.status(400).json({
+                message:
+                    "Beskrivning är odefinerat eller för kort (minst 20 längd)",
+            });
+        }
+
+        if (
+            !("price" in form) ||
+            !form.price ||
+            form.price.length < 2 ||
+            form.price.length > 100000
+        ) {
+            return res.status(400).json({
+                message:
+                    "Pris är odefinerat eller för långt (max hundra tusen)",
+            });
+        }
+
+        if (
+            "oldprice" in form &&
+            (!form.oldprice ||
+                form.oldprice.length < 2 ||
+                form.oldprice.length > 100000)
+        ) {
+            return res.status(400).json({
+                message: "Gammalt Pris är fel (är det över hundra tusen?)",
+            });
+        }
+
+        if (
+            !("instock" in form) ||
+            !form.instock ||
+            form.instock.length < 2 ||
+            form.instock.length > 1000
+        ) {
+            return res.status(400).json({
+                message: "Lagersaldo är odefinerat eller för stort (max 1000)",
+            });
+        }
+        const data = {
+            ...form,
+            categoryid: Number(form.categoryid),
+            price: Number(form.price),
+            instock: Number(form.instock),
+        } as AddProductForm;
+
+        if ("oldprice" in data) {
+            data.oldprice = Number(data.oldprice);
+        }
         try {
-            photos.forEach((photo) => {
+            //Create product
+            const newProduct = await prisma.products.create({
+                data,
+            });
+
+            //Upload files and create references
+            photos.forEach(async (photo) => {
+                //Set max length to 30
+                let splitName = photo.originalname.split(".");
+                let name =
+                    splitName[0].substring(0, 30) +
+                    "." +
+                    splitName[splitName.length - 1];
+                console.log(name);
+
                 fs.writeFileSync(
-                    "./public/" + time + "-" + photo.originalname,
+                    "./public/images/categories/" +
+                        data.categoryid +
+                        "/" +
+                        time +
+                        "-" +
+                        name,
                     photo.buffer
                 );
+                //Create product_images references
+                await prisma.product_images.create({
+                    data: {
+                        name: name,
+                        productid: data.categoryid,
+                        image: time + "-" + name,
+                    },
+                });
             });
-            // file written successfully
-        } catch (err) {
-            console.error(err);
+
+            return res.status(200).json(newProduct);
+        } catch (error) {
+            res.status(500).json({ message: (error as Error).message });
         }
     } else {
         console.log("Permission denied");

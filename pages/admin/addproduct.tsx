@@ -27,7 +27,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Autocomplete from "@mui/material/Autocomplete";
 import { getAllSpecTypes } from "../../lib/specifications";
-import fetchJson from "../../lib/fetchJson";
+import fetchJson, { FetchError } from "../../lib/fetchJson";
 import { AddProduct, NewProduct } from "../api/admin/addproduct";
 
 export default function productlist({
@@ -154,6 +154,19 @@ export default function productlist({
 
         let formData = new FormData();
 
+        if (photos.length === 0) {
+            return setErrorMsg("Du måste ha minst en bild");
+        }
+
+        if (
+            specs[0].items[0].content === "" ||
+            specs[0].items[0].title === ""
+        ) {
+            return setErrorMsg(
+                "Du måste ha minst en spec (och den måste vara definerad)"
+            );
+        }
+
         formData.append("form", JSON.stringify(form));
         for (let i = 0; i < photos.length; i++) {
             formData.append("photos[]", photos[i]);
@@ -165,10 +178,20 @@ export default function productlist({
         //error handling??
 
         //Send
-        await fetchJson("/api/admin/addproduct", {
-            method: "POST",
-            body: formData,
-        });
+
+        try {
+            await fetchJson("/api/admin/addproduct", {
+                method: "POST",
+                body: formData,
+            });
+            setErrorMsg("");
+        } catch (error) {
+            if (error instanceof FetchError) {
+                setErrorMsg(error.data.message);
+            } else {
+                console.error("An unexpected error happened:", error);
+            }
+        }
     };
 
     return (
