@@ -200,9 +200,51 @@ async function addProductRoute(req: NextApiRequest, res: NextApiResponse) {
                 await prisma.product_images.create({
                     data: {
                         name: name,
-                        productid: data.categoryid,
+                        productid: newProduct.id,
                         image: time + "-" + name,
                     },
+                });
+            });
+
+            //Create specs
+            specs.forEach(async (spec) => {
+                await prisma.product_specs.createMany({
+                    data: spec.items.map((field) => {
+                        const splitBySpace = field.content.split(" ");
+                        const nameWithoutComma = splitBySpace[0].replace(
+                            /,/g,
+                            ""
+                        );
+                        let content = nameWithoutComma;
+                        if (
+                            content.toLowerCase() === "sant" ||
+                            content.toLowerCase() === "ja"
+                        ) {
+                            content = "true";
+                        } else if (
+                            content.toLowerCase() === "falskt" ||
+                            content.toLowerCase() === "nej"
+                        ) {
+                            content = "false";
+                        }
+
+                        let extra: { extrainfo?: string } = {};
+                        if (nameWithoutComma.length > 1) {
+                            //add extra
+                            extra.extrainfo = splitBySpace[1].replace(
+                                /[()\s]/g,
+                                ""
+                            );
+                        }
+
+                        return {
+                            ...field,
+                            content,
+                            speccategory: field.title,
+                            productid: newProduct.id,
+                            ...extra,
+                        };
+                    }),
                 });
             });
 
@@ -211,7 +253,7 @@ async function addProductRoute(req: NextApiRequest, res: NextApiResponse) {
             res.status(500).json({ message: (error as Error).message });
         }
     } else {
-        console.log("Permission denied");
+        console.log("Tillåtelse nekades.");
     }
 }
 export default withIronSessionApiRoute(addProductRoute, sessionOptions);

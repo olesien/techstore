@@ -56,7 +56,9 @@ export default function SpecList({ list }: { list: product_specs[] }) {
                                     <p>
                                         {getContent(spec.content)}
                                         {spec.extrainfo
-                                            ? ", " + spec.extrainfo
+                                            ? (spec.extrainfo.length > 2
+                                                  ? ", "
+                                                  : " ") + spec.extrainfo
                                             : ""}
                                     </p>
                                 </li>

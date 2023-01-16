@@ -7,6 +7,7 @@ import { CacheProvider, EmotionCache } from "@emotion/react";
 import createEmotionCache from "../config/createEmotionCache";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import { ToastContainer } from "react-toastify";
 //Bug prevention
 config.autoAddCss = false;
 
@@ -117,6 +118,15 @@ export default function App({
                     }}
                 >
                     <Component {...pageProps} />
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={4000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        draggable={false}
+                        closeOnClick
+                        pauseOnHover
+                    />
                 </SWRConfig>
             </ThemeProvider>
         </CacheProvider>

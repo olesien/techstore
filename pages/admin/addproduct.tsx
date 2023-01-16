@@ -7,7 +7,7 @@ import adminStyles from "../../styles/Admin.module.scss";
 import useQueries from "../../hooks/useQueries";
 import Button from "@mui/material/Button";
 import FormInput from "../../components/generic/FormInput";
-import { Prisma, categories } from "@prisma/client";
+import { Prisma, categories, products } from "@prisma/client";
 import { getAllCategories } from "../../lib/category";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -29,6 +29,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { getAllSpecTypes } from "../../lib/specifications";
 import fetchJson, { FetchError } from "../../lib/fetchJson";
 import { AddProduct, NewProduct } from "../api/admin/addproduct";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 export default function productlist({
     categories,
@@ -49,6 +51,7 @@ export default function productlist({
     const [specs, setSpecs] = useState<NewProduct["specs"]>([
         { name: "Huvud specifikationer", items: [{ title: "", content: "" }] },
     ]);
+    const router = useRouter();
 
     const selectFiles = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = event.target;
@@ -173,18 +176,18 @@ export default function productlist({
         }
         formData.append("specs", JSON.stringify(specs));
 
-        console.log(formData);
-
-        //error handling??
-
         //Send
 
         try {
-            await fetchJson("/api/admin/addproduct", {
+            const product = (await fetchJson("/api/admin/addproduct", {
                 method: "POST",
                 body: formData,
-            });
-            setErrorMsg("");
+            })) as { product?: products };
+            if (product && "id" in product) {
+                toast("Produkt tillagd!");
+                router.push("/product/" + product.id);
+                setErrorMsg("");
+            }
         } catch (error) {
             if (error instanceof FetchError) {
                 setErrorMsg(error.data.message);
