@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AdminRoute from "../../../components/generic/AdminRoute";
 import Layout from "../../../components/layout";
 import MainAccount from "../../../components/MainAccount";
@@ -50,6 +50,28 @@ export default function EditProduct({
         removeField,
         changeValue,
     } = useProductForm();
+
+    useEffect(() => {
+        setForm((form) => {
+            form.name = product.name;
+            if (product.quickspecs) {
+                form.quickspecs = product.quickspecs;
+            }
+            if (product.description) {
+                form.description = product.description;
+            }
+            if (product.price) {
+                form.price = String(product.price);
+            }
+            if (product.oldprice) {
+                form.oldprice = String(product.oldprice);
+            }
+            if (product.instock) {
+                form.instock = String(product.instock);
+            }
+            return form;
+        });
+    }, [product]);
 
     console.log(product);
 
