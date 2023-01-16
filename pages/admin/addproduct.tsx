@@ -27,16 +27,8 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Autocomplete from "@mui/material/Autocomplete";
 import { getAllSpecTypes } from "../../lib/specifications";
-
-export interface Product {
-    name?: string;
-    categoryid?: string;
-    quickspecs?: string;
-    description?: string;
-    price?: string;
-    oldprice?: string;
-    instock?: string;
-}
+import fetchJson from "../../lib/fetchJson";
+import { AddProduct, NewProduct } from "../api/admin/addproduct";
 
 export default function productlist({
     categories,
@@ -50,13 +42,13 @@ export default function productlist({
 }) {
     const [showNav, setShowNav] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
-    const [errors, setErrors] = useState<Product>({});
-    const [form, setForm] = useState<Product>({});
-    const [photos, setPhotos] = useState<File[]>([]);
+    const [errors, setErrors] = useState<AddProduct>({});
+    const [form, setForm] = useState<AddProduct>({});
+    const [photos, setPhotos] = useState<NewProduct["photos"]>([]);
     const [newCategory, setNewCategory] = useState<string>("");
-    const [specs, setSpecs] = useState<
-        { name: string; items: { title: string; content: string }[] }[]
-    >([{ name: "Huvud specifikationer", items: [{ title: "", content: "" }] }]);
+    const [specs, setSpecs] = useState<NewProduct["specs"]>([
+        { name: "Huvud specifikationer", items: [{ title: "", content: "" }] },
+    ]);
 
     const selectFiles = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = event.target;
@@ -153,11 +145,31 @@ export default function productlist({
         });
     };
 
-    const addProduct = () => {
+    const addProduct = async (e: React.SyntheticEvent) => {
+        e.preventDefault();
+        console.log("Adding product");
         console.log(form);
-    };
+        console.log(photos);
+        console.log(specs);
 
-    console.log(specs);
+        let formData = new FormData();
+
+        formData.append("form", JSON.stringify(form));
+        for (let i = 0; i < photos.length; i++) {
+            formData.append("photos[]", photos[i]);
+        }
+        formData.append("specs", JSON.stringify(specs));
+
+        console.log(formData);
+
+        //error handling??
+
+        //Send
+        await fetchJson("/api/admin/addproduct", {
+            method: "POST",
+            body: formData,
+        });
+    };
 
     return (
         <AdminRoute>
