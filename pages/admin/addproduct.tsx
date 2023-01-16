@@ -31,6 +31,10 @@ import fetchJson, { FetchError } from "../../lib/fetchJson";
 import { AddProduct, NewProduct } from "../api/admin/addproduct";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import Specifications from "../../components/admin/Specifications";
+import ListImages from "../../components/admin/ListImages";
+import AddImages from "../../components/admin/AddImages";
+import AddProductForm from "../../components/admin/AddProductForm";
 
 export default function productlist({
     categories,
@@ -227,385 +231,36 @@ export default function productlist({
                         <div className={utilStyles.formContainer}>
                             {errorMsg && <p className="error">{errorMsg}</p>}
                             <form onSubmit={addProduct}>
-                                <div>
-                                    <FormInput
-                                        type={"text"}
-                                        required
-                                        id={"techstore-productname"}
-                                        title={"Produkt namn"}
-                                        hint={"Namnet på produkter"}
-                                        aria={"enter-product-name"}
-                                        error={errors.name}
-                                        value={form.name ?? ""}
-                                        onChange={(name) =>
-                                            setForm((form) => ({
-                                                ...form,
-                                                name,
-                                            }))
-                                        }
-                                    />
-                                    <span>
-                                        <TextField
-                                            value={form.categoryid ?? "0"}
-                                            onChange={(e) =>
-                                                setForm((form) => ({
-                                                    ...form,
-                                                    categoryid: e.target.value,
-                                                }))
-                                            }
-                                            select // tell TextField to render select
-                                            label={"Kategori"}
-                                            SelectProps={{
-                                                autoWidth: true,
-                                            }}
-                                        >
-                                            <MenuItem value={"0"}>
-                                                Välj Kategori
-                                            </MenuItem>
-                                            {categories.map((category) => (
-                                                <MenuItem
-                                                    value={category.id}
-                                                    key={category.id}
-                                                >
-                                                    {translate(category.name)}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </span>
-                                </div>
-
-                                <FormInput
-                                    type={"text"}
-                                    multiline
-                                    required
-                                    id={"techstore-description"}
-                                    title={"Produktbeskrivning"}
-                                    hint={"Max 4 rader"}
-                                    aria={"enter-product-description"}
-                                    error={errors.description}
-                                    value={form.description ?? ""}
-                                    onChange={(description) =>
-                                        setForm((form) => ({
-                                            ...form,
-                                            description,
-                                        }))
-                                    }
+                                <AddProductForm
+                                    errors={errors}
+                                    form={form}
+                                    setForm={setForm}
+                                    categories={categories}
                                 />
-                                <FormInput
-                                    type={"text"}
-                                    required
-                                    id={"techstore-quickspecs"}
-                                    title={"En rad specifikationer"}
-                                    hint={
-                                        "Exempelvis i9 | 16 kärnor | 8 trådar"
-                                    }
-                                    aria={"enter-product-quickspecs"}
-                                    error={errors.quickspecs}
-                                    value={form.quickspecs ?? ""}
-                                    onChange={(quickspecs) =>
-                                        setForm((form) => ({
-                                            ...form,
-                                            quickspecs,
-                                        }))
-                                    }
-                                />
-                                <FormInput
-                                    type={"number"}
-                                    hint={""}
-                                    required
-                                    id={"techstore-product-quantity"}
-                                    title={"Produkter i lager"}
-                                    aria={"enter-product-quantity"}
-                                    error={errors.instock}
-                                    value={form.instock ?? ""}
-                                    onChange={(instock) =>
-                                        setForm((form) => ({
-                                            ...form,
-                                            instock,
-                                        }))
-                                    }
-                                />
-                                <div>
-                                    <FormInput
-                                        required
-                                        id={"techstore-currentprice"}
-                                        title={"Nuvarande pris"}
-                                        hint={""}
-                                        aria={"enter-current-price"}
-                                        type={"number"}
-                                        error={errors.price}
-                                        value={form.price ?? ""}
-                                        onChange={(price) =>
-                                            setForm((form) => ({
-                                                ...form,
-                                                price,
-                                            }))
-                                        }
-                                    />
-                                    <FormInput
-                                        id={"techstore-oldprice"}
-                                        title={"Äldre pris"}
-                                        hint={
-                                            "Om denna är satt så kommer nuvarande pris att fungera som ett kampanj pris."
-                                        }
-                                        aria={"enter-oldprice"}
-                                        type={"number"}
-                                        error={errors.oldprice}
-                                        value={form.oldprice ?? ""}
-                                        onChange={(oldprice) =>
-                                            setForm((form) => ({
-                                                ...form,
-                                                oldprice,
-                                            }))
-                                        }
-                                    />
-                                </div>
                                 <div className={adminStyles.additionSection}>
                                     <h2>Produkt Bilder</h2>
-                                    <div className={adminStyles.formSection}>
-                                        <Button
-                                            variant="contained"
-                                            component="label"
-                                            size="large"
-                                        >
-                                            <FontAwesomeIcon icon={faUpload} />
-                                            Ladda{" "}
-                                            {photos.length > 0
-                                                ? "upp fler"
-                                                : "upp"}{" "}
-                                            bilder
-                                            <input
-                                                // onChange={(e) =>
-                                                //     setActivePhoto(
-                                                //         e.target.files
-                                                //     )
-                                                // }
-                                                onChange={selectFiles}
-                                                type="file"
-                                                hidden
-                                                multiple={true}
-                                            />
-                                        </Button>
-                                    </div>
+                                    <AddImages
+                                        selectFiles={selectFiles}
+                                        photosLength={photos.length}
+                                    />
                                     {photos.length > 0 && (
-                                        <div>
-                                            <List>
-                                                {photos.map((photo, index) => (
-                                                    <ListItem
-                                                        key={index}
-                                                        secondaryAction={
-                                                            <IconButton
-                                                                edge="end"
-                                                                aria-label="delete"
-                                                                onClick={() => {
-                                                                    setPhotos(
-                                                                        (
-                                                                            currentPhotos
-                                                                        ) =>
-                                                                            currentPhotos.filter(
-                                                                                (
-                                                                                    current
-                                                                                ) =>
-                                                                                    current.name !==
-                                                                                    photo.name
-                                                                            )
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <FontAwesomeIcon
-                                                                    icon={
-                                                                        faTrash
-                                                                    }
-                                                                />
-                                                            </IconButton>
-                                                        }
-                                                    >
-                                                        <ListItemAvatar>
-                                                            <Avatar>
-                                                                <img
-                                                                    src={URL.createObjectURL(
-                                                                        photo
-                                                                    )}
-                                                                    alt="X"
-                                                                />
-                                                            </Avatar>
-                                                        </ListItemAvatar>
-                                                        <ListItemText
-                                                            primary={`${photo.name} (${photo.size})`}
-                                                        />
-                                                    </ListItem>
-                                                ))}
-                                            </List>
-                                        </div>
+                                        <ListImages
+                                            photos={photos}
+                                            setPhotos={setPhotos}
+                                        />
                                     )}
                                     {/* SPECS */}
                                     <h2>Produkt Specifikationer</h2>
-                                    <div className={adminStyles.formSection}>
-                                        {specs.map(
-                                            (category, categoryIndex) => {
-                                                return (
-                                                    <div
-                                                        className={
-                                                            adminStyles.category
-                                                        }
-                                                        key={categoryIndex}
-                                                    >
-                                                        <h4>{category.name}</h4>
-                                                        {category.items.map(
-                                                            (
-                                                                field,
-                                                                fieldIndex
-                                                            ) => (
-                                                                <div
-                                                                    key={
-                                                                        fieldIndex
-                                                                    }
-                                                                    className={
-                                                                        adminStyles.field
-                                                                    }
-                                                                >
-                                                                    <div>
-                                                                        <Autocomplete
-                                                                            id="free-solo-demo"
-                                                                            freeSolo
-                                                                            options={specTypes.map(
-                                                                                (
-                                                                                    option
-                                                                                ) =>
-                                                                                    option.title
-                                                                            )}
-                                                                            value={
-                                                                                field.title
-                                                                            }
-                                                                            inputValue={
-                                                                                field.title
-                                                                            }
-                                                                            onChange={(
-                                                                                e,
-                                                                                value
-                                                                            ) => {
-                                                                                changeValue(
-                                                                                    categoryIndex,
-                                                                                    fieldIndex,
-                                                                                    "title",
-                                                                                    value ??
-                                                                                        ""
-                                                                                );
-                                                                            }}
-                                                                            onInputChange={(
-                                                                                e,
-                                                                                value
-                                                                            ) => {
-                                                                                changeValue(
-                                                                                    categoryIndex,
-                                                                                    fieldIndex,
-                                                                                    "title",
-                                                                                    value ??
-                                                                                        ""
-                                                                                );
-                                                                            }}
-                                                                            renderInput={(
-                                                                                params
-                                                                            ) => (
-                                                                                <TextField
-                                                                                    {...params}
-                                                                                    label="Spec"
-                                                                                />
-                                                                            )}
-                                                                        />
-                                                                    </div>
-                                                                    <div>
-                                                                        <TextField
-                                                                            id="techstore-category-title"
-                                                                            label="Värde"
-                                                                            variant="filled"
-                                                                            value={
-                                                                                field.content
-                                                                            }
-                                                                            onChange={(
-                                                                                e
-                                                                            ) =>
-                                                                                changeValue(
-                                                                                    categoryIndex,
-                                                                                    fieldIndex,
-                                                                                    "content",
-                                                                                    e
-                                                                                        .target
-                                                                                        .value
-                                                                                )
-                                                                            }
-                                                                        />
-                                                                    </div>
-                                                                    <div>
-                                                                        <FontAwesomeIcon
-                                                                            icon={
-                                                                                faTrash
-                                                                            }
-                                                                            role="button"
-                                                                            className="clickable"
-                                                                            onClick={() =>
-                                                                                removeField(
-                                                                                    categoryIndex,
-                                                                                    fieldIndex
-                                                                                )
-                                                                            }
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                            )
-                                                        )}
-
-                                                        <div>
-                                                            <Button
-                                                                variant="contained"
-                                                                component="label"
-                                                                onClick={() =>
-                                                                    addField(
-                                                                        categoryIndex
-                                                                    )
-                                                                }
-                                                            >
-                                                                <FontAwesomeIcon
-                                                                    icon={
-                                                                        faPlusCircle
-                                                                    }
-                                                                />
-                                                                Lägg till fält
-                                                            </Button>
-                                                        </div>
-                                                    </div>
-                                                );
-                                            }
-                                        )}
-                                        <div className={adminStyles.addNew}>
-                                            <div>
-                                                <TextField
-                                                    id="techstore-category-title"
-                                                    label="Titel"
-                                                    variant="filled"
-                                                    value={newCategory}
-                                                    size="small"
-                                                    onChange={(e) =>
-                                                        setNewCategory(
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                />
-                                            </div>
-                                            <div>
-                                                <Button
-                                                    variant="contained"
-                                                    component="label"
-                                                    onClick={addCategory}
-                                                >
-                                                    <FontAwesomeIcon
-                                                        icon={faPlusCircle}
-                                                    />
-                                                    Lägg till kategori
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <Specifications
+                                        specs={specs}
+                                        specTypes={specTypes}
+                                        changeValue={changeValue}
+                                        removeField={removeField}
+                                        addField={addField}
+                                        setNewCategory={setNewCategory}
+                                        newCategory={newCategory}
+                                        addCategory={addCategory}
+                                    />
                                 </div>
                                 <div>
                                     <Button type="submit" variant="outlined">
