@@ -16,8 +16,8 @@ import ListImages from "../../../components/admin/ListImages";
 import AddImages from "../../../components/admin/AddImages";
 import AddProductForm from "../../../components/admin/AddProductForm";
 import useProductForm from "../../../hooks/useProductForm";
-import { GetServerSideProps, GetStaticProps } from "next/types";
-import { Product, getProduct, getProductIds } from "../../../lib/product";
+import { GetServerSideProps } from "next/types";
+import { Product, getProduct } from "../../../lib/product";
 import { NewProduct } from "../../api/admin/addproduct";
 
 export default function EditProduct({
@@ -78,17 +78,6 @@ export default function EditProduct({
             }
             return form;
         });
-
-        //Set images
-
-        //Set specs
-        // const specs: {
-        //     name: string;
-        //     items: {
-        //         title: string;
-        //         content: string;
-        //     }[];
-        // }[]
         const newSpecs = product.product_specs.reduce((specs, spec) => {
             const categoryIndex = specs.findIndex(
                 (cat) =>
@@ -126,7 +115,7 @@ export default function EditProduct({
 
         let formData = new FormData();
 
-        if (photos.length === 0) {
+        if (photos.length === 0 && existingPhotos.length === 0) {
             return setErrorMsg("Du måste ha minst en bild");
         }
 
@@ -139,16 +128,17 @@ export default function EditProduct({
             );
         }
 
-        formData.append("form", JSON.stringify(form));
+        formData.append("form", JSON.stringify({ ...form, id: product.id }));
         for (let i = 0; i < photos.length; i++) {
             formData.append("photos[]", photos[i]);
         }
         formData.append("specs", JSON.stringify(specs));
+        formData.append("images", JSON.stringify(existingPhotos));
 
         //Send
 
         try {
-            const product = (await fetchJson("/api/admin/addproduct", {
+            const product = (await fetchJson("/api/admin/editproduct", {
                 method: "POST",
                 body: formData,
             })) as { product?: products };
