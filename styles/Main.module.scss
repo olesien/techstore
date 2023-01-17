@@ -4,32 +4,38 @@
     gap: 1rem;
 
     // Navbar
-    > span ul {
-        width: 225px;
+    > span {
+        width: 325px;
         background-color: $white;
         border-radius: 5px;
-        display: flex;
-        flex-flow: column nowrap;
+        > div {
+            display: flex;
+            justify-content: center;
+            padding: 1rem 0.1rem;
+        }
+        ul {
+            display: flex;
+            flex-flow: column nowrap;
 
-        li {
-            span {
-                padding-left: 5px;
+            li {
+                span {
+                    padding-left: 5px;
+                }
+                border-bottom: 1px solid $background;
+                a {
+                    display: inline-block;
+                    padding: 1rem;
+                    width: 100%;
+                }
+                > p {
+                    padding: 0.5rem;
+                    padding-top: 1rem;
+                }
             }
-            border-bottom: 1px solid $background;
-            a {
-                display: inline-block;
-                padding: 1rem;
-                width: 100%;
-            }
-            > p {
-                padding: 0.5rem;
-                padding-top: 1rem;
+            li a:hover {
+                background-color: $whiteHover;
             }
         }
-        li a:hover {
-            background-color: $whiteHover;
-        }
-
         @media (max-width: 768px) {
             position: absolute;
             z-index: 100;
