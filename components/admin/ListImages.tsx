@@ -14,13 +14,14 @@ export default function ListImages({
     photos,
     setPhotos,
     setExistingPhotos,
-    categoryId,
+    categoryid,
 }: {
     photos: NewProduct["photos"] | product_images[];
     setPhotos?: React.Dispatch<React.SetStateAction<File[]>>;
     setExistingPhotos?: React.Dispatch<React.SetStateAction<product_images[]>>;
-    categoryId?: number;
+    categoryid?: number;
 }) {
+    console.log(categoryid);
     return (
         <div>
             <List>
@@ -63,7 +64,7 @@ export default function ListImages({
                                         "size" in photo
                                             ? URL.createObjectURL(photo)
                                             : `/images/categories/${
-                                                  categoryId ?? 1
+                                                  categoryid ?? 1
                                               }/${photo.image}`
                                     }
                                     alt="X"

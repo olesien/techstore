@@ -107,8 +107,6 @@ export default function EditProduct({
         setSpecs(newSpecs);
     }, [product]);
 
-    console.log(product);
-
     const editProduct = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         console.log("Adding product");
@@ -207,13 +205,13 @@ export default function EditProduct({
                                             setExistingPhotos={
                                                 setExistingPhotos
                                             }
+                                            categoryid={product.categoryid}
                                         />
                                     )}
                                     {photos.length > 0 && (
                                         <ListImages
                                             photos={photos}
                                             setPhotos={setPhotos}
-                                            categoryId={product.categoryid}
                                         />
                                     )}
                                     {/* SPECS */}

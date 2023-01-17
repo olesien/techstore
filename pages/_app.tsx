@@ -1,4 +1,5 @@
 import "../styles/globals.scss";
+import "react-toastify/dist/ReactToastify.css";
 import { AppProps } from "next/app";
 import { SWRConfig } from "swr";
 import fetchJson from "../lib/fetchJson";
