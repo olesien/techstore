@@ -18,8 +18,8 @@ model users {
   postnumber  Int?
   postcity    String?   @db.VarChar(35)
   phonenumber String?   @db.VarChar(38)
-  verified    Boolean?
-  admin       Boolean?
+  verified    Boolean?  @default(false)
+  admin       Boolean?  @default(false)
   image       Bytes?    @db.Blob
   address     String?   @db.VarChar(45)
   orders      orders[]
@@ -88,19 +88,21 @@ model product_specs {
 }
 
 model products {
-  id              Int               @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  categoryid      Int
-  name            String            @db.VarChar(45)
-  quickspecs      String?           @db.VarChar(100)
-  description     String?           @db.Text
-  price           Int
-  oldprice        Int?
-  instock         Int?
-  orders_products orders_products[]
-  product_images  product_images[]
-  product_specs   product_specs[]
-  categories      categories        @relation(fields: [categoryid], references: [id], onUpdate: Restrict, map: "products_ibfk_1")
-  reviews         reviews[]
+  id                                                 Int               @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  categoryid                                         Int
+  name                                               String            @db.VarChar(45)
+  quickspecs                                         String?           @db.VarChar(100)
+  description                                        String?           @db.Text
+  price                                              Int
+  oldprice                                           Int?
+  instock                                            Int?
+  orders_products                                    orders_products[]
+  product_compat_product_compat_productid1Toproducts product_compat[]  @relation("product_compat_productid1Toproducts")
+  product_compat_product_compat_productid2Toproducts product_compat[]  @relation("product_compat_productid2Toproducts")
+  product_images                                     product_images[]
+  product_specs                                      product_specs[]
+  categories                                         categories        @relation(fields: [categoryid], references: [id], onUpdate: Restrict, map: "products_ibfk_1")
+  reviews                                            reviews[]
 
   @@index([categoryid], map: "categoryid")
   @@fulltext([name], map: "name")
@@ -130,4 +132,17 @@ model categories_filters {
   categories categories @relation(fields: [categoryid], references: [id], onUpdate: Restrict, map: "categories_filters_ibfk_1")
 
   @@index([categoryid], map: "categoryid")
+}
+
+model product_compat {
+  id                                           Int      @id @default(autoincrement())
+  productid1                                   Int
+  productid2                                   Int
+  error                                        Boolean
+  message                                      String   @db.VarChar(200)
+  products_product_compat_productid1Toproducts products @relation("product_compat_productid1Toproducts", fields: [productid1], references: [id], onUpdate: Restrict, map: "product_compat_ibfk_1")
+  products_product_compat_productid2Toproducts products @relation("product_compat_productid2Toproducts", fields: [productid2], references: [id], onUpdate: Restrict, map: "product_compat_ibfk_2")
+
+  @@index([productid1], map: "productid1")
+  @@index([productid2], map: "productid2")
 }
