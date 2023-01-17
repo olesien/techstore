@@ -50,7 +50,11 @@ export default function MainAccount({
 
     return (
         <div className={styles.main}>
-            <Nav showNav={showNav} links={user.admin ? adminLinks : links} />
+            <Nav
+                showNav={showNav}
+                links={user.admin ? adminLinks : links}
+                renderChoice={false}
+            />
             {showChildren ? <div>{children}</div> : <div />}
         </div>
     );
