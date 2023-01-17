@@ -239,10 +239,12 @@ async function editProductRoute(req: NextApiRequest, res: NextApiResponse) {
                 });
             });
 
-            //Temporary cutoff
-            return res.status(200).json(newProduct);
+            //Delete all older specs
+            const deletedSpecs = await prisma.product_specs.deleteMany({
+                where: { productid: data.id },
+            });
 
-            //Create specs
+            //Create new specs
             specs.forEach(async (spec) => {
                 await prisma.product_specs.createMany({
                     data: spec.items.map((field) => {
