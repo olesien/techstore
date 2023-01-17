@@ -21,6 +21,7 @@ const translations: { [indexor: string]: string } = {
     micinput: "Mikrofåningång (3.5mm)",
     "USB3.0": "USB 3.0/3.1 Gen 1",
     "USB3.1": "USB 3.1 Gen2 Type-C",
+    diskspace: "Diskutrymme",
 };
 
 const translate = (indexor: string | null | undefined) => {

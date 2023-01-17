@@ -29,14 +29,14 @@ export default function SpecList({ list }: { list: product_specs[] }) {
         },
         []
     );
-    const getContent = (content: string) => {
+    const getContent = (content: string, extrainfo: string) => {
         if (content === "true") {
             return "Ja";
         }
         if (content === "false") {
             return "Nej";
         }
-        if (Number(content) > 0) {
+        if (Number(content) > 0 && extrainfo.length > 2) {
             return `${content} st`;
         }
         return content;
@@ -54,7 +54,10 @@ export default function SpecList({ list }: { list: product_specs[] }) {
                                 <li key={spec.id}>
                                     <p>{translate(spec.title)}</p>
                                     <p>
-                                        {getContent(spec.content)}
+                                        {getContent(
+                                            spec.content,
+                                            String(spec.extrainfo)
+                                        )}
                                         {spec.extrainfo
                                             ? (spec.extrainfo.length > 2
                                                   ? ", "

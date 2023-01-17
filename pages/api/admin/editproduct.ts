@@ -278,7 +278,7 @@ async function editProductRoute(req: NextApiRequest, res: NextApiResponse) {
                         return {
                             ...field,
                             content,
-                            speccategory: field.title,
+                            speccategory: spec.name,
                             productid: newProduct.id,
                             ...extra,
                         };
