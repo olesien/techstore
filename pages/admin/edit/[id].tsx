@@ -98,13 +98,19 @@ export default function EditProduct({
                 const category = specs[categoryIndex];
                 category.items.push({
                     title: spec.title,
-                    content: spec.content,
+                    content: spec.content + " " + (spec.extrainfo ?? ""),
                 });
                 specs.splice(categoryIndex, 1, category);
             } else {
                 specs.push({
                     name: spec.speccategory ?? "Huvud specifikationer",
-                    items: [{ title: spec.title, content: spec.content }],
+                    items: [
+                        {
+                            title: spec.title,
+                            content:
+                                spec.content + " " + (spec.extrainfo ?? ""),
+                        },
+                    ],
                 });
             }
             return specs;
