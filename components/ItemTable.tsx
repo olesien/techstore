@@ -11,6 +11,7 @@ import styles from "../styles/Header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import InStock from "./generic/InStock";
+import Link from "next/link";
 
 export default function ItemTable({
     products,
@@ -57,7 +58,16 @@ export default function ItemTable({
                                         }
                                     ></img>
                                     <div>
-                                        <span>{product.name}</span>
+                                        <Link
+                                            href={"/product/" + product.id}
+                                            legacyBehavior
+                                        >
+                                            <a>
+                                                <span className="clickable">
+                                                    {product.name}
+                                                </span>
+                                            </a>
+                                        </Link>
 
                                         <InStock
                                             instock={product.instock ?? 0}

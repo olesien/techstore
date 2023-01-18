@@ -62,7 +62,16 @@ export default function NavItem({
                                 }
                             ></img>
                             <div>
-                                <p>{product.name}</p>
+                                <Link
+                                    href={"/product/" + product.id}
+                                    legacyBehavior
+                                >
+                                    <a>
+                                        <p className="clickable">
+                                            {product.name}
+                                        </p>
+                                    </a>
+                                </Link>
 
                                 <p>{product.price} kr</p>
                             </div>
