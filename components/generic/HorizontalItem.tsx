@@ -11,6 +11,7 @@ export default function HorizontalItem({
     product,
     basket,
     toBasket,
+    isBuilder,
 }: {
     product: Product;
     basket: Basket[];
@@ -20,6 +21,7 @@ export default function HorizontalItem({
         qtnty?: number,
         remove?: boolean
     ) => void;
+    isBuilder: boolean;
 }) {
     const basketQuantity =
         basket.find((item) => item.id === Number(product.id))?.quantity ?? 0;
@@ -69,7 +71,9 @@ export default function HorizontalItem({
                     disabled={!canBuy}
                 >
                     {canBuy
-                        ? "Köp"
+                        ? isBuilder
+                            ? "Lägg till"
+                            : "Köp"
                         : (product.instock ?? 0) < 1
                         ? "Utsålt"
                         : "Max antal"}

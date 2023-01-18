@@ -132,9 +132,7 @@ export default function Main({
                     </ToggleButton>
                 </ToggleButtonGroup>
                 {isActive ? (
-                    <AdvancedNav
-                        links={links.map((link) => ({ ...link, items: [] }))}
-                    />
+                    <AdvancedNav links={links} />
                 ) : (
                     <Nav links={links} />
                 )}

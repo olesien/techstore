@@ -8,7 +8,7 @@ export type Basket = {
     quantity: number;
 };
 
-const useBasket = () => {
+const useBasket = (variant = "techstore-basket") => {
     const [state, setState] = useState<Basket[]>([]);
     const [initialRender, setInitialRender] = useState(true);
     useDebugValue(state);
@@ -19,7 +19,7 @@ const useBasket = () => {
     //Get Item
     useEffect(() => {
         const getBasket = () => {
-            const item = localStorage.getItem("techstore-basket");
+            const item = localStorage.getItem(variant);
             if (item) {
                 const parsedItem = parse(item);
                 //Flatten arrays and compare
@@ -34,10 +34,10 @@ const useBasket = () => {
         getBasket();
 
         //Listen for changes live
-        window.addEventListener("techstore-basket-change", () => getBasket());
+        window.addEventListener(variant + "-change", () => getBasket());
 
         //Unmount
-        return window.removeEventListener("techstore-basket-change", () =>
+        return window.removeEventListener(variant + "-change", () =>
             getBasket()
         );
     }, []);
@@ -48,15 +48,15 @@ const useBasket = () => {
             setInitialRender(false);
         } else {
             if (state.length !== 0) {
-                localStorage.setItem("techstore-basket", JSON.stringify(state));
+                localStorage.setItem(variant, JSON.stringify(state));
                 console.log("Dispatch update");
-                window.dispatchEvent(new Event("techstore-basket-change"));
+                window.dispatchEvent(new Event(variant + "-change"));
             } else {
                 //Remove
-                const exists = localStorage.getItem("techstore-basket");
+                const exists = localStorage.getItem(variant);
                 if (exists) {
-                    localStorage.removeItem("techstore-basket");
-                    window.dispatchEvent(new Event("techstore-basket-change"));
+                    localStorage.removeItem(variant);
+                    window.dispatchEvent(new Event(variant + "-change"));
                 }
             }
         }

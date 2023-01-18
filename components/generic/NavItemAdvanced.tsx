@@ -3,7 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../../styles/Main.module.scss";
+import { Basket as BasketType } from "../../hooks/useBasket";
 import { faStarOfLife } from "@fortawesome/free-solid-svg-icons";
+import { ProductByIdType } from "../../pages/api/productsbyids/[ids]";
 
 export default function NavItem({
     title,
@@ -16,7 +18,7 @@ export default function NavItem({
     link: string;
     icon: IconDefinition;
     required: boolean;
-    items: { id: number; photo: string; name: string; price: string }[];
+    items: (BasketType & ProductByIdType)[];
 }) {
     const router = useRouter();
     return (
@@ -38,6 +40,30 @@ export default function NavItem({
                     )}
                 </a>
             </Link>
+
+            {/* List items */}
+            {items.map((product) => {
+                return (
+                    <div>
+                        <div className={styles.product_builder_col}>
+                            <img
+                                src={
+                                    `/images/categories/${product.categoryid}/` +
+                                    product.product_images[0].image
+                                }
+                                title={
+                                    product.product_images[0].name ?? "produkt"
+                                }
+                            ></img>
+                            <div>
+                                <p>{product.name}</p>
+
+                                <p>{product.price} kr</p>
+                            </div>
+                        </div>
+                    </div>
+                );
+            })}
         </li>
     );
 }

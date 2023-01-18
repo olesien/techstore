@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
-import styles from "../styles/Header.module.scss";
-import useSWR, { Fetcher } from "swr";
+import useSWR from "swr";
 import { Basket as BasketType } from "../hooks/useBasket";
-import ItemTable from "./ItemTable";
 import ClipLoader from "react-spinners/ClipLoader";
 import { ProductByIdType } from "../pages/api/productsbyids/[ids]";
 import { Button } from "@mui/material";
 import BasketOverlay from "./BasketOverlay";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import ProductsOverview from "./ProductsOverview";
 const fetchURL = (url: string) => fetch(url).then((r) => r.json());

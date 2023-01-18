@@ -18,8 +18,10 @@ export default function NavItem({
         <li className={router.asPath == link ? styles.active : ""}>
             <Link href={link} legacyBehavior>
                 <a>
-                    <FontAwesomeIcon icon={icon} size={"1x"} />
-                    <span>{title}</span>
+                    <div>
+                        <FontAwesomeIcon icon={icon} size={"1x"} />
+                        <span>{title}</span>
+                    </div>
                 </a>
             </Link>
         </li>

@@ -3,9 +3,13 @@ import HorizontalItem from "./generic/HorizontalItem";
 import { Product } from "../pages/category/[id]";
 import productStyles from "../styles/Products.module.scss";
 import useBasket from "../hooks/useBasket";
+import useComputerBuilder from "../hooks/useComputerBuilder";
 
 export default function ProductList({ products }: { products: Product[] }) {
-    const { state: basket, toBasket } = useBasket();
+    const { isActive } = useComputerBuilder();
+    const { state: basket, toBasket } = useBasket(
+        isActive ? "techstore-builder-basket" : "techstore-basket"
+    );
     return (
         <div className={productStyles.list}>
             {products.length === 0 && <p>Inga produkter kunde hittas</p>}
@@ -15,6 +19,7 @@ export default function ProductList({ products }: { products: Product[] }) {
                     product={product}
                     basket={basket}
                     toBasket={toBasket}
+                    isBuilder={!!isActive}
                 />
             ))}
         </div>

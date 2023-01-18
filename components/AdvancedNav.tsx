@@ -2,6 +2,11 @@ import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@mui/material";
 import styles from "../styles/Main.module.scss";
 import NavItemAdvanced from "./generic/NavItemAdvanced";
+import useBasket, { Basket as BasketType } from "../hooks/useBasket";
+import useSWR from "swr";
+import ClipLoader from "react-spinners/ClipLoader";
+import { ProductByIdType } from "../pages/api/productsbyids/[ids]";
+const fetchURL = (url: string) => fetch(url).then((r) => r.json());
 
 export default function AdvancedNav({
     links,
@@ -13,16 +18,17 @@ export default function AdvancedNav({
               icon: IconDefinition;
               required: boolean;
               categoryId: number;
-              items: {
-                  id: number;
-                  photo: string;
-                  name: string;
-                  price: string;
-              }[];
           }
         | { header: string }
     )[];
 }) {
+    const { state: basket } = useBasket("techstore-builder-basket");
+    const basketIds = basket.map((item) => item.id);
+    const { data, isLoading, error } = useSWR(
+        "/api/productsbyids/" + JSON.stringify(basketIds),
+        fetchURL
+    );
+    console.log(data);
     return (
         <>
             <p>Summa kostnad</p>
@@ -33,18 +39,38 @@ export default function AdvancedNav({
                     Till kassa
                 </Button>
             </div>
-            <ul>
-                {links.map((link) => {
-                    if ("header" in link) {
+            {isLoading || !data ? (
+                <ClipLoader
+                    loading={true}
+                    size={150}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                />
+            ) : error ? (
+                <p>{error}</p>
+            ) : (
+                <ul>
+                    {links.map((link) => {
+                        if ("header" in link) {
+                            return (
+                                <li key={0}>
+                                    <p>{link.header}</p>
+                                </li>
+                            );
+                        }
                         return (
-                            <li key={0}>
-                                <p>{link.header}</p>
-                            </li>
+                            <NavItemAdvanced
+                                key={link.categoryId}
+                                {...link}
+                                items={data.products.filter(
+                                    (product: BasketType & ProductByIdType) =>
+                                        product.categoryid === link.categoryId
+                                )}
+                            />
                         );
-                    }
-                    return <NavItemAdvanced key={link.categoryId} {...link} />;
-                })}
-            </ul>
+                    })}
+                </ul>
+            )}
         </>
     );
 }
