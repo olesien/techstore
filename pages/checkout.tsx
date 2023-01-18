@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import fetchJson, { FetchError } from "../lib/fetchJson";
 import { useRouter } from "next/router";
 import { removeEmpty } from "../lib/utils";
+import useComputerBuilder from "../hooks/useComputerBuilder";
 const fetchURL = (url: string) => fetch(url).then((r) => r.json());
 
 export interface Order {
@@ -32,13 +33,14 @@ export default function checkout() {
         isLoading: isLoadingUser,
         error: userError,
     } = useSWR<UserDetails>("/api/userdetails");
-    const {
-        state: basket,
-        setState: updateBasket,
-        getCount,
-        trash,
-    } = useBasket();
-    const basketIds = basket.map((item) => item.id);
+    const { isActive } = useComputerBuilder();
+    const { state: basket, trash } = useBasket();
+    const { state: builderBasket, trash: trashBuilder } = useBasket(
+        "techstore-builder-basket"
+    );
+    const basketIds = (isActive ? builderBasket : basket).map(
+        (item) => item.id
+    );
     const { data, isLoading, error } = useSWR(
         "/api/productsbyids/" + JSON.stringify(basketIds),
         fetchURL
@@ -77,7 +79,9 @@ export default function checkout() {
     }
 
     const products = data.products.map((product: ProductByIdType) => {
-        const basketItem = basket.find((item) => item.id === product.id);
+        const basketItem = (isActive ? builderBasket : basket).find(
+            (item) => item.id === product.id
+        );
         return { ...product, quantity: basketItem?.quantity };
     });
 
@@ -136,7 +140,11 @@ export default function checkout() {
             setErrors({});
             //Redirect to order success
             router.push("/successfulorder");
-            trash();
+            if (isActive) {
+                trashBuilder();
+            } else {
+                trash();
+            }
         } catch (error) {
             if (error instanceof FetchError) {
                 setErrorMsg(error.data.message);
@@ -151,7 +159,10 @@ export default function checkout() {
                 <div className={mainStyles.subMain}>
                     <p>Valda produkter</p>
                     <section className={utilStyles.section}>
-                        <ProductsOverview products={products} trash={trash} />
+                        <ProductsOverview
+                            products={products}
+                            trash={isActive ? trashBuilder : trash}
+                        />
                     </section>
                     <p>Dina detaljer</p>
                     <section

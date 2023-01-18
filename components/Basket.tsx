@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import useSWR from "swr";
 import { Basket as BasketType } from "../hooks/useBasket";
 import ClipLoader from "react-spinners/ClipLoader";

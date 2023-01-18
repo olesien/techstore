@@ -190,14 +190,6 @@
         }
     }
 
-    //Icons are clickable
-    .clickableIcon {
-        padding: 0.3rem;
-        :hover {
-            cursor: pointer;
-        }
-    }
-
     table {
         max-height: 650px;
         overflow-y: scroll;
@@ -210,5 +202,13 @@
         thead {
             margin: auto;
         }
+    }
+}
+
+//Icons are clickable
+.clickableIcon {
+    padding: 0.3rem;
+    :hover {
+        cursor: pointer;
     }
 }

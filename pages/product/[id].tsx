@@ -3,11 +3,7 @@ import Layout from "../../components/layout";
 import Head from "next/head";
 import Main from "../../components/Main";
 import { GetServerSideProps } from "next";
-import {
-    getProduct,
-    ProductType,
-    Product as ProductClean,
-} from "../../lib/product";
+import { getProduct, ProductType } from "../../lib/product";
 import productStyles from "../../styles/Product.module.scss";
 import productListStyles from "../../styles/Products.module.scss";
 import Carousel from "../../components/generic/Carousel";
@@ -16,7 +12,7 @@ import SpecList from "../../components/SpecList";
 import ProductRating from "../../components/generic/ProductRating";
 import useUser from "../../lib/useUser";
 import Reviews from "../../components/Reviews";
-import useBasket, { Basket } from "../../hooks/useBasket";
+import useBasket from "../../hooks/useBasket";
 
 export default function Product({ product }: { product: ProductType }) {
     const { user } = useUser();

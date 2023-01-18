@@ -26,7 +26,6 @@ export default function Main({
     children: JSX.Element;
 }) {
     const { width } = useWindowDimensions();
-    console.log(width);
 
     const showChildren = !showNav || Number(width) > 768;
 
@@ -103,7 +102,7 @@ export default function Main({
         },
     ];
 
-    const { isActive, toggleIsActive, setIsActive } = useComputerBuilder();
+    const { isActive, setIsActive } = useComputerBuilder();
     const handleChange = (
         event: React.MouseEvent<HTMLElement>,
         newAlignment: string

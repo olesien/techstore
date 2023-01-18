@@ -3,12 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../../styles/Main.module.scss";
+import headStyles from "../../styles/Header.module.scss";
 import { Basket as BasketType } from "../../hooks/useBasket";
-import {
-    faBasketShopping,
-    faStarOfLife,
-    faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faStarOfLife, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { ProductByIdType } from "../../pages/api/productsbyids/[ids]";
 
 export default function NavItem({
@@ -17,12 +14,14 @@ export default function NavItem({
     icon,
     required,
     items,
+    trash,
 }: {
     title: string;
     link: string;
     icon: IconDefinition;
     required: boolean;
     items: (BasketType & ProductByIdType)[];
+    trash: (productid?: number | undefined) => void;
 }) {
     const router = useRouter();
     return (
@@ -66,7 +65,13 @@ export default function NavItem({
                             </div>
                         </div>
                         <div>
-                            <FontAwesomeIcon icon={faTrash} />
+                            <span
+                                className={headStyles.clickableIcon}
+                                role="button"
+                                onClick={() => trash(product.id)}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} />
+                            </span>
                         </div>
                     </div>
                 );

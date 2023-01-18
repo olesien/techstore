@@ -7,8 +7,9 @@ import useComputerBuilder from "../hooks/useComputerBuilder";
 
 export default function ProductList({ products }: { products: Product[] }) {
     const { isActive } = useComputerBuilder();
-    const { state: basket, toBasket } = useBasket(
-        isActive ? "techstore-builder-basket" : "techstore-basket"
+    const { state: basket, toBasket } = useBasket();
+    const { state: builderBasket, toBasket: toBuilderBasket } = useBasket(
+        "techstore-builder-basket"
     );
     return (
         <div className={productStyles.list}>
@@ -17,8 +18,8 @@ export default function ProductList({ products }: { products: Product[] }) {
                 <HorizontalItem
                     key={Number(product.id)}
                     product={product}
-                    basket={basket}
-                    toBasket={toBasket}
+                    basket={isActive ? builderBasket : basket}
+                    toBasket={isActive ? toBuilderBasket : toBasket}
                     isBuilder={!!isActive}
                 />
             ))}

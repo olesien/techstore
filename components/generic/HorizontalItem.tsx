@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import InStock from "./InStock";
 import Link from "next/link";
 import ProductRating from "./ProductRating";
-import useBasket, { Basket } from "../../hooks/useBasket";
+import { Basket } from "../../hooks/useBasket";
 
 export default function HorizontalItem({
     product,

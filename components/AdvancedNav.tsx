@@ -6,6 +6,7 @@ import useBasket, { Basket as BasketType } from "../hooks/useBasket";
 import useSWR from "swr";
 import ClipLoader from "react-spinners/ClipLoader";
 import { ProductByIdType } from "../pages/api/productsbyids/[ids]";
+import Link from "next/link";
 const fetchURL = (url: string) => fetch(url).then((r) => r.json());
 
 export default function AdvancedNav({
@@ -22,11 +23,12 @@ export default function AdvancedNav({
         | { header: string }
     )[];
 }) {
-    const { state: basket } = useBasket("techstore-builder-basket");
+    const { state: basket, trash } = useBasket("techstore-builder-basket");
     const basketIds = basket.map((item) => item.id);
     const { data, isLoading, error } = useSWR(
         "/api/productsbyids/" + JSON.stringify(basketIds),
-        fetchURL
+        fetchURL,
+        { keepPreviousData: true }
     );
     console.log(data);
     return (
@@ -34,12 +36,20 @@ export default function AdvancedNav({
             <p>Summa kostnad</p>
             <h2>15155 kr</h2>
             <div className={styles.navButtons}>
-                <Button color="error">Rensa</Button>
-                <Button color="success" variant="contained" size="small">
+                <Button color="error" onClick={() => trash()}>
+                    Rensa
+                </Button>
+                <Button
+                    color="success"
+                    variant="contained"
+                    size="small"
+                    component={Link}
+                    href="/checkout"
+                >
                     Till kassa
                 </Button>
             </div>
-            {isLoading || !data ? (
+            {!data ? (
                 <ClipLoader
                     loading={true}
                     size={150}
@@ -66,6 +76,7 @@ export default function AdvancedNav({
                                     (product: BasketType & ProductByIdType) =>
                                         product.categoryid === link.categoryId
                                 )}
+                                trash={trash}
                             />
                         );
                     })}
