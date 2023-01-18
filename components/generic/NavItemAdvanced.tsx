@@ -4,7 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../../styles/Main.module.scss";
 import { Basket as BasketType } from "../../hooks/useBasket";
-import { faStarOfLife } from "@fortawesome/free-solid-svg-icons";
+import {
+    faBasketShopping,
+    faStarOfLife,
+    faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { ProductByIdType } from "../../pages/api/productsbyids/[ids]";
 
 export default function NavItem({
@@ -44,8 +48,8 @@ export default function NavItem({
             {/* List items */}
             {items.map((product) => {
                 return (
-                    <div>
-                        <div className={styles.product_builder_col}>
+                    <div className={styles.product_builder_col}>
+                        <div>
                             <img
                                 src={
                                     `/images/categories/${product.categoryid}/` +
@@ -60,6 +64,9 @@ export default function NavItem({
 
                                 <p>{product.price} kr</p>
                             </div>
+                        </div>
+                        <div>
+                            <FontAwesomeIcon icon={faTrash} />
                         </div>
                     </div>
                 );

@@ -40,7 +40,7 @@ const useBasket = (variant = "techstore-basket") => {
         return window.removeEventListener(variant + "-change", () =>
             getBasket()
         );
-    }, []);
+    }, [variant]);
 
     //Set item
     useEffect(() => {
