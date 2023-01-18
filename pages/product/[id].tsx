@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Layout from "../../components/layout";
-import Head from "next/head";
 import Main from "../../components/Main";
 import { GetServerSideProps } from "next";
 import { getProduct, ProductType } from "../../lib/product";
@@ -10,14 +9,17 @@ import Carousel from "../../components/generic/Carousel";
 import { Button } from "@mui/material";
 import SpecList from "../../components/SpecList";
 import ProductRating from "../../components/generic/ProductRating";
-import useUser from "../../lib/useUser";
 import Reviews from "../../components/Reviews";
 import useBasket from "../../hooks/useBasket";
+import useComputerBuilder from "../../hooks/useComputerBuilder";
 
 export default function Product({ product }: { product: ProductType }) {
-    const { user } = useUser();
     const [showNav, setShowNav] = useState(false);
+    const { isActive } = useComputerBuilder();
     const { state: basket, toBasket } = useBasket();
+    const { state: builderBasket, toBasket: toBuilderBasket } = useBasket(
+        "techstore-builder-basket"
+    );
     //404 Not found page?
     if ("error" in product) {
         return (
@@ -29,8 +31,6 @@ export default function Product({ product }: { product: ProductType }) {
         );
     }
     const title = `${product.name} - Techstore`;
-
-    console.log(basket);
 
     const basketQuantity =
         basket.find((item) => item.id === product.id)?.quantity ?? 0;
@@ -101,11 +101,17 @@ export default function Product({ product }: { product: ProductType }) {
                                 color="success"
                                 fullWidth
                                 className={productStyles.buyBtn}
-                                onClick={() => toBasket(product, canBuy)}
+                                onClick={() =>
+                                    isActive
+                                        ? toBuilderBasket(product, canBuy)
+                                        : toBasket(product, canBuy)
+                                }
                                 disabled={!canBuy}
                             >
                                 {canBuy
-                                    ? "Köp"
+                                    ? isActive
+                                        ? "Lägg till"
+                                        : "Köp"
                                     : (product.instock ?? 0) < 1
                                     ? "Utsålt"
                                     : "Max antal"}

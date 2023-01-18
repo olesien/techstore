@@ -47,7 +47,10 @@ export default function NavItem({
             {/* List items */}
             {items.map((product) => {
                 return (
-                    <div className={styles.product_builder_col}>
+                    <div
+                        className={styles.product_builder_col}
+                        key={product.id}
+                    >
                         <div>
                             <img
                                 src={

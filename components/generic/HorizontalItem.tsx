@@ -6,6 +6,7 @@ import InStock from "./InStock";
 import Link from "next/link";
 import ProductRating from "./ProductRating";
 import { Basket } from "../../hooks/useBasket";
+import { product_compat } from "@prisma/client";
 
 export default function HorizontalItem({
     product,
@@ -27,6 +28,24 @@ export default function HorizontalItem({
         basket.find((item) => item.id === Number(product.id))?.quantity ?? 0;
 
     const canBuy = (Number(product.instock) ?? 0) - basketQuantity >= 1;
+    //Check if it's incompat
+    const checkCompat = (
+        quickspecs: string,
+        product_compat: product_compat[]
+    ) => {
+        const issues = product_compat.filter(
+            (compat) =>
+                basket.find((item) => item.id === compat.productid2) ||
+                basket.find((item) => item.id === compat.productid1)
+        );
+        if (issues.length > 0) {
+            return issues[0].message;
+        }
+        return quickspecs;
+    };
+
+    console.log(product);
+    console.log(basket);
     return (
         <div className={productStyles.horizontalItem}>
             <div className={productStyles.horzImage}>
@@ -47,7 +66,14 @@ export default function HorizontalItem({
                     </a>
                 </Link>
                 <ProductRating rating={product.review_avg} />
-                <p>{product.quickspecs}</p>
+                <p>
+                    {isBuilder
+                        ? checkCompat(
+                              product.quickspecs ?? "",
+                              product.product_compat
+                          )
+                        : product.quickspecs}
+                </p>
             </div>
             <div>
                 <InStock instock={Number(product.instock)} />

@@ -4,7 +4,7 @@ import Main from "../../components/Main";
 import { GetServerSideProps } from "next";
 import { getCategory } from "../../lib/category";
 import { OtherFilters, getProducts } from "../../lib/products";
-import { categories_filters, products } from "@prisma/client";
+import { categories_filters, product_compat, products } from "@prisma/client";
 import { Box, Chip, FormControl, MenuItem, TextField } from "@mui/material";
 import productStyles from "../../styles/Products.module.scss";
 import RenderList from "../../components/RenderList";
@@ -14,6 +14,7 @@ import SliderWithValue from "../../components/SliderWithValue";
 export type ProductAddons = {
     product_images: string[];
     review_avg: number;
+    product_compat: product_compat[];
 };
 
 export type Product = products & ProductAddons;

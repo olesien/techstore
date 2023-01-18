@@ -27,7 +27,6 @@ export default function RenderList({
     };
     return (
         <>
-            {" "}
             <div className={productStyles.listHeader}>
                 <p>
                     Visar {products.length}
