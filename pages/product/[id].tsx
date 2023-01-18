@@ -37,6 +37,23 @@ export default function Product({ product }: { product: ProductType }) {
 
     const canBuy = (product.instock ?? 0) - basketQuantity >= 1;
 
+    const checkCompat = () => {
+        if (!isActive) return undefined;
+        const issues = product.product_compat
+            .filter(
+                (compat) =>
+                    builderBasket.find(
+                        (item) => item.id === compat.productid2
+                    ) ||
+                    builderBasket.find((item) => item.id === compat.productid1)
+            )
+            .sort((a, b) => (a.error && !b.error ? 1 : -1));
+        if (issues.length > 0) {
+            return issues[0].message;
+        }
+        return undefined;
+    };
+
     return (
         <Layout toggleNav={() => setShowNav((prev) => !prev)} title={title}>
             <Main showNav={showNav}>
@@ -96,6 +113,8 @@ export default function Product({ product }: { product: ProductType }) {
                                 <h1>{product.price} kr</h1>
                             )}
 
+                            {!!checkCompat() && <p>{checkCompat()}</p>}
+
                             <Button
                                 variant="contained"
                                 color="success"
@@ -106,7 +125,7 @@ export default function Product({ product }: { product: ProductType }) {
                                         ? toBuilderBasket(product, canBuy)
                                         : toBasket(product, canBuy)
                                 }
-                                disabled={!canBuy}
+                                disabled={!canBuy || !!checkCompat()}
                             >
                                 {canBuy
                                     ? isActive

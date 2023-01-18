@@ -1,5 +1,6 @@
 import prisma from "./prisma";
 import {
+    product_compat,
     product_images,
     product_specs,
     products,
@@ -14,6 +15,7 @@ type Error = {
 type Product_addons = {
     product_images: product_images[];
     product_specs: product_specs[];
+    product_compat: product_compat[];
     reviews: (reviews & { users: users })[];
     avg: number;
 };
@@ -45,6 +47,8 @@ export async function getProduct(id: number) {
                         users: true,
                     },
                 },
+                product_compat_product_compat_productid1Toproducts: true,
+                product_compat_product_compat_productid2Toproducts: true,
             },
             where: {
                 id,
@@ -70,6 +74,10 @@ export async function getProduct(id: number) {
                 ...review,
                 timeposted: String(review.timeposted),
             })),
+            product_compat:
+                product.product_compat_product_compat_productid1Toproducts.concat(
+                    product.product_compat_product_compat_productid2Toproducts
+                ),
         };
     } catch (err: any) {
         return {
