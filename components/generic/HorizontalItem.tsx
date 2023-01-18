@@ -7,6 +7,7 @@ import Link from "next/link";
 import ProductRating from "./ProductRating";
 import { Basket } from "../../hooks/useBasket";
 import { product_compat } from "@prisma/client";
+import { formattedNumber } from "../../lib/utils";
 
 export default function HorizontalItem({
     product,
@@ -76,12 +77,12 @@ export default function HorizontalItem({
             </div>
             {product.oldprice ? (
                 <div className={productStyles.horzDiscountPrice}>
-                    <p>{product.oldprice} kr</p>
-                    <p>{product.price} kr</p>
+                    <p>{formattedNumber(product.oldprice)} kr</p>
+                    <p>{formattedNumber(product.price)} kr</p>
                 </div>
             ) : (
                 <div className={productStyles.horzPrice}>
-                    <p>{product.price} kr</p>
+                    <p>{formattedNumber(product.price)} kr</p>
                 </div>
             )}
 

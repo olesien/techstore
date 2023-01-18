@@ -7,6 +7,7 @@ import useSWR from "swr";
 import ClipLoader from "react-spinners/ClipLoader";
 import { ProductByIdType } from "../pages/api/productsbyids/[ids]";
 import Link from "next/link";
+import { formattedNumber, summedCost } from "../lib/utils";
 const fetchURL = (url: string) => fetch(url).then((r) => r.json());
 
 export default function AdvancedNav({
@@ -30,11 +31,16 @@ export default function AdvancedNav({
         fetchURL,
         { keepPreviousData: true }
     );
-    console.log(data);
+    const products = data
+        ? data.products.map((product: ProductByIdType) => {
+              const basketItem = basket.find((item) => item.id === product.id);
+              return { ...product, quantity: basketItem?.quantity };
+          })
+        : [];
     return (
         <>
             <p>Summa kostnad</p>
-            <h2>15155 kr</h2>
+            <h2>{summedCost(products)} kr</h2>
             <div className={styles.navButtons}>
                 <Button color="error" onClick={() => trash()}>
                     Rensa

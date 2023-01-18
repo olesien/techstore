@@ -1,7 +1,6 @@
 import useSWR from "swr";
 import React, { useEffect, useState } from "react";
 import { UserDetails } from "./api/userdetails";
-import Head from "next/head";
 import mainStyles from "../styles/Main.module.scss";
 import Layout from "../components/layout";
 import useBasket from "../hooks/useBasket";
@@ -84,8 +83,6 @@ export default function checkout() {
         );
         return { ...product, quantity: basketItem?.quantity };
     });
-
-    console.log(user);
 
     const sendOrder = async (e: React.SyntheticEvent) => {
         e.preventDefault();

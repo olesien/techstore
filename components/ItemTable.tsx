@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import InStock from "./generic/InStock";
 import Link from "next/link";
+import { formattedNumber } from "../lib/utils";
 
 export default function ItemTable({
     products,
@@ -110,7 +111,9 @@ export default function ItemTable({
                                 </TableCell>
                                 <TableCell className={styles.price_col}>
                                     <div>
-                                        <span>{product.price} kr</span>
+                                        <span>
+                                            {formattedNumber(product.price)} kr
+                                        </span>
                                         <span
                                             className={styles.clickableIcon}
                                             role="button"

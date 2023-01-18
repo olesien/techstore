@@ -12,6 +12,7 @@ import ProductRating from "../../components/generic/ProductRating";
 import Reviews from "../../components/Reviews";
 import useBasket from "../../hooks/useBasket";
 import useComputerBuilder from "../../hooks/useComputerBuilder";
+import { formattedNumber } from "../../lib/utils";
 
 export default function Product({ product }: { product: ProductType }) {
     const [showNav, setShowNav] = useState(false);
@@ -103,14 +104,14 @@ export default function Product({ product }: { product: ProductType }) {
                             {product.oldprice ? (
                                 <>
                                     <h3 className={productStyles.oldprice}>
-                                        {product.oldprice} kr
+                                        {formattedNumber(product.oldprice)} kr
                                     </h3>
                                     <h1 className={productStyles.newprice}>
-                                        {product.price} kr
+                                        {formattedNumber(product.price)} kr
                                     </h1>
                                 </>
                             ) : (
-                                <h1>{product.price} kr</h1>
+                                <h1>{formattedNumber(product.price)} kr</h1>
                             )}
 
                             {!!checkCompat() && <p>{checkCompat()}</p>}

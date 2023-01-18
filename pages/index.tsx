@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Layout from "../components/layout";
 import utilStyles from "../styles/utils.module.scss";
 import Main from "../components/Main";
@@ -42,32 +41,7 @@ export default function Home({
         );
     }
     const [showNav, setShowNav] = useState(false);
-    const items = [
-        {
-            title: "I9",
-            image: "/images/i9.png",
-            id: 1,
-            price: 1000,
-            saleprice: 1000,
-            description: "En jäkligt snabb processor!",
-        },
-        {
-            title: "I10",
-            image: "/images/i9.png",
-            id: 2,
-            price: 1000,
-            saleprice: 1000,
-            description: "En jäkligt snabb processor!",
-        },
-        {
-            title: "I11",
-            image: "/images/i9.png",
-            id: 3,
-            price: 1000,
-            saleprice: 1000,
-            description: "En jäkligt snabb processor!",
-        },
-    ];
+
     return (
         <Layout
             toggleNav={() => setShowNav((prev) => !prev)}

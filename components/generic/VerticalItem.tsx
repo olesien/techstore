@@ -3,6 +3,7 @@ import Image from "next/image";
 import Button from "@mui/material/Button";
 import utilStyles from "../../styles/utils.module.scss";
 import { CheapProduct } from "../../lib/cheapProducts";
+import { formattedNumber } from "../../lib/utils";
 
 export default function VerticalItem({ product }: { product: CheapProduct }) {
     return (
@@ -24,8 +25,12 @@ export default function VerticalItem({ product }: { product: CheapProduct }) {
             </div>
             <div className="horizontal-flex gap-1 m-1">
                 <div className="vertical-flex">
-                    <p className="crossed">{product.oldprice} kr</p>
-                    <p className={utilStyles.discount}>{product.price} kr</p>
+                    <p className="crossed">
+                        {formattedNumber(product.oldprice ?? 0)} kr
+                    </p>
+                    <p className={utilStyles.discount}>
+                        {formattedNumber(product.price)} kr
+                    </p>
                 </div>
                 <div>
                     <Button variant={"contained"} color={"success"}>

@@ -7,6 +7,7 @@ import headStyles from "../../styles/Header.module.scss";
 import { Basket as BasketType } from "../../hooks/useBasket";
 import { faStarOfLife, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { ProductByIdType } from "../../pages/api/productsbyids/[ids]";
+import { formattedNumber } from "../../lib/utils";
 
 export default function NavItem({
     title,
@@ -24,6 +25,7 @@ export default function NavItem({
     trash: (productid?: number | undefined) => void;
 }) {
     const router = useRouter();
+
     return (
         <li className={router.asPath == link ? styles.active : ""}>
             <Link href={link} legacyBehavior>
@@ -73,7 +75,7 @@ export default function NavItem({
                                     </a>
                                 </Link>
 
-                                <p>{product.price} kr</p>
+                                <p>{formattedNumber(product.price)} kr</p>
                             </div>
                         </div>
                         <div>
