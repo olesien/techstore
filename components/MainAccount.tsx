@@ -2,17 +2,7 @@ import Nav from "./Nav";
 import styles from "../styles/Main.module.scss";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import {
-    faBox,
-    faChessBoard,
-    faFan,
-    faFloppyDisk,
-    faGaugeHigh,
     faList,
-    faMemory,
-    faMicrochip,
-    faMusic,
-    faPalette,
-    faPlug,
     faPlus,
     faTruck,
     faUserGear,
@@ -50,11 +40,9 @@ export default function MainAccount({
 
     return (
         <div className={styles.main}>
-            <Nav
-                showNav={showNav}
-                links={user.admin ? adminLinks : links}
-                renderChoice={false}
-            />
+            <span id={showNav ? "" : "hide-nav"}>
+                <Nav links={user.admin ? adminLinks : links} />
+            </span>
             {showChildren ? <div>{children}</div> : <div />}
         </div>
     );
