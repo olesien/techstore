@@ -29,19 +29,18 @@ export default function HorizontalItem({
 
     const canBuy = (Number(product.instock) ?? 0) - basketQuantity >= 1;
     //Check if it's incompat
-    const checkCompat = (
-        quickspecs: string,
-        product_compat: product_compat[]
-    ) => {
-        const issues = product_compat.filter(
-            (compat) =>
-                basket.find((item) => item.id === compat.productid2) ||
-                basket.find((item) => item.id === compat.productid1)
-        );
+    const checkCompat = () => {
+        const issues = product.product_compat
+            .filter(
+                (compat) =>
+                    basket.find((item) => item.id === compat.productid2) ||
+                    basket.find((item) => item.id === compat.productid1)
+            )
+            .sort((a, b) => (a.error && !b.error ? 1 : -1));
         if (issues.length > 0) {
             return issues[0].message;
         }
-        return quickspecs;
+        return undefined;
     };
 
     console.log(product);
@@ -68,10 +67,7 @@ export default function HorizontalItem({
                 <ProductRating rating={product.review_avg} />
                 <p>
                     {isBuilder
-                        ? checkCompat(
-                              product.quickspecs ?? "",
-                              product.product_compat
-                          )
+                        ? checkCompat() ?? product.quickspecs
                         : product.quickspecs}
                 </p>
             </div>
@@ -94,7 +90,7 @@ export default function HorizontalItem({
                     variant="contained"
                     color="success"
                     onClick={() => toBasket(product, canBuy)}
-                    disabled={!canBuy}
+                    disabled={!canBuy || !!checkCompat()}
                 >
                     {canBuy
                         ? isBuilder
