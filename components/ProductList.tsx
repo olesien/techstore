@@ -6,25 +6,21 @@ import useBasket from "../hooks/useBasket";
 import useComputerBuilder from "../hooks/useComputerBuilder";
 import { maxQuantity } from "./Main";
 
-export default function ProductList({
-    products,
-    categoryId,
-}: {
-    products: Product[];
-    categoryId: number;
-}) {
-    const categoryLimit = maxQuantity[String(categoryId)];
+export default function ProductList({ products }: { products: Product[] }) {
     const { isActive } = useComputerBuilder();
     const { state: basket, toBasket } = useBasket();
     const { state: builderBasket, toBasket: toBuilderBasket } = useBasket(
         "techstore-builder-basket"
     );
 
-    const categoryQuantity = builderBasket
-        .filter((item) => Number(item.categoryid) === Number(categoryId))
-        .reduce((total, item) => {
-            return total + item.quantity;
-        }, 0);
+    const categoryQuantity = (categoryId: number) =>
+        builderBasket
+            .filter((item) => Number(item.categoryid) === Number(categoryId))
+            .reduce((total, item) => {
+                return total + item.quantity;
+            }, 0);
+    const categoryLimit = (categoryId: number) =>
+        maxQuantity[String(categoryId)];
     return (
         <div className={productStyles.list}>
             {products.length === 0 && <p>Inga produkter kunde hittas</p>}
@@ -35,7 +31,11 @@ export default function ProductList({
                     basket={isActive ? builderBasket : basket}
                     toBasket={isActive ? toBuilderBasket : toBasket}
                     isBuilder={!!isActive}
-                    disabled={categoryQuantity >= categoryLimit}
+                    disabled={
+                        !!isActive &&
+                        categoryQuantity(product.categoryid) >=
+                            categoryLimit(product.categoryid)
+                    }
                 />
             ))}
         </div>

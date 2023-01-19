@@ -12,14 +12,14 @@ export default function Nav({
               title: string;
               link: string;
               icon: IconDefinition;
-              categoryId: number;
+              categoryId?: number;
           }
         | { header: string }
     )[];
 }) {
     return (
         <ul>
-            {links.map((link) => {
+            {links.map((link, index) => {
                 if ("header" in link) {
                     return (
                         <li key={0}>
@@ -29,7 +29,7 @@ export default function Nav({
                 }
                 return (
                     <NavItem
-                        key={link.categoryId}
+                        key={link?.categoryId ?? index + 1}
                         title={link.title}
                         link={link.link}
                         icon={link.icon}

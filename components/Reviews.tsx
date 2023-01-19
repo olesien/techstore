@@ -106,13 +106,15 @@ export default function Reviews({ product }: { product: Product }) {
                                             : ""}
                                     </p>
                                     {review.userid === (user?.id ?? 0) && (
-                                        <span>
+                                        <span
+                                            role="button"
+                                            className="clickable"
+                                        >
                                             <FontAwesomeIcon
                                                 icon={faXmark}
                                                 onClick={() =>
                                                     removeReview(review.id)
                                                 }
-                                                role="button"
                                             />
                                         </span>
                                     )}

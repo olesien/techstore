@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../components/layout";
 import Main from "../components/Main";
-import productStyles from "../styles/Products.module.scss";
-import Pagination from "@mui/material/Pagination";
-import Box from "@mui/material/Box";
-import Slider from "@mui/material/Slider";
 import { GetServerSideProps } from "next";
 import { getProductsBySearch } from "../lib/productsbysearch";
 import { Data } from "./category/[id]";

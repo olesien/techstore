@@ -1,16 +1,16 @@
 const MONTH_NAMES = [
-    "Januari",
-    "Februari",
+    "Jan",
+    "Feb",
     "Mars",
-    "April",
+    "Apr",
     "Maj",
     "Juni",
     "Juli",
-    "Augusti",
-    "September",
-    "Oktober",
-    "November",
-    "December",
+    "Aug",
+    "Sept",
+    "Okt",
+    "Nov",
+    "Dec",
 ];
 
 //Credit: https://muffinman.io/blog/javascript-time-ago-function/
@@ -32,18 +32,14 @@ function getFormattedDate(
     }
 
     if (prefomattedDate) {
-        // Today at 10:20
-        // Yesterday at 10:20
-        return `${prefomattedDate} vid ${hours}:${minutes}`;
+        return `${prefomattedDate} kl ${hours}:${minutes}`;
     }
 
     if (hideYear) {
-        // 10. January at 10:20
-        return `${day}. ${month} vid ${hours}:${minutes}`;
+        return `${day}. ${month}`;
     }
 
-    // 10. January 2017. at 10:20
-    return `${day}. ${month} ${year}. vid ${hours}:${minutes}`;
+    return `${day}. ${month} ${year}`;
 }
 
 // --- Main function

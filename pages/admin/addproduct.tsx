@@ -47,6 +47,10 @@ export default function AddProduct({
         changeValue,
     } = useProductForm();
 
+    const [incompats, setIncompats] = useState<
+        { id1: number; id2: number; error: boolean; message: string }[]
+    >([]);
+
     const addProduct = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         console.log("Adding product");

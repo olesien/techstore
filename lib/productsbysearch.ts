@@ -48,7 +48,11 @@ export async function getProductsBySearch(
                     search: query,
                 },
             },
-            include: { product_images: { take: 1 } },
+            include: {
+                product_images: { take: 1 },
+                product_compat_product_compat_productid1Toproducts: true,
+                product_compat_product_compat_productid2Toproducts: true,
+            },
             skip: page * 10 - 10,
             take: 10,
             orderBy,
@@ -74,6 +78,10 @@ export async function getProductsBySearch(
                 review_avg:
                     avg.find((review) => review.productid === product.id)?._avg
                         .rating ?? 0,
+                product_compat:
+                    product.product_compat_product_compat_productid1Toproducts.concat(
+                        product.product_compat_product_compat_productid2Toproducts
+                    ),
             })),
         };
     } catch (err: any) {

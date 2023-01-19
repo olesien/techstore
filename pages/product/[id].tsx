@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Layout from "../../components/layout";
-import Main from "../../components/Main";
+import Main, { maxQuantity } from "../../components/Main";
 import { GetServerSideProps } from "next";
 import { getProduct, ProductType } from "../../lib/product";
 import productStyles from "../../styles/Product.module.scss";
@@ -54,6 +54,19 @@ export default function Product({ product }: { product: ProductType }) {
         }
         return undefined;
     };
+
+    const categoryQuantity = (categoryId: number) =>
+        builderBasket
+            .filter((item) => Number(item.categoryid) === Number(categoryId))
+            .reduce((total, item) => {
+                return total + item.quantity;
+            }, 0);
+    const categoryLimit = (categoryId: number) =>
+        maxQuantity[String(categoryId)];
+    const disabled =
+        !!isActive &&
+        categoryQuantity(product.categoryid) >=
+            categoryLimit(product.categoryid);
 
     return (
         <Layout toggleNav={() => setShowNav((prev) => !prev)} title={title}>
@@ -126,9 +139,11 @@ export default function Product({ product }: { product: ProductType }) {
                                         ? toBuilderBasket(product, canBuy)
                                         : toBasket(product, canBuy)
                                 }
-                                disabled={!canBuy || !!checkCompat()}
+                                disabled={
+                                    !canBuy || !!checkCompat() || disabled
+                                }
                             >
-                                {canBuy
+                                {canBuy && !disabled
                                     ? isActive
                                         ? "Lägg till"
                                         : "Köp"
