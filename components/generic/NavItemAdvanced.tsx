@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../../styles/Main.module.scss";
-import headStyles from "../../styles/Header.module.scss";
 import { Basket as BasketType } from "../../hooks/useBasket";
-import { faStarOfLife, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faStarOfLife } from "@fortawesome/free-solid-svg-icons";
 import { ProductByIdType } from "../../pages/api/productsbyids/[ids]";
-import { formattedNumber } from "../../lib/utils";
+
+import NavProduct from "../NavProduct";
 
 export default function NavItem({
     title,
@@ -47,49 +47,9 @@ export default function NavItem({
             </Link>
 
             {/* List items */}
-            {items.map((product) => {
-                return (
-                    <div
-                        className={styles.product_builder_col}
-                        key={product.id}
-                    >
-                        <div>
-                            <img
-                                src={
-                                    `/images/categories/${product.categoryid}/` +
-                                    product.product_images[0].image
-                                }
-                                title={
-                                    product.product_images[0].name ?? "produkt"
-                                }
-                            ></img>
-                            <div>
-                                <Link
-                                    href={"/product/" + product.id}
-                                    legacyBehavior
-                                >
-                                    <a>
-                                        <p className="clickable">
-                                            {product.name}
-                                        </p>
-                                    </a>
-                                </Link>
-
-                                <p>{formattedNumber(product.price)} kr</p>
-                            </div>
-                        </div>
-                        <div>
-                            <span
-                                className={headStyles.clickableIcon}
-                                role="button"
-                                onClick={() => trash(product.id)}
-                            >
-                                <FontAwesomeIcon icon={faTrashCan} />
-                            </span>
-                        </div>
-                    </div>
-                );
-            })}
+            {items.map((product) => (
+                <NavProduct product={product} key={product.id} trash={trash} />
+            ))}
         </li>
     );
 }

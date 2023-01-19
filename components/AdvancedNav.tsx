@@ -7,8 +7,8 @@ import useSWR from "swr";
 import ClipLoader from "react-spinners/ClipLoader";
 import { ProductByIdType } from "../pages/api/productsbyids/[ids]";
 import Link from "next/link";
-import { formattedNumber, summedCost } from "../lib/utils";
-const fetchURL = (url: string) => fetch(url).then((r) => r.json());
+import { fetchURL, summedCost } from "../lib/utils";
+import { requiredCategories } from "./Main";
 
 export default function AdvancedNav({
     links,
@@ -37,6 +37,10 @@ export default function AdvancedNav({
               return { ...product, quantity: basketItem?.quantity };
           })
         : [];
+
+    const filteredMaxQuantity = requiredCategories.filter((categoryId) =>
+        basket.find((item) => item.categoryid === categoryId)
+    );
     return (
         <>
             <p>Summa kostnad</p>
@@ -51,6 +55,9 @@ export default function AdvancedNav({
                     size="small"
                     component={Link}
                     href="/checkout"
+                    disabled={
+                        filteredMaxQuantity.length < requiredCategories.length
+                    }
                 >
                     Till kassa
                 </Button>

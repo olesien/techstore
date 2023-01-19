@@ -18,3 +18,5 @@ export const summedCost = (productList: ProductWithBasket) => {
     }, 0);
     return formattedNumber(cost);
 };
+
+export const fetchURL = (url: string) => fetch(url).then((r) => r.json());

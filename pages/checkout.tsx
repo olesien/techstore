@@ -11,9 +11,8 @@ import FormInput from "../components/generic/FormInput";
 import Button from "@mui/material/Button";
 import fetchJson, { FetchError } from "../lib/fetchJson";
 import { useRouter } from "next/router";
-import { removeEmpty } from "../lib/utils";
+import { fetchURL, removeEmpty } from "../lib/utils";
 import useComputerBuilder from "../hooks/useComputerBuilder";
-const fetchURL = (url: string) => fetch(url).then((r) => r.json());
 
 export interface Order {
     mail?: string;

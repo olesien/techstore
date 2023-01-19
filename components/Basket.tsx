@@ -7,7 +7,7 @@ import { Button } from "@mui/material";
 import BasketOverlay from "./BasketOverlay";
 import Link from "next/link";
 import ProductsOverview from "./ProductsOverview";
-const fetchURL = (url: string) => fetch(url).then((r) => r.json());
+import { fetchURL } from "../lib/utils";
 
 export default function Basket({
     basket,

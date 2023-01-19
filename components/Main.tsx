@@ -31,6 +31,8 @@ export const maxQuantity: { [key: string]: number } = {
     "10": 10,
 };
 
+export const requiredCategories = [1, 2, 4, 5, 6, 7, 9];
+
 export default function Main({
     showNav,
     children,
