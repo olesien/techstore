@@ -18,6 +18,19 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
 import AdvancedNav from "./AdvancedNav";
 
+export const maxQuantity: { [key: string]: number } = {
+    "1": 1,
+    "2": 1,
+    "3": 3,
+    "4": 3,
+    "5": 2,
+    "6": 1,
+    "7": 1,
+    "8": 1,
+    "9": 1,
+    "10": 10,
+};
+
 export default function Main({
     showNav,
     children,

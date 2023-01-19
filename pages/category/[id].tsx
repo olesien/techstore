@@ -236,6 +236,7 @@ export default function List({
                         data={data}
                         products={products}
                         changeQuery={changeQuery}
+                        categoryId={category.id}
                     />
                 </div>
             </Main>

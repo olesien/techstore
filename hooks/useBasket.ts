@@ -6,6 +6,7 @@ import { Product } from "../pages/category/[id]";
 export type Basket = {
     id: number;
     quantity: number;
+    categoryid: number;
 };
 
 const useBasket = (variant = "techstore-basket") => {
@@ -89,6 +90,7 @@ const useBasket = (variant = "techstore-basket") => {
                 newBasket.splice(basketIndex, 1, {
                     id: Number(product.id),
                     quantity: newTotal,
+                    categoryid: Number(product.categoryid),
                 });
             }
 
@@ -96,7 +98,14 @@ const useBasket = (variant = "techstore-basket") => {
 
             setState(newBasket);
         } else if (!remove) {
-            setState([...state, { id: Number(product.id), quantity: qtnty }]);
+            setState([
+                ...state,
+                {
+                    id: Number(product.id),
+                    quantity: qtnty,
+                    categoryid: Number(product.categoryid),
+                },
+            ]);
         }
     };
     const trash = (productid?: number) => {

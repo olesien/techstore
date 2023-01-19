@@ -10,10 +10,12 @@ export default function RenderList({
     products,
     data,
     changeQuery,
+    categoryId,
 }: {
     products: Product[];
     data: Partial<Data> & Pick<Data, "page" | "pageCount">;
     changeQuery: (queryIndex: string, value: number | string) => void;
+    categoryId: number;
 }) {
     const handlePageChange = (
         event: React.ChangeEvent<unknown>,
@@ -46,7 +48,7 @@ export default function RenderList({
                     <MenuItem value={4}>Pris Lågt - Högt</MenuItem>
                 </TextField>
             </div>
-            <ProductList products={products} />
+            <ProductList products={products} categoryId={categoryId} />
             <div className="p-1 flex center-flex">
                 <Pagination
                     count={data?.pageCount ?? 1}

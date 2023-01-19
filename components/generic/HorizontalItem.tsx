@@ -14,6 +14,7 @@ export default function HorizontalItem({
     basket,
     toBasket,
     isBuilder,
+    disabled,
 }: {
     product: Product;
     basket: Basket[];
@@ -24,6 +25,7 @@ export default function HorizontalItem({
         remove?: boolean
     ) => void;
     isBuilder: boolean;
+    disabled: boolean;
 }) {
     const basketQuantity =
         basket.find((item) => item.id === Number(product.id))?.quantity ?? 0;
@@ -91,9 +93,9 @@ export default function HorizontalItem({
                     variant="contained"
                     color="success"
                     onClick={() => toBasket(product, canBuy)}
-                    disabled={!canBuy || !!checkCompat()}
+                    disabled={!canBuy || !!checkCompat() || disabled}
                 >
-                    {canBuy
+                    {canBuy && !disabled
                         ? isBuilder
                             ? "Lägg till"
                             : "Köp"

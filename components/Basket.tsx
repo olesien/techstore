@@ -46,8 +46,6 @@ export default function Basket({
         );
     }
 
-    console.log(data);
-
     const products = data.products.map((product: ProductByIdType) => {
         const basketItem = basket.find((item) => item.id === product.id);
         return { ...product, quantity: basketItem?.quantity };
