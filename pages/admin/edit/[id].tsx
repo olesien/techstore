@@ -19,16 +19,23 @@ import useProductForm from "../../../hooks/useProductForm";
 import { GetServerSideProps } from "next/types";
 import { Product, getProduct } from "../../../lib/product";
 import { NewProduct } from "../../api/admin/addproduct";
+import Incompats from "../../../components/admin/Incompats";
+import { getAllProductNames } from "../../../lib/products";
 
 export default function EditProduct({
     categories,
     specTypes,
     product,
+    productNames,
 }: {
     categories: Pick<categories, "id" | "name">[];
     specTypes: (Prisma.PickArray<
         Prisma.Product_specsGroupByOutputType,
         "title"[]
+    > & {})[];
+    productNames: (Prisma.PickArray<
+        Prisma.ProductsGroupByOutputType,
+        ("id" | "name")[]
     > & {})[];
     product: Product;
 }) {
@@ -54,6 +61,11 @@ export default function EditProduct({
         addField,
         removeField,
         changeValue,
+        incompats,
+        removeIncompatField,
+        addIncompatField,
+        changeIncompatValue,
+        setIncompats,
     } = useProductForm();
 
     useEffect(() => {
@@ -105,6 +117,20 @@ export default function EditProduct({
             return specs;
         }, [] as NewProduct["specs"]);
         setSpecs(newSpecs);
+
+        const incompats =
+            product.product_compat_product_compat_productid1Toproducts.map(
+                (incompat) => {
+                    const error = incompat.error;
+                    const message = incompat.message;
+                    const product =
+                        productNames.find(
+                            (product) => product.id === incompat.productid2
+                        )?.name ?? "";
+                    return { error, message, product };
+                }
+            );
+        setIncompats(incompats);
     }, [product]);
 
     const editProduct = async (e: React.SyntheticEvent) => {
@@ -132,6 +158,7 @@ export default function EditProduct({
         }
         formData.append("specs", JSON.stringify(specs));
         formData.append("images", JSON.stringify(existingPhotos));
+        formData.append("incompats", JSON.stringify(incompats));
 
         //Send
 
@@ -162,28 +189,6 @@ export default function EditProduct({
             >
                 <MainAccount showNav={showNav}>
                     <section className={utilStyles.section}>
-                        {/* - > Content
-                        Product Name
-                        Product Description 
-                        Product Quickspecs
-                        Product price 
-                        Product discount price (optional)
-                        Category dropdown
-                        Amount in stock
-                        
-                        Image uploader
-                        <- List of uploaded images, with X icon to delete ->
-                        Input field click to upload file
-                        
-                        Product specs
-                        At the top you can click plus to add the non-categorized specs
-                        Dropdown to select title -> Input field for name
-                        Below you can click another plus to add a category. When clicked you can input an name, then a plus appears to right to add a spec under said category
-                        
-                        Product Compat
-                        Plus icon to the right of title, when clicked adds:
-                        Dropdown of all products we have, along with a SEARCH in input, this will select productid. Then an input field with some feedback, and checkbox for "error", otherwise treated as warning*/}
-
                         <div className={utilStyles.formContainer}>
                             {errorMsg && <p className="error">{errorMsg}</p>}
                             <form onSubmit={editProduct}>
@@ -226,6 +231,15 @@ export default function EditProduct({
                                         newCategory={newCategory}
                                         addCategory={addCategory}
                                     />
+
+                                    <h2>Produkt inkompatabiliteter</h2>
+                                    <Incompats
+                                        incompats={incompats}
+                                        changeValue={changeIncompatValue}
+                                        removeField={removeIncompatField}
+                                        addField={addIncompatField}
+                                        productNames={productNames}
+                                    />
                                 </div>
                                 <div>
                                     <Button type="submit" variant="outlined">
@@ -248,12 +262,14 @@ export const getServerSideProps: GetServerSideProps = async ({
     const categories = await getAllCategories();
     const specTypes = await getAllSpecTypes();
     const product = await getProduct(Number(params?.id));
+    const productNames = await getAllProductNames();
 
     return {
         props: {
             categories,
             specTypes,
             product,
+            productNames,
         },
     };
 };

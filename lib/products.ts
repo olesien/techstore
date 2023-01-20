@@ -13,6 +13,13 @@ export type OtherFilters = {
     };
 };
 
+export async function getAllProductNames() {
+    const names = await prisma.products.groupBy({
+        by: ["name", "id"],
+    });
+    return names;
+}
+
 export async function getProducts(
     id: string,
     page: number,

@@ -5,31 +5,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import multer from "multer";
 import fs from "fs";
 import prisma from "../../../lib/prisma";
-export interface AddProduct {
-    name?: string;
-    categoryid?: string;
-    quickspecs?: string;
-    description?: string;
-    price?: string;
-    oldprice?: string;
-    instock?: string;
-}
-
-export interface AddProductForm {
-    name: string;
-    categoryid: number;
-    quickspecs: string;
-    description: string;
-    price: number;
-    oldprice?: number;
-    instock: number;
-}
-
-export interface NewProduct {
-    form: AddProduct;
-    photos: File[];
-    specs: { name: string; items: { title: string; content: string }[] }[];
-}
+import { AddProductForm, NewProduct } from "./addproduct";
 
 //Solution credit: https://stackoverflow.com/questions/69478495/how-to-send-file-in-form-data-in-next-js
 //^^ above solution didn't even have upvotes :(
@@ -71,6 +47,10 @@ async function editProductRoute(req: NextApiRequest, res: NextApiResponse) {
             id: number;
         };
         const specs = JSON.parse(result.fields.specs) as NewProduct["specs"];
+        const incompats = JSON.parse(
+            result.fields.incompats
+        ) as NewProduct["incompat"];
+
         const existingPhotos = JSON.parse(
             result.fields.images
         ) as product_images[];
@@ -211,7 +191,8 @@ async function editProductRoute(req: NextApiRequest, res: NextApiResponse) {
             }
 
             //Upload files and create references
-            photos.forEach(async (photo) => {
+            for (let i = 0; i < photos.length; i++) {
+                const photo = photos[i];
                 //Set max length to 30
                 let splitName = photo.originalname.split(".");
                 let name =
@@ -237,7 +218,7 @@ async function editProductRoute(req: NextApiRequest, res: NextApiResponse) {
                         image: time + "-" + name,
                     },
                 });
-            });
+            }
 
             //Delete all older specs
             const deletedSpecs = await prisma.product_specs.deleteMany({
@@ -245,15 +226,22 @@ async function editProductRoute(req: NextApiRequest, res: NextApiResponse) {
             });
 
             //Create new specs
-            specs.forEach(async (spec) => {
+            for (let i = 0; i < specs.length; i++) {
+                const spec = specs[i];
                 await prisma.product_specs.createMany({
                     data: spec.items.map((field) => {
                         const splitBySpace = field.content.split(" ");
-                        const nameWithoutComma = splitBySpace[0].replace(
-                            /,/g,
-                            ""
-                        );
-                        let content = nameWithoutComma;
+                        let content = field.content;
+                        let extrainfo = null;
+                        if (splitBySpace.length > 0) {
+                            const nameWithoutComma = splitBySpace[0].replace(
+                                /,/g,
+                                ""
+                            );
+                            content = nameWithoutComma;
+                            extrainfo = splitBySpace[1].replace(/[()\s]/g, "");
+                        }
+
                         if (
                             content.toLowerCase() === "sant" ||
                             content.toLowerCase() === "ja"
@@ -267,12 +255,9 @@ async function editProductRoute(req: NextApiRequest, res: NextApiResponse) {
                         }
 
                         let extra: { extrainfo?: string } = {};
-                        if (nameWithoutComma.length > 1) {
+                        if (extrainfo) {
                             //add extra
-                            extra.extrainfo = splitBySpace[1].replace(
-                                /[()\s]/g,
-                                ""
-                            );
+                            extra.extrainfo = extrainfo;
                         }
 
                         return {
@@ -284,7 +269,36 @@ async function editProductRoute(req: NextApiRequest, res: NextApiResponse) {
                         };
                     }),
                 });
+            }
+
+            //Delete all older compats
+            const deletedCompats = await prisma.product_compat.deleteMany({
+                where: { productid1: data.id },
             });
+
+            //Add (in)compats
+            for (let i = 0; i < incompats.length; i++) {
+                const incompat = incompats[i];
+                //Get product id
+                const product = await prisma.products.findFirst({
+                    where: {
+                        name: {
+                            search: incompat.product,
+                        },
+                    },
+                });
+
+                if (product) {
+                    await prisma.product_compat.create({
+                        data: {
+                            productid1: newProduct.id,
+                            productid2: product.id,
+                            error: incompat.error,
+                            message: incompat.message,
+                        },
+                    });
+                }
+            }
 
             return res.status(200).json(newProduct);
         } catch (error) {

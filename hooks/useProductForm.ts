@@ -12,6 +12,45 @@ export default function useProductForm() {
         { name: "Huvud specifikationer", items: [{ title: "", content: "" }] },
     ]);
 
+    const [incompats, setIncompats] = useState<
+        { product: string; error: boolean; message: string }[]
+    >([{ product: "", error: false, message: "" }]);
+
+    const changeIncompatValue = (
+        fieldId: number,
+        type: "message" | "error" | "product",
+        value: string | boolean
+    ) => {
+        setIncompats((incompats) => {
+            const incompat = incompats[fieldId];
+            if (incompat) {
+                if (type === "message" || type === "product") {
+                    incompat[type] = String(value);
+                }
+                if (type === "error") {
+                    incompat[type] = Boolean(value);
+                }
+                incompats.splice(fieldId, 1, incompat);
+            }
+
+            return [...incompats];
+        });
+    };
+
+    const removeIncompatField = (fieldId: number) => {
+        setIncompats((incompats) => {
+            incompats.splice(fieldId, 1);
+            return [...incompats];
+        });
+    };
+
+    const addIncompatField = () => {
+        setIncompats((incompats) => {
+            incompats.push({ product: "", error: false, message: "" });
+            return [...incompats];
+        });
+    };
+
     const selectFiles = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = event.target;
         const selectedFiles = files as FileList;
@@ -124,5 +163,10 @@ export default function useProductForm() {
         addField,
         removeField,
         changeValue,
+        incompats,
+        setIncompats,
+        removeIncompatField,
+        addIncompatField,
+        changeIncompatValue,
     };
 }

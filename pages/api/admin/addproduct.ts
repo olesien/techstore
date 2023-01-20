@@ -24,10 +24,17 @@ export interface AddProductForm {
     instock: number;
 }
 
+export type Incompat = {
+    product: string;
+    error: boolean;
+    message: string;
+};
+
 export interface NewProduct {
     form: AddProduct;
     photos: File[];
     specs: { name: string; items: { title: string; content: string }[] }[];
+    incompat: Incompat[];
 }
 
 //Solution credit: https://stackoverflow.com/questions/69478495/how-to-send-file-in-form-data-in-next-js
@@ -68,6 +75,9 @@ async function addProductRoute(req: NextApiRequest, res: NextApiResponse) {
         const result = await parseFormData(req, res);
         const form = JSON.parse(result.fields.form) as NewProduct["form"];
         const specs = JSON.parse(result.fields.specs) as NewProduct["specs"];
+        const incompats = JSON.parse(
+            result.fields.incompats
+        ) as NewProduct["incompat"];
 
         const photos = result.files as {
             fieldname: string;
@@ -77,7 +87,7 @@ async function addProductRoute(req: NextApiRequest, res: NextApiResponse) {
             buffer: Buffer;
             size: number;
         }[];
-        console.log(form, specs, photos);
+        console.log(form, specs, photos, incompats);
 
         const time = Date.now();
 
@@ -154,8 +164,7 @@ async function addProductRoute(req: NextApiRequest, res: NextApiResponse) {
         if (
             !("instock" in form) ||
             !form.instock ||
-            form.instock.length < 2 ||
-            form.instock.length > 1000
+            Number(form.instock) > 1000
         ) {
             return res.status(400).json({
                 message: "Lagersaldo är odefinerat eller för stort (max 1000)",
@@ -178,7 +187,8 @@ async function addProductRoute(req: NextApiRequest, res: NextApiResponse) {
             });
 
             //Upload files and create references
-            photos.forEach(async (photo) => {
+            for (let i = 0; i < photos.length; i++) {
+                const photo = photos[i];
                 //Set max length to 30
                 let splitName = photo.originalname.split(".");
                 let name =
@@ -204,18 +214,30 @@ async function addProductRoute(req: NextApiRequest, res: NextApiResponse) {
                         image: time + "-" + name,
                     },
                 });
-            });
+            }
 
             //Create specs
-            specs.forEach(async (spec) => {
+            for (let i = 0; i < specs.length; i++) {
+                const spec = specs[i];
                 await prisma.product_specs.createMany({
                     data: spec.items.map((field) => {
                         const splitBySpace = field.content.split(" ");
-                        const nameWithoutComma = splitBySpace[0].replace(
-                            /,/g,
-                            ""
-                        );
-                        let content = nameWithoutComma;
+                        let content = field.content;
+                        let extrainfo = null;
+                        if (splitBySpace.length > 0) {
+                            const nameWithoutComma = splitBySpace[0].replace(
+                                /,/g,
+                                ""
+                            );
+                            content = nameWithoutComma;
+                            if (splitBySpace.length > 1) {
+                                extrainfo = splitBySpace[1].replace(
+                                    /[()\s]/g,
+                                    ""
+                                );
+                            }
+                        }
+
                         if (
                             content.toLowerCase() === "sant" ||
                             content.toLowerCase() === "ja"
@@ -229,12 +251,9 @@ async function addProductRoute(req: NextApiRequest, res: NextApiResponse) {
                         }
 
                         let extra: { extrainfo?: string } = {};
-                        if (nameWithoutComma.length > 1) {
+                        if (extrainfo) {
                             //add extra
-                            extra.extrainfo = splitBySpace[1].replace(
-                                /[()\s]/g,
-                                ""
-                            );
+                            extra.extrainfo = extrainfo;
                         }
 
                         return {
@@ -246,7 +265,31 @@ async function addProductRoute(req: NextApiRequest, res: NextApiResponse) {
                         };
                     }),
                 });
-            });
+            }
+
+            //Add (in)compats
+            for (let i = 0; i < incompats.length; i++) {
+                const incompat = incompats[i];
+                //Get product id
+                const product = await prisma.products.findFirst({
+                    where: {
+                        name: {
+                            search: incompat.product,
+                        },
+                    },
+                });
+
+                if (product) {
+                    await prisma.product_compat.create({
+                        data: {
+                            productid1: newProduct.id,
+                            productid2: product.id,
+                            error: incompat.error,
+                            message: incompat.message,
+                        },
+                    });
+                }
+            }
 
             return res.status(200).json(newProduct);
         } catch (error) {

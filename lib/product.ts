@@ -13,6 +13,8 @@ type Error = {
     error: string;
 };
 type Product_addons = {
+    product_compat_product_compat_productid1Toproducts: product_compat[];
+    product_compat_product_compat_productid2Toproducts: product_compat[];
     product_images: product_images[];
     product_specs: product_specs[];
     product_compat: product_compat[];
