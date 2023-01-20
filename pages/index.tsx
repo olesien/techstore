@@ -49,7 +49,7 @@ export default function Home({
         >
             <Main showNav={showNav}>
                 <div>
-                    <section className={utilStyles.hero}>
+                    {/* <section className={utilStyles.hero}>
                         <Link href="/builder" legacyBehavior>
                             <a>
                                 <Image
@@ -64,7 +64,7 @@ export default function Home({
                                 />
                             </a>
                         </Link>
-                    </section>
+                    </section> */}
                     <p>Nya Produkter</p>
                     <section className={utilStyles.section}>
                         <Carousel

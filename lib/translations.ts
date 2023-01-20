@@ -22,6 +22,10 @@ const translations: { [indexor: string]: string } = {
     "USB3.0": "USB 3.0/3.1 Gen 1",
     "USB3.1": "USB 3.1 Gen2 Type-C",
     diskspace: "Diskutrymme",
+    chipset: "Chipset",
+    overclockingsupport: "Överklockingsstöd",
+    socket: "Proccessorsocket",
+    memory_type: "Internminnestyp",
 };
 
 const translate = (indexor: string | null | undefined) => {
