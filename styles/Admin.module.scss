@@ -83,3 +83,12 @@
         padding-top: 1rem;
     }
 }
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    div button {
+        white-space: nowrap;
+    }
+}

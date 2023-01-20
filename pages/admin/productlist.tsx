@@ -10,13 +10,15 @@ import TableRow from "@mui/material/TableRow";
 import utilStyles from "../../styles/utils.module.scss";
 import styles from "../../styles/Account.module.scss";
 import TableBody from "@mui/material/TableBody";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { AllProductsWithErrors } from "../api/admin/productlist";
 import adminStyles from "../../styles/Admin.module.scss";
 import translate from "../../lib/translations";
 import { Button, TextField } from "@mui/material";
 import Link from "next/link";
 import useQueries from "../../hooks/useQueries";
+import fetchJson, { FetchError } from "../../lib/fetchJson";
+import { toast } from "react-toastify";
 
 export default function productlist() {
     const { query, changeQuery } = useQueries();
@@ -25,16 +27,16 @@ export default function productlist() {
     useEffect(() => {
         setSearch(String(query?.adminsearch ?? ""));
     }, [query?.adminsearch]);
+    const path =
+        "/api/admin/productlist" +
+        (query?.adminsearch
+            ? `?adminsearch=${JSON.stringify(query?.adminsearch)}`
+            : "");
     const {
         data: products,
         isLoading,
         error,
-    } = useSWR<AllProductsWithErrors>(
-        "/api/admin/productlist" +
-            (query?.adminsearch
-                ? `?adminsearch=${JSON.stringify(query?.adminsearch)}`
-                : "")
-    );
+    } = useSWR<AllProductsWithErrors>(path);
     if (isLoading || error || !products || "message" in products) {
         return (
             <Layout
@@ -51,6 +53,32 @@ export default function productlist() {
     const keySubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.code === "Enter") {
             makeSearch();
+        }
+    };
+
+    const remove = async (id: number) => {
+        const confirmRemove = confirm(
+            "Är du säker att du vill ta bort denna produkten?"
+        );
+        if (confirmRemove) {
+            try {
+                await fetchJson(`/api/admin/removeproduct/${id}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: "",
+                });
+                //Refetch
+                mutate(path);
+                toast("Produkt borttagen");
+            } catch (error) {
+                if (error instanceof FetchError) {
+                    toast.error(error.data.message);
+                } else {
+                    toast.error("Något gick snett");
+                }
+            }
         }
     };
     return (
@@ -100,6 +128,7 @@ export default function productlist() {
                                                 "&:last-child td, &:last-child th":
                                                     { border: 0 },
                                             }}
+                                            key={product.id}
                                         >
                                             <TableCell
                                                 className={
@@ -147,17 +176,39 @@ export default function productlist() {
                                             </TableCell>
 
                                             <TableCell>
-                                                <Button
-                                                    component={Link}
-                                                    href={
-                                                        "/admin/edit/" +
-                                                        product.id
+                                                <div
+                                                    className={
+                                                        adminStyles.actions
                                                     }
-                                                    variant="contained"
-                                                    size="small"
                                                 >
-                                                    Redigera
-                                                </Button>
+                                                    <div>
+                                                        <Button
+                                                            component={Link}
+                                                            href={
+                                                                "/admin/edit/" +
+                                                                product.id
+                                                            }
+                                                            variant="contained"
+                                                            size="small"
+                                                        >
+                                                            Redigera
+                                                        </Button>
+                                                    </div>
+                                                    <div>
+                                                        <Button
+                                                            variant="contained"
+                                                            size="small"
+                                                            color="error"
+                                                            onClick={() =>
+                                                                remove(
+                                                                    product.id
+                                                                )
+                                                            }
+                                                        >
+                                                            Ta Bort
+                                                        </Button>
+                                                    </div>
+                                                </div>
                                             </TableCell>
                                         </TableRow>
                                     ))}
