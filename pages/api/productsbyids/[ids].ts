@@ -1,12 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
-import {
-    product_images,
-    product_specs,
-    products,
-    reviews,
-    users,
-} from "@prisma/client";
+import { product_images, products } from "@prisma/client";
 
 type Error = {
     code: number;

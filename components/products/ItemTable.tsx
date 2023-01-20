@@ -5,14 +5,14 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import useBasket, { Basket } from "../hooks/useBasket";
-import { ProductByIdType } from "../pages/api/productsbyids/[ids]";
-import styles from "../styles/Header.module.scss";
+import useBasket, { Basket } from "../../hooks/useBasket";
+import { ProductByIdType } from "../../pages/api/productsbyids/[ids]";
+import styles from "../../styles/Header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import InStock from "./generic/InStock";
+import InStock from "../generic/InStock";
 import Link from "next/link";
-import { formattedNumber } from "../lib/utils";
+import { formattedNumber } from "../../lib/utils";
 
 export default function ItemTable({
     products,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import AdminRoute from "../../components/generic/AdminRoute";
-import Layout from "../../components/layout";
-import MainAccount from "../../components/MainAccount";
+import AdminRoute from "../../components/admin/AdminRoute";
+import Layout from "../../components/generic/Layout";
+import MainAccount from "../../components/generic/MainAccount";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";

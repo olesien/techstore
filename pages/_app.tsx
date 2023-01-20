@@ -35,11 +35,6 @@ declare module "@mui/material/styles" {
         secondary: Palette["primary"];
     }
 
-    // interface PaletteOptions {
-    //     neutral: PaletteOptions["primary"];
-    //     secondary: PaletteOptions["secondary"];
-    // }
-
     interface PaletteColor {
         darker?: string;
     }
@@ -62,20 +57,6 @@ declare module "@mui/material/styles" {
         };
     }
 }
-
-// const theme = createTheme({
-//     palette: {
-//         primary: {
-//             // Purple and green play nicely together.
-//             main: "#4870FF",
-//         },
-//         // alert: {
-//         //     // This is green.A700 as hex.
-//         //     main: "#C99B26",
-//         // },
-//     },
-// });
-
 export const theme = createTheme({
     status: {
         danger: "#DA3535",
@@ -94,11 +75,6 @@ export const theme = createTheme({
             main: "#FFF",
             contrastText: "#000",
         },
-        // success: {
-        //     main: "#44A02D",
-        //     contrastText: "FFF",
-        //     light: "FFF",
-        // },
     },
 });
 

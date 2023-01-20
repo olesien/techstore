@@ -1,5 +1,3 @@
-import type { User } from "./user";
-
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "../../lib/session";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -11,7 +9,6 @@ async function addreview(req: NextApiRequest, res: NextApiResponse) {
         return res.status(403).json({ message: "Förbjuden" });
     }
     const { id: userid } = req.session.user;
-    console.log(content, rating);
     const exists = await prisma.reviews.findFirst({
         where: { userid, productid },
     });
@@ -32,9 +29,6 @@ async function addreview(req: NextApiRequest, res: NextApiResponse) {
         return res.status(403).json({ message: "Inkorrekt data" });
     }
 
-    // const newUser = await prisma.users.create({
-    //     data,
-    // });
     try {
         const review = await prisma.reviews.create({
             data: {

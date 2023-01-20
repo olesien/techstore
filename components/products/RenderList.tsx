@@ -1,10 +1,10 @@
 import React from "react";
-import productStyles from "../styles/Products.module.scss";
+import productStyles from "../../styles/Products.module.scss";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import ProductList from "./ProductList";
-import { Data, Product } from "../pages/category/[id]";
+import { Data, Product } from "../../pages/category/[id]";
 import Pagination from "@mui/material/Pagination";
+import ProductList from "./ProductList";
 
 export default function RenderList({
     products,

@@ -1,13 +1,13 @@
 import React from "react";
 import useSWR from "swr";
-import { Basket as BasketType } from "../hooks/useBasket";
+import { Basket as BasketType } from "../../hooks/useBasket";
 import ClipLoader from "react-spinners/ClipLoader";
-import { ProductByIdType } from "../pages/api/productsbyids/[ids]";
+import { ProductByIdType } from "../../pages/api/productsbyids/[ids]";
 import { Button } from "@mui/material";
-import BasketOverlay from "./BasketOverlay";
+import BasketOverlay from "../basket/BasketOverlay";
 import Link from "next/link";
-import ProductsOverview from "./ProductsOverview";
-import { fetchURL } from "../lib/utils";
+import { fetchURL } from "../../lib/utils";
+import ProductsOverview from "../products/ProductsOverview";
 
 export default function Basket({
     basket,

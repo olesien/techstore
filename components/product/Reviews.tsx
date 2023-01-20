@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { Product } from "../lib/product";
-import productStyles from "../styles/Product.module.scss";
-import useUser from "../lib/useUser";
+import { Product } from "../../lib/product";
+import productStyles from "../../styles/Product.module.scss";
+import useUser from "../../lib/useUser";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPerson, faXmark } from "@fortawesome/free-solid-svg-icons";
-import ProductRating from "./generic/ProductRating";
-import { Button, Input, TextField } from "@mui/material";
-import ProductRatingSet from "./generic/ProductRatingSet";
-import fetchJson, { FetchError } from "../lib/fetchJson";
-import { timeAgo } from "../lib/getTimeSince";
+import ProductRating from "./ProductRating";
+import { Button, TextField } from "@mui/material";
+import ProductRatingSet from "./ProductRatingSet";
+import fetchJson, { FetchError } from "../../lib/fetchJson";
+import { timeAgo } from "../../lib/getTimeSince";
 import { useRouter } from "next/router";
 
 export default function Reviews({ product }: { product: Product }) {
@@ -32,7 +32,6 @@ export default function Reviews({ product }: { product: Product }) {
 
             //Refresh props
             router.replace(router.asPath);
-            console.log(res);
         } catch (error) {
             if (error instanceof FetchError) {
                 console.log(error);
@@ -71,8 +70,6 @@ export default function Reviews({ product }: { product: Product }) {
             //Refresh props
             router.replace(router.asPath);
 
-            console.log(res);
-
             setError(undefined);
         } catch (error) {
             if (error instanceof FetchError) {
@@ -87,7 +84,6 @@ export default function Reviews({ product }: { product: Product }) {
             <ul>
                 {product.reviews.length === 0 && <li>Inga recensioner ännu</li>}
                 {product.reviews.map((review) => {
-                    console.log(timeAgo(String(review.timeposted)));
                     return (
                         <li key={review.id}>
                             <div className={productStyles.reviewHeader}>

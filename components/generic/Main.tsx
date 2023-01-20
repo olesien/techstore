@@ -1,6 +1,6 @@
-import Nav from "./Nav";
-import styles from "../styles/Main.module.scss";
-import useWindowDimensions from "../hooks/useWindowDimensions";
+import Nav from "../nav/Nav";
+import styles from "../../styles/Main.module.scss";
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 import {
     faBox,
     faChessBoard,
@@ -13,10 +13,10 @@ import {
     faPalette,
     faPlug,
 } from "@fortawesome/free-solid-svg-icons";
-import useComputerBuilder from "../hooks/useComputerBuilder";
+import useComputerBuilder from "../../hooks/useComputerBuilder";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
-import AdvancedNav from "./AdvancedNav";
+import AdvancedNav from "../nav/AdvancedNav";
 
 export const maxQuantity: { [key: string]: number } = {
     "1": 1,
@@ -35,9 +35,11 @@ export const requiredCategories = [1, 2, 4, 5, 6, 7, 9];
 
 export default function Main({
     showNav,
+    noNav = false,
     children,
 }: {
     showNav: boolean;
+    noNav?: boolean;
     children: JSX.Element;
 }) {
     const { width } = useWindowDimensions();
@@ -131,27 +133,30 @@ export default function Main({
 
     return (
         <div className={styles.main}>
-            <span id={showNav ? "" : "hide-nav"}>
-                <ToggleButtonGroup
-                    color="primary"
-                    value={isActive ? "datorbyggare" : "standard"}
-                    exclusive
-                    onChange={handleChange}
-                    aria-label="Platform"
-                    size="small"
-                >
-                    <ToggleButton value="standard">Standard</ToggleButton>
-                    <ToggleButton value="datorbyggare">
-                        Datorbyggare
-                    </ToggleButton>
-                </ToggleButtonGroup>
-                {isActive ? (
-                    <AdvancedNav links={links} />
-                ) : (
-                    <Nav links={links} />
-                )}
-            </span>
-            {showChildren ? <div>{children}</div> : <div />}
+            {!noNav && (
+                <span id={showNav ? "" : "hide-nav"}>
+                    <ToggleButtonGroup
+                        color="primary"
+                        value={isActive ? "datorbyggare" : "standard"}
+                        exclusive
+                        onChange={handleChange}
+                        aria-label="Platform"
+                        size="small"
+                    >
+                        <ToggleButton value="standard">Standard</ToggleButton>
+                        <ToggleButton value="datorbyggare">
+                            Datorbyggare
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                    {isActive ? (
+                        <AdvancedNav links={links} />
+                    ) : (
+                        <Nav links={links} />
+                    )}
+                </span>
+            )}
+
+            {showChildren || noNav ? <div>{children}</div> : <div />}
         </div>
     );
 }

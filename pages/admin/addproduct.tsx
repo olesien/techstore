@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import AdminRoute from "../../components/generic/AdminRoute";
-import Layout from "../../components/layout";
-import MainAccount from "../../components/MainAccount";
+import AdminRoute from "../../components/admin/AdminRoute";
+import Layout from "../../components/generic/Layout";
+import MainAccount from "../../components/generic/MainAccount";
 import utilStyles from "../../styles/utils.module.scss";
 import adminStyles from "../../styles/Admin.module.scss";
 import Button from "@mui/material/Button";

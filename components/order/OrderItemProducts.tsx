@@ -1,8 +1,8 @@
 import React from "react";
-import { Order } from "../pages/api/orders";
+import { Order } from "../../pages/api/orders";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import styles from "../styles/Account.module.scss";
+import styles from "../../styles/Account.module.scss";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";

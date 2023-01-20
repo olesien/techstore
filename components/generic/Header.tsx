@@ -1,11 +1,11 @@
 import Link from "next/link";
-import useUser from "../lib/useUser";
+import useUser from "../../lib/useUser";
 import { useRouter } from "next/router";
-import fetchJson from "../lib/fetchJson";
-import styles from "../styles/Header.module.scss";
+import fetchJson from "../../lib/fetchJson";
+import styles from "../../styles/Header.module.scss";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { theme } from "../pages/_app";
+import { theme } from "../../pages/_app";
 import {
     faBars,
     faBasketShopping,
@@ -14,11 +14,11 @@ import {
     faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Login from "./login";
-import { KeyboardEventHandler, useEffect, useState } from "react";
-import Basket from "./Basket";
-import useBasket, { Basket as BasketType } from "../hooks/useBasket";
-import useQueries from "../hooks/useQueries";
+import Login from "../auth/Login";
+import { useEffect, useState } from "react";
+import Basket from "../basket/Basket";
+import useBasket, { Basket as BasketType } from "../../hooks/useBasket";
+import useQueries from "../../hooks/useQueries";
 
 export default function Header({
     toggleNav,
@@ -53,7 +53,6 @@ export default function Header({
     };
 
     useEffect(() => {
-        console.log(visibleCart);
         if (visibleCart) {
             document.body.style.overflow = "hidden";
         } else {

@@ -7,7 +7,7 @@ import { Basket as BasketType } from "../../hooks/useBasket";
 import { faStarOfLife } from "@fortawesome/free-solid-svg-icons";
 import { ProductByIdType } from "../../pages/api/productsbyids/[ids]";
 
-import NavProduct from "../NavProduct";
+import NavProduct from "./NavProduct";
 
 export default function NavItem({
     title,

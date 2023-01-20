@@ -21,7 +21,6 @@ export default function ListImages({
     setExistingPhotos?: React.Dispatch<React.SetStateAction<product_images[]>>;
     categoryid?: number;
 }) {
-    console.log(categoryid);
     return (
         <div>
             <List>

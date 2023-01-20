@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import useUser from "../../lib/useUser";
-import Layout from "../../components/layout";
+import Layout from "../../components/generic/Layout";
 import useSWR from "swr";
-import MainAccount from "../../components/MainAccount";
+import MainAccount from "../../components/generic/MainAccount";
 import { OrdersWithErrors } from "../api/orders";
 import styles from "../../styles/utils.module.scss";
-import FormInput from "../../components/generic/FormInput";
+import FormInput from "../../components/forms/FormInput";
 import { Register } from "./register";
 import Button from "@mui/material/Button";
 import { removeEmpty } from "../../lib/utils";

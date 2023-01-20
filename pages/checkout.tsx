@@ -2,17 +2,17 @@ import useSWR from "swr";
 import React, { useEffect, useState } from "react";
 import { UserDetails } from "./api/userdetails";
 import mainStyles from "../styles/Main.module.scss";
-import Layout from "../components/layout";
+import Layout from "../components/generic/Layout";
 import useBasket from "../hooks/useBasket";
 import { ProductByIdType } from "./api/productsbyids/[ids]";
-import ProductsOverview from "../components/ProductsOverview";
 import utilStyles from "../styles/utils.module.scss";
-import FormInput from "../components/generic/FormInput";
+import FormInput from "../components/forms/FormInput";
 import Button from "@mui/material/Button";
 import fetchJson, { FetchError } from "../lib/fetchJson";
 import { useRouter } from "next/router";
 import { fetchURL, removeEmpty } from "../lib/utils";
 import useComputerBuilder from "../hooks/useComputerBuilder";
+import ProductsOverview from "../components/products/ProductsOverview";
 
 export interface Order {
     mail?: string;
@@ -297,25 +297,3 @@ export default function checkout() {
         </Layout>
     );
 }
-
-// export const getServerSideProps = withIronSessionSsr(
-//     async function getServerSideProps({ req }) {
-//         if (!req.session.user) {
-//             return {
-//                 props: { user: null },
-//             };
-//         }
-//         const user = await getUserDetails(req.session.user);
-//         return {
-//             props: { user },
-//         };
-//     },
-//     {
-//         cookieName: "techstore_user",
-//         password: "o2p13opi12jk3opi12j3jop13j1jpo132hip123",
-//         // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
-//         cookieOptions: {
-//             secure: process.env.NODE_ENV === "production",
-//         },
-//     }
-// );

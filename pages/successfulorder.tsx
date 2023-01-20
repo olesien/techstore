@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from "../components/layout";
+import Layout from "../components/generic/Layout";
 import mainStyles from "../styles/Main.module.scss";
 import utilStyles from "../styles/utils.module.scss";
 import Confetti from "react-confetti";

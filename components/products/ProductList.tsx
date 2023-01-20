@@ -1,10 +1,10 @@
 import React from "react";
-import HorizontalItem from "./generic/HorizontalItem";
-import { Product } from "../pages/category/[id]";
-import productStyles from "../styles/Products.module.scss";
-import useBasket from "../hooks/useBasket";
-import useComputerBuilder from "../hooks/useComputerBuilder";
-import { maxQuantity } from "./Main";
+import HorizontalItem from "./HorizontalItem";
+import { Product } from "../../pages/category/[id]";
+import productStyles from "../../styles/Products.module.scss";
+import useBasket from "../../hooks/useBasket";
+import useComputerBuilder from "../../hooks/useComputerBuilder";
+import { maxQuantity } from "../generic/Main";
 
 export default function ProductList({ products }: { products: Product[] }) {
     const { isActive } = useComputerBuilder();

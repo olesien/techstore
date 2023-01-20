@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import useUser from "../../lib/useUser";
 import fetchJson, { FetchError } from "../../lib/fetchJson";
 import styles from "../../styles/utils.module.scss";
-import Layout from "../../components/layout";
-import Head from "next/head";
-import Main from "../../components/Main";
+import Layout from "../../components/generic/Layout";
+import Main from "../../components/generic/Main";
 
-import FormInput from "../../components/generic/FormInput";
+import FormInput from "../../components/forms/FormInput";
 import Button from "@mui/material/Button";
 
 export interface Register {
@@ -134,8 +133,9 @@ export default function Register() {
         <Layout
             toggleNav={() => setShowNav((prev) => !prev)}
             title="Registrera - Techstore"
+            nonav={true}
         >
-            <Main showNav={showNav}>
+            <Main showNav={showNav} noNav={true}>
                 <div className={styles.formContainer}>
                     {errorMsg && <p className="error">{errorMsg}</p>}
                     <form onSubmit={register}>
@@ -255,8 +255,12 @@ export default function Register() {
                                 setForm((form) => ({ ...form, password2 }))
                             }
                         />
-                        <div>
-                            <Button type="submit" variant="outlined">
+                        <div className="flex center-flex">
+                            <Button
+                                type="submit"
+                                variant="outlined"
+                                className="max-400"
+                            >
                                 Registrera
                             </Button>
                         </div>

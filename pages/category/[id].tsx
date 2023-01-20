@@ -1,15 +1,15 @@
 import { useState } from "react";
-import Layout from "../../components/layout";
-import Main from "../../components/Main";
+import Layout from "../../components/generic/Layout";
+import Main from "../../components/generic/Main";
 import { GetServerSideProps } from "next";
 import { getCategory } from "../../lib/category";
 import { OtherFilters, getProducts } from "../../lib/products";
 import { categories_filters, product_compat, products } from "@prisma/client";
 import { Box, Chip, FormControl, MenuItem, TextField } from "@mui/material";
 import productStyles from "../../styles/Products.module.scss";
-import RenderList from "../../components/RenderList";
 import useQueries from "../../hooks/useQueries";
-import SliderWithValue from "../../components/SliderWithValue";
+import SliderWithValue from "../../components/products/SliderWithValue";
+import RenderList from "../../components/products/RenderList";
 
 export type ProductAddons = {
     product_images: string[];

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import useUser from "../../lib/useUser";
-import Layout from "../../components/layout";
+import Layout from "../../components/generic/Layout";
 import useSWR from "swr";
-import MainAccount from "../../components/MainAccount";
+import MainAccount from "../../components/generic/MainAccount";
 import { OrdersWithErrors } from "../api/orders";
 import utilStyles from "../../styles/utils.module.scss";
 import Table from "@mui/material/Table";
@@ -12,7 +12,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import styles from "../../styles/Account.module.scss";
-import OrderItem from "../../components/OrderItem";
+import OrderItem from "../../components/order/OrderItem";
 
 export default function Orders() {
     const [showNav, setShowNav] = useState(false);

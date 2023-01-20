@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 
 export default function CarouselItem({
     title,
@@ -12,7 +11,6 @@ export default function CarouselItem({
     id: number;
     newImg?: boolean;
 }) {
-    console.log(image);
     return (
         <div className="horizontal-flex max-width">
             {newImg && (

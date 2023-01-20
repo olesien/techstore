@@ -30,27 +30,19 @@ export default function SliderWithValue({
 
     //Update
     useEffect(() => {
-        console.log(filterData);
         if (filterData.value && typeof filterData.value !== "string") {
-            console.log(filterData.value);
             setValues(filterData.value.map((value) => Number(value)));
-            //setValues(JSON.parse(filterData.value) as number[]);
         } else {
             const pureValues = filterData.list.map((item) =>
                 Number(item.content)
             );
             setValues([Math.min(...pureValues), Math.max(...pureValues)]);
-            console.log([Math.min(...pureValues), Math.max(...pureValues)]);
         }
     }, [filterData]);
-
-    console.log(values);
 
     function valuetext(value: number) {
         return `${value} type`;
     }
-
-    //JSON.parse(filterData.value) as number[]
     const pureValues = filterData.list.map((item) => Number(item.content));
 
     return (

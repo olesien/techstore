@@ -1,13 +1,9 @@
 import { product_specs } from "@prisma/client";
 import React from "react";
-import productStyles from "../styles/Product.module.scss";
-import translate from "../lib/translations";
+import productStyles from "../../styles/Product.module.scss";
+import translate from "../../lib/translations";
 
 export default function SpecList({ list }: { list: product_specs[] }) {
-    // {
-    //     category: "namehere",
-    //     list: [{id: 1, title: "hi", content: "Lian Li"}]
-    // }
     const specs = list.reduce(
         (
             prevCats: { category: string | null; list: product_specs[] }[],

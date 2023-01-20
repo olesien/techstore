@@ -1,9 +1,9 @@
 import { product_images, products } from "@prisma/client";
 import React from "react";
-import headStyles from "../styles/Header.module.scss";
-import styles from "../styles/Main.module.scss";
-import { Basket as BasketType } from "../hooks/useBasket";
-import { formattedNumber } from "../lib/utils";
+import headStyles from "../../styles/Header.module.scss";
+import styles from "../../styles/Main.module.scss";
+import { Basket as BasketType } from "../../hooks/useBasket";
+import { formattedNumber } from "../../lib/utils";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";

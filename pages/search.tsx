@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import Layout from "../components/layout";
-import Main from "../components/Main";
+import Layout from "../components/generic/Layout";
+import Main from "../components/generic/Main";
 import { GetServerSideProps } from "next";
 import { getProductsBySearch } from "../lib/productsbysearch";
 import { Data } from "./category/[id]";
-import RenderList from "../components/RenderList";
 import useQueries from "../hooks/useQueries";
+import RenderList from "../components/products/RenderList";
 
 type Error = {
     code: number;
@@ -19,7 +19,6 @@ export default function search({
 }) {
     const [showNav, setShowNav] = useState(false);
     const { query, changeQuery } = useQueries();
-    console.log(data);
     if ("error" in data) {
         return (
             <Layout

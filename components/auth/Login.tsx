@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import useUser from "../lib/useUser";
-import fetchJson, { FetchError } from "../lib/fetchJson";
-import styles from "../styles/Auth.module.scss";
+import useUser from "../../lib/useUser";
+import fetchJson, { FetchError } from "../../lib/fetchJson";
+import styles from "../../styles/Auth.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import FormInput from "./generic/FormInput";
+import FormInput from "../forms/FormInput";
 import Button from "@mui/material/Button";
 import Link from "next/link";
 

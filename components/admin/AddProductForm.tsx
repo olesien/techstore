@@ -1,5 +1,5 @@
 import React from "react";
-import FormInput from "../generic/FormInput";
+import FormInput from "../forms/FormInput";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { AddProduct } from "../../pages/api/admin/addproduct";

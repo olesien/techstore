@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Order } from "../pages/api/orders";
+import { Order } from "../../pages/api/orders";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import dayjs from "dayjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
-import styles from "../styles/Account.module.scss";
-import OrderItemProducts from "./OrderItemProducts";
+import styles from "../../styles/Account.module.scss";
+import OrderItemProducts from "../order/OrderItemProducts";
 
 const getDateString = (timestamp: string) =>
     dayjs(timestamp).format("YYYY-MM-DD");

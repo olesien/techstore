@@ -1,12 +1,9 @@
-import Layout from "../components/layout";
+import Layout from "../components/generic/Layout";
 import utilStyles from "../styles/utils.module.scss";
-import Main from "../components/Main";
+import Main from "../components/generic/Main";
 import { useState } from "react";
-import builderimage from "../public/images/builder.png";
-import Image from "next/image";
-import Link from "next/link";
 import Carousel from "../components/generic/Carousel";
-import VerticalItem from "../components/generic/VerticalItem";
+import VerticalItem from "../components/products/VerticalItem";
 import { RecentProduct, getRecentProducts } from "../lib/recentProducts";
 import { CheapProduct, getCheapProducts } from "../lib/cheapProducts";
 type Error = {
@@ -49,22 +46,6 @@ export default function Home({
         >
             <Main showNav={showNav}>
                 <div>
-                    {/* <section className={utilStyles.hero}>
-                        <Link href="/builder" legacyBehavior>
-                            <a>
-                                <Image
-                                    alt="Vercel logo"
-                                    src={builderimage}
-                                    width={1000}
-                                    height={1000}
-                                    style={{
-                                        maxWidth: "100%",
-                                        height: "auto",
-                                    }}
-                                />
-                            </a>
-                        </Link>
-                    </section> */}
                     <p>Nya Produkter</p>
                     <section className={utilStyles.section}>
                         <Carousel

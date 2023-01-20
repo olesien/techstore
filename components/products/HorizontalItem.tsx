@@ -2,11 +2,10 @@ import React from "react";
 import productStyles from "../../styles/Products.module.scss";
 import { Product } from "../../pages/category/[id]";
 import Button from "@mui/material/Button";
-import InStock from "./InStock";
+import InStock from "../generic/InStock";
 import Link from "next/link";
-import ProductRating from "./ProductRating";
+import ProductRating from "../product/ProductRating";
 import { Basket } from "../../hooks/useBasket";
-import { product_compat } from "@prisma/client";
 import { formattedNumber } from "../../lib/utils";
 
 export default function HorizontalItem({
@@ -46,8 +45,6 @@ export default function HorizontalItem({
         return undefined;
     };
 
-    console.log(product);
-    console.log(basket);
     return (
         <div className={productStyles.horizontalItem}>
             <div className={productStyles.horzImage}>

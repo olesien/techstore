@@ -1,14 +1,14 @@
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@mui/material";
-import styles from "../styles/Main.module.scss";
-import NavItemAdvanced from "./generic/NavItemAdvanced";
-import useBasket, { Basket as BasketType } from "../hooks/useBasket";
+import styles from "../../styles/Main.module.scss";
+import NavItemAdvanced from "./NavItemAdvanced";
+import useBasket, { Basket as BasketType } from "../../hooks/useBasket";
 import useSWR from "swr";
 import ClipLoader from "react-spinners/ClipLoader";
-import { ProductByIdType } from "../pages/api/productsbyids/[ids]";
+import { ProductByIdType } from "../../pages/api/productsbyids/[ids]";
 import Link from "next/link";
-import { fetchURL, summedCost } from "../lib/utils";
-import { requiredCategories } from "./Main";
+import { fetchURL, summedCost } from "../../lib/utils";
+import { requiredCategories } from "../generic/Main";
 
 export default function AdvancedNav({
     links,

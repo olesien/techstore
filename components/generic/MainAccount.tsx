@@ -1,13 +1,13 @@
-import Nav from "./Nav";
-import styles from "../styles/Main.module.scss";
-import useWindowDimensions from "../hooks/useWindowDimensions";
+import Nav from "../nav/Nav";
+import styles from "../../styles/Main.module.scss";
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 import {
     faList,
     faPlus,
     faTruck,
     faUserGear,
 } from "@fortawesome/free-solid-svg-icons";
-import useUser from "../lib/useUser";
+import useUser from "../../lib/useUser";
 
 export default function MainAccount({
     showNav,

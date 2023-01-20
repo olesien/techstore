@@ -1,8 +1,5 @@
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
-import NavItem from "./generic/NavItem";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import ToggleButton from "@mui/material/ToggleButton";
-import useComputerBuilder from "../hooks/useComputerBuilder";
+import NavItem from "../nav/NavItem";
 
 export default function Nav({
     links,
