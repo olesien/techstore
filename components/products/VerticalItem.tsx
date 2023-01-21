@@ -33,7 +33,12 @@ export default function VerticalItem({ product }: { product: CheapProduct }) {
                     </p>
                 </div>
                 <div>
-                    <Button variant={"contained"} color={"success"}>
+                    <Button
+                        variant={"contained"}
+                        color={"success"}
+                        component={Link}
+                        href={"/product/" + product.id}
+                    >
                         Visa
                     </Button>
                 </div>

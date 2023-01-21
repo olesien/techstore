@@ -45,7 +45,7 @@ export default function Home({
             title="Hem - Techstore"
         >
             <Main showNav={showNav}>
-                <div>
+                <div className={utilStyles.homepage}>
                     <p>Nya Produkter</p>
                     <section className={utilStyles.section}>
                         <Carousel
