@@ -33,12 +33,7 @@ export default function Header({
     const [search, setSearch] = useState(query?.query ?? "");
     const { user, mutateUser } = useUser();
     const router = useRouter();
-    const {
-        state: basket,
-        setState: updateBasket,
-        getCount,
-        trash,
-    } = useBasket();
+    const { state: basket, getCount, trash } = useBasket();
 
     const toggleCart = () => {
         setVisibleCart((prevVisibility) => !prevVisibility);
@@ -61,123 +56,140 @@ export default function Header({
     }, [visibleCart]);
 
     return (
-        <header className={styles.header}>
-            <div className={styles.headContainer}>
-                <div>
-                    <Link href="/" legacyBehavior>
-                        <a>
-                            <img src="/Logo.svg" alt="Techstore logo" />
-                        </a>
-                    </Link>
-                </div>
-                <div className={styles.containerFlex}>
+        <>
+            <header className={styles.header}>
+                <div className={styles.headContainer}>
                     <div>
-                        {!nonav && (
-                            <div
-                                className={styles.hamburger}
-                                onClick={toggleNav}
-                            >
-                                <FontAwesomeIcon icon={faBars} size={"1x"} />
-                            </div>
-                        )}
+                        <Link href="/" legacyBehavior>
+                            <a>
+                                <img src="/Logo.svg" alt="Techstore logo" />
+                            </a>
+                        </Link>
                     </div>
-
-                    <div className="container-flex">
-                        <TextField
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            id="filled-basic"
-                            label="Sök bland produkter"
-                            variant="filled"
-                            size="small"
-                            color="primary"
-                            sx={{
-                                input: {
-                                    color: theme.status.contrast,
-                                    background: theme.status.header,
-                                    borderRadius: 1,
-                                },
-                            }}
-                            onKeyDown={keySubmit}
-                        />
-                        <Button variant="contained" onClick={makeSearch}>
-                            Sök
-                        </Button>
-                    </div>
-                </div>
-                <nav>
-                    <ul>
-                        {user?.isLoggedIn === false && (
-                            <li
-                                role="button"
-                                className="button horizontal-flex gap-04"
-                                onClick={() =>
-                                    setLoginVisible(
-                                        (loginVisible) => !loginVisible
-                                    )
-                                }
-                            >
-                                <FontAwesomeIcon icon={faSignIn} />
-                                <span>Logga In</span>
-                            </li>
-                        )}
-                        {user?.isLoggedIn === true && (
-                            <>
-                                <li>
-                                    <Link href="/account/orders" legacyBehavior>
-                                        <a>
-                                            <FontAwesomeIcon icon={faUser} />
-                                            <span>Konto</span>
-                                        </a>
-                                    </Link>
-                                </li>
-
-                                <li>
-                                    <a
-                                        href="/api/logout"
-                                        onClick={async (e) => {
-                                            e.preventDefault();
-                                            mutateUser(
-                                                await fetchJson("/api/logout", {
-                                                    method: "POST",
-                                                }),
-                                                false
-                                            );
-                                            router.push("/");
-                                        }}
-                                    >
-                                        <FontAwesomeIcon
-                                            icon={faRightFromBracket}
-                                        />
-                                        <span>Logga ut</span>
-                                    </a>
-                                </li>
-                            </>
-                        )}
-                        <li>
-                            <Button variant="text" onClick={() => toggleCart()}>
-                                <FontAwesomeIcon icon={faBasketShopping} />
-                                <span>
-                                    Kundvagn
-                                    {basket.length > 0
-                                        ? ` (${getCount(basket)})`
-                                        : ""}
-                                </span>
-                            </Button>
-                            {visibleCart && (
-                                <Basket
-                                    basket={basket}
-                                    toggleCart={() => toggleCart()}
-                                    trash={trash}
-                                />
+                    <div className={styles.containerFlex}>
+                        <div>
+                            {!nonav && (
+                                <div
+                                    className={styles.hamburger}
+                                    onClick={toggleNav}
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faBars}
+                                        size={"1x"}
+                                    />
+                                </div>
                             )}
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            {loginVisible && user?.isLoggedIn !== true && (
-                <Login closeMenu={() => setLoginVisible(false)} />
-            )}
-        </header>
+                        </div>
+
+                        <div className="container-flex">
+                            <TextField
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                id="filled-basic"
+                                label="Sök bland produkter"
+                                variant="filled"
+                                size="small"
+                                color="primary"
+                                sx={{
+                                    input: {
+                                        color: theme.status.contrast,
+                                        background: theme.status.header,
+                                        borderRadius: 1,
+                                    },
+                                }}
+                                onKeyDown={keySubmit}
+                            />
+                            <Button variant="contained" onClick={makeSearch}>
+                                Sök
+                            </Button>
+                        </div>
+                    </div>
+                    <nav>
+                        <ul>
+                            {user?.isLoggedIn === false && (
+                                <li
+                                    role="button"
+                                    className="button horizontal-flex gap-04"
+                                    onClick={() =>
+                                        setLoginVisible(
+                                            (loginVisible) => !loginVisible
+                                        )
+                                    }
+                                >
+                                    <FontAwesomeIcon icon={faSignIn} />
+                                    <span>Logga In</span>
+                                </li>
+                            )}
+                            {user?.isLoggedIn === true && (
+                                <>
+                                    <li>
+                                        <Link
+                                            href="/account/orders"
+                                            legacyBehavior
+                                        >
+                                            <a>
+                                                <FontAwesomeIcon
+                                                    icon={faUser}
+                                                />
+                                                <span>Konto</span>
+                                            </a>
+                                        </Link>
+                                    </li>
+
+                                    <li>
+                                        <a
+                                            href="/api/logout"
+                                            onClick={async (e) => {
+                                                e.preventDefault();
+                                                mutateUser(
+                                                    await fetchJson(
+                                                        "/api/logout",
+                                                        {
+                                                            method: "POST",
+                                                        }
+                                                    ),
+                                                    false
+                                                );
+                                                router.push("/");
+                                            }}
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faRightFromBracket}
+                                            />
+                                            <span>Logga ut</span>
+                                        </a>
+                                    </li>
+                                </>
+                            )}
+                            <li>
+                                <Button
+                                    variant="text"
+                                    onClick={() => toggleCart()}
+                                >
+                                    <FontAwesomeIcon icon={faBasketShopping} />
+                                    <span>
+                                        Kundvagn
+                                        {basket.length > 0
+                                            ? ` (${getCount(basket)})`
+                                            : ""}
+                                    </span>
+                                </Button>
+                                {visibleCart && (
+                                    <Basket
+                                        basket={basket}
+                                        toggleCart={() => toggleCart()}
+                                        trash={trash}
+                                    />
+                                )}
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                {loginVisible && user?.isLoggedIn !== true && (
+                    <Login closeMenu={() => setLoginVisible(false)} />
+                )}
+            </header>
+            {/* <div className={styles.headerContainer}></div> */}
+        </>
     );
 }

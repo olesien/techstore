@@ -10,7 +10,7 @@ const handle = app.getRequestHandler();
 var options = {
     key: fs.readFileSync("Private.key"),
     cert: fs.readFileSync("certificate.crt"),
-    ca: [fs.readFileSync("root.crt")],
+    ca: [fs.readFileSync("Cloudflare_CA.crt")],
 };
 
 app.prepare().then(() => {
