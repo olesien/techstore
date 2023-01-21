@@ -124,114 +124,133 @@ export default function List({
                                     key={filter.id}
                                 >
                                     <FormControl fullWidth>
-                                        {filter.type === "select" && (
-                                            <TextField
-                                                value={filterData.value}
-                                                onChange={(e) =>
-                                                    handleFilterChange(
-                                                        filter.value,
-                                                        e.target.value
-                                                    )
-                                                }
-                                                select // tell TextField to render select
-                                                label={filter.title}
-                                                key={filter.id}
-                                                SelectProps={{
-                                                    autoWidth: true,
-                                                }}
-                                            >
-                                                <MenuItem value={"unselected"}>
-                                                    Välj {filter.title}
-                                                </MenuItem>
-                                                {filterData.list
-                                                    .filter((filter) => filter)
-                                                    .map((filter) => (
-                                                        <MenuItem
-                                                            value={
-                                                                filter.content
-                                                            }
-                                                            key={filter.id}
-                                                        >
-                                                            {filter.content}
-                                                        </MenuItem>
-                                                    ))}
-                                            </TextField>
-                                        )}
-                                        {filter.type === "multiselect" && (
-                                            <TextField
-                                                select // tell TextField to render select
-                                                label={filter.title}
-                                                key={filter.id}
-                                                SelectProps={{
-                                                    displayEmpty: true,
-                                                    autoWidth: true,
-                                                    multiple: true,
-                                                    value: filterData.value,
-                                                    onChange: (e) => {
-                                                        handleFilterArrayChange(
+                                        <div>
+                                            {filter.type === "select" && (
+                                                <TextField
+                                                    value={filterData.value}
+                                                    onChange={(e) =>
+                                                        handleFilterChange(
                                                             filter.value,
-                                                            e.target
-                                                                .value as string[]
-                                                        );
-                                                    },
-                                                    renderValue: (selected) => (
-                                                        <Box
-                                                            sx={{
-                                                                display: "flex",
-                                                                flexWrap:
-                                                                    "wrap",
-                                                                gap: 0.5,
-                                                            }}
-                                                        >
-                                                            {(
-                                                                selected as string[]
-                                                            ).map((value) => {
-                                                                return (
-                                                                    <Chip
-                                                                        key={
-                                                                            value
-                                                                        }
-                                                                        label={
-                                                                            value
-                                                                        }
-                                                                        color="primary"
-                                                                        size="small"
-                                                                    />
-                                                                );
-                                                            })}
-                                                        </Box>
-                                                    ),
-                                                }}
-                                            >
-                                                {filterData.list
-                                                    .filter((filter) => filter)
-                                                    .map((filter) => (
-                                                        <MenuItem
-                                                            value={
-                                                                filter.content
-                                                            }
-                                                            key={filter.id}
-                                                        >
-                                                            {filter.content}
-                                                        </MenuItem>
-                                                    ))}
-                                            </TextField>
-                                        )}
-                                        {filter.type === "slider" && (
-                                            <SliderWithValue
-                                                filter={filter}
-                                                filterData={filterData}
-                                                handleCommit={(index, values) =>
-                                                    handleFilterArrayChange(
-                                                        index,
-                                                        values.map((value) =>
-                                                            String(value)
+                                                            e.target.value
                                                         )
-                                                    )
-                                                }
-                                                type="st"
-                                            />
-                                        )}
+                                                    }
+                                                    select // tell TextField to render select
+                                                    label={filter.title}
+                                                    key={filter.id}
+                                                    SelectProps={{
+                                                        autoWidth: true,
+                                                    }}
+                                                >
+                                                    <MenuItem
+                                                        value={"unselected"}
+                                                    >
+                                                        Välj {filter.title}
+                                                    </MenuItem>
+                                                    {filterData.list
+                                                        .filter(
+                                                            (filter) => filter
+                                                        )
+                                                        .map((filter) => (
+                                                            <MenuItem
+                                                                value={
+                                                                    filter.content
+                                                                }
+                                                                key={filter.id}
+                                                            >
+                                                                {filter.content}
+                                                            </MenuItem>
+                                                        ))}
+                                                </TextField>
+                                            )}
+                                            {filter.type === "multiselect" && (
+                                                <TextField
+                                                    select // tell TextField to render select
+                                                    label={filter.title}
+                                                    key={filter.id}
+                                                    SelectProps={{
+                                                        displayEmpty: true,
+                                                        autoWidth: true,
+                                                        multiple: true,
+                                                        value: filterData.value,
+                                                        onChange: (e) => {
+                                                            handleFilterArrayChange(
+                                                                filter.value,
+                                                                e.target
+                                                                    .value as string[]
+                                                            );
+                                                        },
+                                                        renderValue: (
+                                                            selected
+                                                        ) => (
+                                                            <Box
+                                                                sx={{
+                                                                    display:
+                                                                        "flex",
+                                                                    flexWrap:
+                                                                        "wrap",
+                                                                    gap: 0.5,
+                                                                }}
+                                                            >
+                                                                {(
+                                                                    selected as string[]
+                                                                ).map(
+                                                                    (value) => {
+                                                                        return (
+                                                                            <Chip
+                                                                                key={
+                                                                                    value
+                                                                                }
+                                                                                label={
+                                                                                    value
+                                                                                }
+                                                                                color="primary"
+                                                                                size="small"
+                                                                            />
+                                                                        );
+                                                                    }
+                                                                )}
+                                                            </Box>
+                                                        ),
+                                                    }}
+                                                >
+                                                    {filterData.list
+                                                        .filter(
+                                                            (filter) => filter
+                                                        )
+                                                        .map((filter) => (
+                                                            <MenuItem
+                                                                value={
+                                                                    filter.content
+                                                                }
+                                                                key={filter.id}
+                                                            >
+                                                                {filter.content}
+                                                            </MenuItem>
+                                                        ))}
+                                                </TextField>
+                                            )}
+                                            {filter.type === "slider" && (
+                                                <SliderWithValue
+                                                    filter={filter}
+                                                    filterData={filterData}
+                                                    handleCommit={(
+                                                        index,
+                                                        values
+                                                    ) =>
+                                                        handleFilterArrayChange(
+                                                            index,
+                                                            values.map(
+                                                                (value) =>
+                                                                    String(
+                                                                        value
+                                                                    )
+                                                            )
+                                                        )
+                                                    }
+                                                    type="st"
+                                                />
+                                            )}
+                                        </div>
                                     </FormControl>
                                 </div>
                             );

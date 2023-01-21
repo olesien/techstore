@@ -25,10 +25,8 @@ export default function Layout({
     useEffect(() => {
         if (setShowNav) {
             setShowNav(false);
-            console.log("hide nav");
         }
     }, [router?.asPath]);
-    console.log(router?.asPath);
     return (
         <>
             <Head>
