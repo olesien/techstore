@@ -55,6 +55,7 @@ export default function List({
     if ("error" in data) {
         return (
             <Layout
+                setShowNav={setShowNav}
                 toggleNav={() => setShowNav((prev) => !prev)}
                 title="Ordrar - Techstore"
                 error={data.error}
@@ -84,7 +85,11 @@ export default function List({
     };
 
     return (
-        <Layout toggleNav={() => setShowNav((prev) => !prev)} title={title}>
+        <Layout
+            toggleNav={() => setShowNav((prev) => !prev)}
+            title={title}
+            setShowNav={setShowNav}
+        >
             <Main showNav={showNav}>
                 <div>
                     <div className={productStyles.filter}>

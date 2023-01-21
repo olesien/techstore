@@ -42,6 +42,7 @@ export default function User() {
     if (isLoading || error || !userDetails || "message" in userDetails) {
         return (
             <Layout
+                setShowNav={setShowNav}
                 toggleNav={() => setShowNav((prev) => !prev)}
                 title="Ordrar - Techstore"
                 error={error}
@@ -157,6 +158,7 @@ export default function User() {
 
     return (
         <Layout
+            setShowNav={setShowNav}
             toggleNav={() => setShowNav((prev) => !prev)}
             title="Ändra uppgifter - Techstore"
         >

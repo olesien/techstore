@@ -40,6 +40,7 @@ export default function productlist() {
     if (isLoading || error || !products || "message" in products) {
         return (
             <Layout
+                setShowNav={setShowNav}
                 toggleNav={() => setShowNav((prev) => !prev)}
                 title="Ordrar - Techstore"
                 error={error?.message}
@@ -84,6 +85,7 @@ export default function productlist() {
     return (
         <AdminRoute>
             <Layout
+                setShowNav={setShowNav}
                 toggleNav={() => setShowNav((prev) => !prev)}
                 title="Ordrar - Techstore"
             >

@@ -108,6 +108,7 @@ export default function AddProduct({
     return (
         <AdminRoute>
             <Layout
+                setShowNav={setShowNav}
                 toggleNav={() => setShowNav((prev) => !prev)}
                 title="Ordrar - Techstore"
             >

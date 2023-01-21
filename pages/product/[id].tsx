@@ -25,6 +25,7 @@ export default function Product({ product }: { product: ProductType }) {
     if ("error" in product) {
         return (
             <Layout
+                setShowNav={setShowNav}
                 toggleNav={() => setShowNav((prev) => !prev)}
                 title="Ordrar - Techstore"
                 error={product.error}
@@ -69,7 +70,11 @@ export default function Product({ product }: { product: ProductType }) {
             categoryLimit(product.categoryid);
 
     return (
-        <Layout toggleNav={() => setShowNav((prev) => !prev)} title={title}>
+        <Layout
+            toggleNav={() => setShowNav((prev) => !prev)}
+            title={title}
+            setShowNav={setShowNav}
+        >
             <Main showNav={showNav}>
                 <div className={productStyles.grid}>
                     <div className={productStyles.left}>

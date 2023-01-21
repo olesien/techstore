@@ -34,6 +34,7 @@ export default function search({
         <Layout
             toggleNav={() => setShowNav((prev) => !prev)}
             title={"Sökträffar på " + query?.query ?? ""}
+            setShowNav={setShowNav}
         >
             <Main showNav={showNav}>
                 <div>

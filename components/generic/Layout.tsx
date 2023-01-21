@@ -1,8 +1,11 @@
 import Head from "next/head";
 import Header from "./Header";
 import ClipLoader from "react-spinners/ClipLoader";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
-export default function layout({
+export default function Layout({
+    setShowNav,
     toggleNav,
     children,
     title,
@@ -10,6 +13,7 @@ export default function layout({
     loading,
     error,
 }: {
+    setShowNav?: React.Dispatch<React.SetStateAction<boolean>>;
     toggleNav?: () => void;
     children?: React.ReactNode;
     title: string;
@@ -17,6 +21,14 @@ export default function layout({
     loading?: boolean;
     error?: string;
 }) {
+    const router = useRouter();
+    useEffect(() => {
+        if (setShowNav) {
+            setShowNav(false);
+            console.log("hide nav");
+        }
+    }, [router?.asPath]);
+    console.log(router?.asPath);
     return (
         <>
             <Head>

@@ -28,6 +28,7 @@ export default function Orders() {
     if (isLoading || error || !orders || "message" in orders) {
         return (
             <Layout
+                setShowNav={setShowNav}
                 toggleNav={() => setShowNav((prev) => !prev)}
                 title="Ordrar - Techstore"
                 error={error}
@@ -38,6 +39,7 @@ export default function Orders() {
 
     return (
         <Layout
+            setShowNav={setShowNav}
             toggleNav={() => setShowNav((prev) => !prev)}
             title="Ordrar - Techstore"
         >

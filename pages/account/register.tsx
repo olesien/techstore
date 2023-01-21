@@ -131,6 +131,7 @@ export default function Register() {
     };
     return (
         <Layout
+            setShowNav={setShowNav}
             toggleNav={() => setShowNav((prev) => !prev)}
             title="Registrera - Techstore"
             nonav={true}

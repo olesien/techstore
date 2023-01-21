@@ -18,9 +18,11 @@ export default function Home({
     recentProducts: RecentProduct[] | Error;
     cheapProducts: CheapProduct[] | Error;
 }) {
+    const [showNav, setShowNav] = useState(false);
     if ("error" in recentProducts) {
         return (
             <Layout
+                setShowNav={setShowNav}
                 toggleNav={() => setShowNav((prev) => !prev)}
                 title="Ordrar - Techstore"
                 error={recentProducts.error}
@@ -31,16 +33,17 @@ export default function Home({
     if ("error" in cheapProducts) {
         return (
             <Layout
+                setShowNav={setShowNav}
                 toggleNav={() => setShowNav((prev) => !prev)}
                 title="Ordrar - Techstore"
                 error={cheapProducts.error}
             />
         );
     }
-    const [showNav, setShowNav] = useState(false);
 
     return (
         <Layout
+            setShowNav={setShowNav}
             toggleNav={() => setShowNav((prev) => !prev)}
             title="Hem - Techstore"
         >
