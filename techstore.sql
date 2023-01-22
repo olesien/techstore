@@ -351,7 +351,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `mail_UNIQUE` (`mail`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -360,7 +360,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (5,NULL,'Test','test','test@gmail.com','$2b$15$K/ijNHjNPlWouTvrJ.NBpuhQ98SoUpWHSVzWmigVXfX7EM/n7Ufqq',NULL,NULL,NULL,0,0,NULL,NULL),(6,NULL,'test','Test','test123@gmail.com','$2b$15$QDF2xbSU8GRQET77WJ4n3uZTfiheWRSSIcD.MZFI4UYCPifTIykz2',NULL,NULL,NULL,0,0,NULL,NULL),(7,NULL,'LinusAAC','Lindberg','test1@gmail.com','$2b$15$hTkoPCQXUiO9whIpBviroeXlAp6hNrDvenziefMqBoZV7Ek/zm6p2',111111,'Malmö','123456123123',0,1,NULL,'testgatan 6A'),(8,NULL,'Test','test','abc@gmail.com','$2b$15$jguSPEUoMYAs3/a1gK5Jwes7ZUYuoWkY6QxJu6AUKEzlbjPLrP7oK',NULL,NULL,NULL,0,0,NULL,NULL),(9,NULL,'test',NULL,'test2@gmail.com','$2b$15$HwO2az/VLHPlkULauX5kMOjJ58JoPwrdRYZ9ifVoEO/1aZn57rGGG',NULL,NULL,NULL,0,0,NULL,NULL);
+INSERT INTO `users` VALUES (5,NULL,'Test','test','test@gmail.com','$2b$15$K/ijNHjNPlWouTvrJ.NBpuhQ98SoUpWHSVzWmigVXfX7EM/n7Ufqq',NULL,NULL,NULL,0,0,NULL,NULL),(6,NULL,'test','Test','test123@gmail.com','$2b$15$QDF2xbSU8GRQET77WJ4n3uZTfiheWRSSIcD.MZFI4UYCPifTIykz2',NULL,NULL,NULL,0,0,NULL,NULL),(7,NULL,'LinusAAC','Lindberg','test1@gmail.com','$2b$15$hTkoPCQXUiO9whIpBviroeXlAp6hNrDvenziefMqBoZV7Ek/zm6p2',111111,'Malmö','123456123123',0,1,NULL,'testgatan 6A'),(8,NULL,'Test','test','abc@gmail.com','$2b$15$jguSPEUoMYAs3/a1gK5Jwes7ZUYuoWkY6QxJu6AUKEzlbjPLrP7oK',NULL,NULL,NULL,0,0,NULL,NULL),(9,NULL,'test',NULL,'test2@gmail.com','$2b$15$HwO2az/VLHPlkULauX5kMOjJ58JoPwrdRYZ9ifVoEO/1aZn57rGGG',NULL,NULL,NULL,0,0,NULL,NULL),(10,NULL,'Admin','Admin','admin@gmail.com','$2b$15$gbymaK0RhX9BRmr2uFbRt.BhoMUuylwz.KOmQQadvXXYI3ldCpu9q',42069,'Admingatan','12345678910',1,1,NULL,'Admingatan 6A');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -373,4 +373,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-22 20:52:00
+-- Dump completed on 2023-01-22 21:10:33

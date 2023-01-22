@@ -12,3 +12,8 @@ Link: https://www.my-techstore.shop/
 2. Import techstore.sql into a MySQL server
 3. Create .env and add the connection string
 4. Run yarn dev
+
+# Login (admin)
+
+Mail: admin@gmail.com
+Password: admin
