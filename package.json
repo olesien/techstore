@@ -3,7 +3,7 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
-        "start": "NODE_ENV=production node server.js"
+        "start": "next start -p 80"
     },
     "dependencies": {
         "@emotion/react": "^11.10.5",

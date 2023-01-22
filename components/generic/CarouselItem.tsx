@@ -12,7 +12,7 @@ export default function CarouselItem({
     newImg?: boolean;
 }) {
     return (
-        <div className="horizontal-flex max-width">
+        <div className="horizontal-flex max-width carousel-item">
             {newImg && (
                 <div className="vertical-flex bold flex-1">
                     <Link href={"/product/" + id} legacyBehavior>

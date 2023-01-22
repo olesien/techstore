@@ -1,7 +1,7 @@
 @import "colors.scss";
 
 .header {
-    z-index: 100;
+    z-index: 101;
     top: 0;
     position: sticky;
     width: 100%;
@@ -115,6 +115,11 @@
     > * {
         direction: ltr;
     }
+
+    @media only screen and (max-width: 550px) {
+        direction: ltr;
+        position: inherit;
+    }
 }
 
 .cart {
@@ -125,7 +130,6 @@
     min-height: 100px;
     background-color: $white;
     top: 31px;
-    // padding: 1rem;
 
     > p {
         text-align: center;
@@ -135,7 +139,10 @@
     }
 
     @media only screen and (max-width: 550px) {
-        width: 340px;
+        top: 66px;
+        // width: 340px;
+        left: 0;
+        width: 100%;
     }
 
     > a {

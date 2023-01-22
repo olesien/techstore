@@ -17,7 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Login from "../auth/Login";
 import { useEffect, useState } from "react";
 import Basket from "../basket/Basket";
-import useBasket, { Basket as BasketType } from "../../hooks/useBasket";
+import useBasket from "../../hooks/useBasket";
 import useQueries from "../../hooks/useQueries";
 
 export default function Header({
@@ -189,7 +189,6 @@ export default function Header({
                     <Login closeMenu={() => setLoginVisible(false)} />
                 )}
             </header>
-            {/* <div className={styles.headerContainer}></div> */}
         </>
     );
 }

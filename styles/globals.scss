@@ -162,6 +162,10 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @media only screen and (max-width: 570px) {
+        max-width: 75%;
+    }
 }
 
 .img-container-halfsize {
@@ -203,15 +207,15 @@ button {
     width: 100%;
     top: 0;
     left: 0;
-    height: 100%;
+    height: 100vh;
     overflow: hidden;
     background-color: rgba(0, 0, 0, 0.2);
     z-index: 1000;
-    :hover {
-        cursor: pointer;
-    }
 }
 
+.overlay:hover {
+    cursor: pointer;
+}
 .gray-box {
     background-color: $elementBackground;
     width: 15px;
@@ -251,4 +255,13 @@ button {
 
 .max-400 {
     max-width: 400px;
+}
+
+.carousel-item {
+    @media only screen and (max-width: 570px) {
+        font-size: 0.9em;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 }
