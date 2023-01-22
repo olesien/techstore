@@ -67,6 +67,7 @@ const translations: { [indexor: string]: string } = {
     memory_speed_oc: "Minneshastighet (överklockad)",
     memory_slots: "Antal platser",
     soundcard: "Ljudkort",
+    effect: "Effekt",
 };
 
 const translate = (indexor: string | null | undefined) => {
