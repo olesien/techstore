@@ -215,6 +215,13 @@
             margin: auto;
         }
     }
+
+    @media only screen and (max-width: 550px) {
+        font-size: 0.8em;
+        span {
+            font-size: 0.8em;
+        }
+    }
 }
 
 //Icons are clickable

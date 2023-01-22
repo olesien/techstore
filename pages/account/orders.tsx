@@ -45,7 +45,7 @@ export default function Orders() {
         >
             <MainAccount showNav={showNav}>
                 <section className={utilStyles.section + " " + styles.orders}>
-                    <TableContainer>
+                    <TableContainer className="table">
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead>
                                 <TableRow>

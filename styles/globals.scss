@@ -265,3 +265,9 @@ button {
         gap: 0.5rem;
     }
 }
+
+.table td {
+    @media only screen and (max-width: 470px) {
+        padding: 4px;
+    }
+}

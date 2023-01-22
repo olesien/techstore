@@ -22,7 +22,7 @@ export default function ItemTable({
     const { state: basket, toBasket, trash } = useBasket();
 
     return (
-        <TableContainer>
+        <TableContainer className="table">
             <Table aria-label="simple table">
                 <TableHead>
                     <TableRow>
