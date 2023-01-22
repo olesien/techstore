@@ -7,6 +7,12 @@ import Link from "next/link";
 import ProductRating from "../product/ProductRating";
 import { Basket } from "../../hooks/useBasket";
 import { formattedNumber } from "../../lib/utils";
+import useCompat from "../../hooks/useCompat";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faCircleExclamation,
+    faTriangleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function HorizontalItem({
     product,
@@ -31,19 +37,9 @@ export default function HorizontalItem({
 
     const canBuy = (Number(product.instock) ?? 0) - basketQuantity >= 1;
     //Check if it's incompat
-    const checkCompat = () => {
-        const issues = product.product_compat
-            .filter(
-                (compat) =>
-                    basket.find((item) => item.id === compat.productid2) ||
-                    basket.find((item) => item.id === compat.productid1)
-            )
-            .sort((a, b) => (a.error && !b.error ? 1 : -1));
-        if (issues.length > 0) {
-            return issues[0].message;
-        }
-        return undefined;
-    };
+    const { compatIssue, compatError } = useCompat(product, basket);
+    const compatabilityIssue = compatIssue();
+    const compatabilityError = compatError();
 
     return (
         <div className={productStyles.horizontalItem}>
@@ -65,9 +61,32 @@ export default function HorizontalItem({
                     </a>
                 </Link>
                 <ProductRating rating={product.review_avg} />
-                <p>
+                <p
+                    className={
+                        compatabilityError
+                            ? "error"
+                            : compatabilityIssue
+                            ? "warning"
+                            : ""
+                    }
+                >
+                    {compatabilityError ? (
+                        <FontAwesomeIcon
+                            icon={faCircleExclamation}
+                            className="iconpadding"
+                        />
+                    ) : (
+                        compatabilityIssue && (
+                            <FontAwesomeIcon
+                                icon={faTriangleExclamation}
+                                className="iconpadding"
+                            />
+                        )
+                    )}
                     {isBuilder
-                        ? checkCompat() ?? product.quickspecs
+                        ? compatabilityError ??
+                          compatabilityIssue ??
+                          product.quickspecs
                         : product.quickspecs}
                 </p>
             </div>
@@ -90,7 +109,7 @@ export default function HorizontalItem({
                     variant="contained"
                     color="success"
                     onClick={() => toBasket(product, canBuy)}
-                    disabled={!canBuy || !!checkCompat() || disabled}
+                    disabled={!canBuy || !!compatabilityError || disabled}
                 >
                     {canBuy && !disabled
                         ? isBuilder

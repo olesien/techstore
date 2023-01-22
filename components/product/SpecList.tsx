@@ -32,7 +32,7 @@ export default function SpecList({ list }: { list: product_specs[] }) {
         if (content === "false") {
             return "Nej";
         }
-        if (Number(content) > 0 && extrainfo.length > 2) {
+        if (Number(content) > 0 && extrainfo.length > 4) {
             return `${content} st`;
         }
         return content;
@@ -55,7 +55,7 @@ export default function SpecList({ list }: { list: product_specs[] }) {
                                             String(spec.extrainfo)
                                         )}
                                         {spec.extrainfo
-                                            ? (spec.extrainfo.length > 2
+                                            ? (spec.extrainfo.length > 4
                                                   ? ", "
                                                   : " ") + spec.extrainfo
                                             : ""}

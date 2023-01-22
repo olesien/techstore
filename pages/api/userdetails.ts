@@ -3,9 +3,7 @@ import { sessionOptions } from "../../lib/session";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "../../lib/prisma";
-type Error = {
-    message: string;
-};
+import { Error } from "../../lib/fetchJson";
 
 export type UserDetails =
     | {

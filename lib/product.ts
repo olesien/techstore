@@ -1,3 +1,4 @@
+import { ErrorWithCode } from "./fetchJson";
 import prisma from "./prisma";
 import {
     product_compat,
@@ -8,11 +9,7 @@ import {
     users,
 } from "@prisma/client";
 
-type Error = {
-    code: number;
-    error: string;
-};
-type Product_addons = {
+export type Product_addons = {
     product_compat_product_compat_productid1Toproducts: product_compat[];
     product_compat_product_compat_productid2Toproducts: product_compat[];
     product_images: product_images[];
@@ -22,7 +19,7 @@ type Product_addons = {
     avg: number;
 };
 
-export type ProductType = (products & Product_addons) | Error;
+export type ProductType = (products & Product_addons) | ErrorWithCode;
 
 export type Product = products & Product_addons;
 

@@ -252,7 +252,13 @@ button {
 .error {
     color: $danger;
 }
+.warning {
+    color: $orange;
+}
 
+.iconpadding {
+    padding-right: 5px;
+}
 .max-400 {
     max-width: 400px;
 }

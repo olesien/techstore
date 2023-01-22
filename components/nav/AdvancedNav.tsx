@@ -85,10 +85,18 @@ export default function AdvancedNav({
                             <NavItemAdvanced
                                 key={link.categoryId}
                                 {...link}
-                                items={data.products.filter(
-                                    (product: BasketType & ProductByIdType) =>
-                                        product.categoryid === link.categoryId
-                                )}
+                                items={data.products
+                                    .filter(
+                                        (product: ProductByIdType) =>
+                                            product.categoryid ===
+                                            link.categoryId
+                                    )
+                                    .map((product: ProductByIdType) => ({
+                                        ...product,
+                                        ...basket.find(
+                                            (item) => item.id === product.id
+                                        ),
+                                    }))}
                                 trash={trash}
                             />
                         );

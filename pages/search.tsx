@@ -6,16 +6,14 @@ import { getProductsBySearch } from "../lib/productsbysearch";
 import { Data } from "./category/[id]";
 import useQueries from "../hooks/useQueries";
 import RenderList from "../components/products/RenderList";
-
-type Error = {
-    code: number;
-    error: string;
-};
+import { ErrorWithCode } from "../lib/fetchJson";
 
 export default function search({
     data,
 }: {
-    data: Pick<Data, "page" | "pageCount" | "sortBy" | "products"> | Error;
+    data:
+        | Pick<Data, "page" | "pageCount" | "sortBy" | "products">
+        | ErrorWithCode;
 }) {
     const [showNav, setShowNav] = useState(false);
     const { query, changeQuery } = useQueries();

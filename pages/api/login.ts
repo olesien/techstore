@@ -1,5 +1,4 @@
 import type { User } from "./user";
-
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "../../lib/session";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -11,7 +10,6 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
 
     try {
         //Login
-
         const userQuery = await prisma.users.findFirst({
             where: { mail },
         });

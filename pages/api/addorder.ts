@@ -125,8 +125,6 @@ async function addorder(req: NextApiRequest, res: NextApiResponse) {
             data: productList,
         });
 
-        console.log(orderedProducts);
-
         //STEP 5: Remove quantities from products
         products.forEach(async (product) => {
             const productWithQuantity = productsByIds.find(
@@ -144,9 +142,6 @@ async function addorder(req: NextApiRequest, res: NextApiResponse) {
                         instock: newQuantity,
                     },
                 });
-                console.log(updatedProduct);
-            } else {
-                console.log(productWithQuantity, productsByIds, product);
             }
         });
         return res.status(200).json(order);

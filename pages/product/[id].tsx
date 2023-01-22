@@ -13,6 +13,12 @@ import Reviews from "../../components/product/Reviews";
 import useBasket from "../../hooks/useBasket";
 import useComputerBuilder from "../../hooks/useComputerBuilder";
 import { formattedNumber } from "../../lib/utils";
+import useCompat from "../../hooks/useCompat";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faCircleExclamation,
+    faTriangleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Product({ product }: { product: ProductType }) {
     const [showNav, setShowNav] = useState(false);
@@ -21,7 +27,6 @@ export default function Product({ product }: { product: ProductType }) {
     const { state: builderBasket, toBasket: toBuilderBasket } = useBasket(
         "techstore-builder-basket"
     );
-    //404 Not found page?
     if ("error" in product) {
         return (
             <Layout
@@ -39,23 +44,6 @@ export default function Product({ product }: { product: ProductType }) {
 
     const canBuy = (product.instock ?? 0) - basketQuantity >= 1;
 
-    const checkCompat = () => {
-        if (!isActive) return undefined;
-        const issues = product.product_compat
-            .filter(
-                (compat) =>
-                    builderBasket.find(
-                        (item) => item.id === compat.productid2
-                    ) ||
-                    builderBasket.find((item) => item.id === compat.productid1)
-            )
-            .sort((a, b) => (a.error && !b.error ? 1 : -1));
-        if (issues.length > 0) {
-            return issues[0].message;
-        }
-        return undefined;
-    };
-
     const categoryQuantity = (categoryId: number) =>
         builderBasket
             .filter((item) => Number(item.categoryid) === Number(categoryId))
@@ -68,6 +56,9 @@ export default function Product({ product }: { product: ProductType }) {
         !!isActive &&
         categoryQuantity(product.categoryid) >=
             categoryLimit(product.categoryid);
+    const { compatIssue, compatError } = useCompat(product, builderBasket);
+    const compatabilityIssue = compatIssue();
+    const compatabilityError = compatError();
 
     return (
         <Layout
@@ -132,7 +123,38 @@ export default function Product({ product }: { product: ProductType }) {
                                 <h1>{formattedNumber(product.price)} kr</h1>
                             )}
 
-                            {!!checkCompat() && <p>{checkCompat()}</p>}
+                            {isActive &&
+                                (compatabilityError ||
+                                    (compatabilityIssue && (
+                                        <p
+                                            className={
+                                                compatabilityError
+                                                    ? "error"
+                                                    : compatabilityIssue
+                                                    ? "warning"
+                                                    : ""
+                                            }
+                                        >
+                                            {compatabilityError ? (
+                                                <FontAwesomeIcon
+                                                    icon={faCircleExclamation}
+                                                    className="iconpadding"
+                                                />
+                                            ) : (
+                                                compatabilityIssue && (
+                                                    <FontAwesomeIcon
+                                                        icon={
+                                                            faTriangleExclamation
+                                                        }
+                                                        className="iconpadding"
+                                                    />
+                                                )
+                                            )}
+                                            {compatabilityError ??
+                                                compatabilityIssue ??
+                                                ""}
+                                        </p>
+                                    )))}
 
                             <Button
                                 variant="contained"
@@ -145,7 +167,9 @@ export default function Product({ product }: { product: ProductType }) {
                                         : toBasket(product, canBuy)
                                 }
                                 disabled={
-                                    !canBuy || !!checkCompat() || disabled
+                                    !canBuy ||
+                                    (isActive && !!compatError) ||
+                                    disabled
                                 }
                             >
                                 {canBuy && !disabled

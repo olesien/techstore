@@ -4,9 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "../../../lib/prisma";
 import { categories, product_images, products } from "@prisma/client";
-type Error = {
-    message: string;
-};
+import { Error } from "../../../lib/fetchJson";
 
 export type AllProducts = products & {
     product_images: product_images[];

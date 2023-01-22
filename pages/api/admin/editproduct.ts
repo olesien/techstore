@@ -239,7 +239,12 @@ async function editProductRoute(req: NextApiRequest, res: NextApiResponse) {
                                 ""
                             );
                             content = nameWithoutComma;
-                            extrainfo = splitBySpace[1].replace(/[()\s]/g, "");
+                            if (splitBySpace.length > 1) {
+                                extrainfo = splitBySpace[1].replace(
+                                    /[()\s]/g,
+                                    ""
+                                );
+                            }
                         }
 
                         if (

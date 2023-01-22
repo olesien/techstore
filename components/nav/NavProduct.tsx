@@ -37,7 +37,7 @@ export default function NavProduct({
 
                     <p>
                         {formattedNumber(product.price)} kr{" "}
-                        {product.quantity > 1 &&
+                        {Number(product.quantity) > 1 &&
                             " (" + product.quantity + " st)"}
                     </p>
                 </div>

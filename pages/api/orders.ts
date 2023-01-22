@@ -9,9 +9,8 @@ import {
     product_images,
     products,
 } from "@prisma/client";
-type Error = {
-    message: string;
-};
+
+import { Error } from "../../lib/fetchJson";
 
 export type Order =
     | orders & {

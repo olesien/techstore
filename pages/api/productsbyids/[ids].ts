@@ -1,15 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { product_images, products } from "@prisma/client";
-
-type Error = {
-    code: number;
-    error: string;
-};
+import { ErrorWithCode } from "../../../lib/fetchJson";
 
 export type ProductByIdTypeError =
     | (products & { product_images: product_images[] })
-    | Error;
+    | ErrorWithCode;
 
 export type ProductByIdType = products & { product_images: product_images[] };
 

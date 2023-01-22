@@ -10,6 +10,7 @@ import productStyles from "../../styles/Products.module.scss";
 import useQueries from "../../hooks/useQueries";
 import SliderWithValue from "../../components/products/SliderWithValue";
 import RenderList from "../../components/products/RenderList";
+import { ErrorWithCode } from "../../lib/fetchJson";
 
 export type ProductAddons = {
     product_images: string[];
@@ -34,11 +35,6 @@ export type Data = {
     products: Product[];
 };
 
-type Error = {
-    code: number;
-    error: string;
-};
-
 export default function List({
     category,
     data,
@@ -48,7 +44,7 @@ export default function List({
         title: string;
         filters: categories_filters[];
     };
-    data: Data | Error;
+    data: Data | ErrorWithCode;
 }) {
     const [showNav, setShowNav] = useState(false);
     const { changeQuery, removeQuery } = useQueries();

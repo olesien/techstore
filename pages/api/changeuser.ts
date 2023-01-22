@@ -91,6 +91,7 @@ async function changeUser(req: NextApiRequest, res: NextApiResponse) {
                             login: user.mail,
                             avatarUrl: "",
                             id: user.id,
+                            admin: user.admin,
                         } as User;
                         req.session.user = session;
                         await req.session.save();

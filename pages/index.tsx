@@ -6,17 +6,14 @@ import Carousel from "../components/generic/Carousel";
 import VerticalItem from "../components/products/VerticalItem";
 import { RecentProduct, getRecentProducts } from "../lib/recentProducts";
 import { CheapProduct, getCheapProducts } from "../lib/cheapProducts";
-type Error = {
-    code: number;
-    error: string;
-};
+import { ErrorWithCode } from "../lib/fetchJson";
 
 export default function Home({
     recentProducts,
     cheapProducts,
 }: {
-    recentProducts: RecentProduct[] | Error;
-    cheapProducts: CheapProduct[] | Error;
+    recentProducts: RecentProduct[] | ErrorWithCode;
+    cheapProducts: CheapProduct[] | ErrorWithCode;
 }) {
     const [showNav, setShowNav] = useState(false);
     if ("error" in recentProducts) {
