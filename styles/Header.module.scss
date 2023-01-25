@@ -52,6 +52,15 @@
         padding: 0.5rem;
         font-size: 0.9em;
     }
+
+    @media (max-width: 400px) {
+        padding: 0.5rem;
+        font-size: 0.8em;
+
+        button {
+            font-size: 1em;
+        }
+    }
 }
 
 .headContainer {

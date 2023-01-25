@@ -209,20 +209,29 @@ export default function List({
                                                         ),
                                                     }}
                                                 >
-                                                    {filterData.list
-                                                        .filter(
-                                                            (filter) => filter
-                                                        )
-                                                        .map((filter) => (
-                                                            <MenuItem
-                                                                value={
-                                                                    filter.content
-                                                                }
-                                                                key={filter.id}
-                                                            >
-                                                                {filter.content}
-                                                            </MenuItem>
-                                                        ))}
+                                                    {filterData?.list ? (
+                                                        filterData.list
+                                                            .filter(
+                                                                (filter) =>
+                                                                    filter
+                                                            )
+                                                            .map((filter) => (
+                                                                <MenuItem
+                                                                    value={
+                                                                        filter.content
+                                                                    }
+                                                                    key={
+                                                                        filter.id
+                                                                    }
+                                                                >
+                                                                    {
+                                                                        filter.content
+                                                                    }
+                                                                </MenuItem>
+                                                            ))
+                                                    ) : (
+                                                        <></>
+                                                    )}
                                                 </TextField>
                                             )}
                                             {filter.type === "slider" && (

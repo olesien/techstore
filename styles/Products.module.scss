@@ -21,6 +21,9 @@
     img {
         width: auto;
         height: 6rem;
+        @media only screen and (max-width: 550px) {
+            height: auto;
+        }
     }
 
     div {
