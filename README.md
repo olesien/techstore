@@ -4,7 +4,7 @@ A tech webstore with a built in compatibility checker
 
 # preview
 
-Link: [https://www.my-techstore.shop/](https://my-techstore.com/)
+Link: https://my-techstore.com/
 
 # Installation & setup
 
